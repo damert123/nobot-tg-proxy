@@ -6,7 +6,10 @@ namespace App\Services;
 use Carbon\Carbon;
 use danog\MadelineProto\API;
 use danog\MadelineProto\SimpleEventHandler;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class BasicEventHandler extends SimpleEventHandler
 {
@@ -15,39 +18,85 @@ class BasicEventHandler extends SimpleEventHandler
 
     public function onUpdateNewMessage(array $update): void
     {
-        // Проверяем, есть ли ключ 'message' в обновлении
         $message = $update['message'] ?? null;
-
-
 
 
         if ($message) {
 
+            Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
             $text = $message['message'] ?? 'Без текста';
-
+            $peerId = $message['peer_id'] ?? null;
             $fromId = $message['from_id'] ?? null;
-            $userInfo = $this->getInfo($fromId);
 
-            $date = $message['date'];
-            $formatDate = Carbon::createFromTimestamp($date, 'Europe/Moscow')->toDateTimeString();
+            // Получаем данные текущего пользователя (менеджера)
+            $self = $this->getSelf();
+            $managerId = $self['id'];
 
-            $photoId = $userInfo['User']['photo']['photo_id'] ?? null;
-            $dcId = $userInfo['User']['photo']['dc_id'] ?? null;
-            $userFirstName = $userInfo['User']['first_name'] ?? '';
-            $userLastName = $userInfo['User']['last_name'] ?? '';
-            $userName = $userInfo['User']['username'] ?? '';
-            $userId = $userInfo['User']['id'] ?? '';
+            // Определяем, кто клиент
+            $isManagerSender = ($fromId === $managerId);
+            $clientId = $isManagerSender ? $peerId : $fromId;
+
+            // Определяем, какой ID использовать для поиска аккаунта Telegram
+            // Если пишет менеджер, то ищем по from_id (ID менеджера)
+            // Если пишет клиент, то ищем по peer_id (ID менеджера)
+            $telegramAccountId = $isManagerSender ? $fromId : $peerId;
+
+            // Получаем информацию о клиенте
+            $clientInfo = $this->getInfo($clientId);
+            $clientFirstName = $clientInfo['User']['first_name'] ?? '';
+            $clientLastName = $clientInfo['User']['last_name'] ?? '';
+            $clientUserName = $clientInfo['User']['username'] ?? '';
+
+            // Получаем информацию об отправителе
+            $senderInfo = $this->getInfo($fromId);
+            $senderFirstName = $senderInfo['User']['first_name'] ?? '';
+            $senderLastName = $senderInfo['User']['last_name'] ?? '';
+            $senderUserName = $senderInfo['User']['username'] ?? '';
+
+
+
+            // Находим Telegram аккаунт по peerId
+            $telegramAccount = DB::table('telegram_accounts')
+                ->where('telegram_id', $telegramAccountId)
+                ->first();
+
+            if (!$telegramAccount) {
+                Log::channel('tg-messages')->warning("Не удалось найти Telegram аккаунт с ID: $telegramAccountId");
+
+            }
+
+            $planfixIntegration = DB::table('planfix_integrations')
+                ->where('telegram_account_id', $telegramAccount->id)
+                ->first();
+
+            if (!$planfixIntegration) {
+                Log::warning("Не удалось найти Planfix интеграцию для аккаунта ID: $peerId");
+
+            }
+
+            // Данные для CRM
+            $data = [
+                'cmd' => 'newMessage',
+                'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
+                'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
+                'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
+                'message' => $text ?: 'Файл', // Текст сообщения
+                'title' => $clientUserName, // Заголовок задачи (всегда имя клиента)
+                'contactId' => $fromId, // ID отправителя
+                'contactName' => $senderFirstName, // Имя отправителя
+                'contactLastName' => $senderLastName, // Фамилия отправителя (необязательно)
+            ];
 
 
 
 
-            Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$userName}, имя: {$userFirstName}, фамилия: {$userLastName} Дата сообщения: {$formatDate}");
 
-            $pathAvatar = __DIR__ . '/downloads/avatars/';
-            $filePathMediaPhoto = __DIR__ . '/downloads/media/photo/';
-            $filePathMediaVoice = __DIR__ . '/downloads/media/voice/';
-            $filePathMediaDocument = __DIR__ . '/downloads/media/document/';
-            $filePathMediaRoundMessage = __DIR__ . '/downloads/media/video_message/';
+            Log::channel('tg-messages')->info($self['id'] . "UserID");
+            Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$clientUserName}, имя: {$senderFirstName}, фамилия: {$senderLastName}");
+
+
 
             if (isset($message['media'])){
                 try {
@@ -55,37 +104,86 @@ class BasicEventHandler extends SimpleEventHandler
 
                     if (isset($media['photo'])) {
                         $photoId = $media['photo']['id'];
-                        if (!is_dir($filePathMediaPhoto)){
-                            mkdir($filePathMediaPhoto, 0755, true);
+
+                        $filePath = "telegram/media/photo/{$photoId}.jpg";
+
+                        if (!Storage::disk('public')->exists('telegram/media/photo')){
+                            Storage::disk('public')->makeDirectory('telegram/media/photo');
                         }
 
+
                         Log::info('Получено фото');
-                        $this->downloadToFile($media, $filePathMediaPhoto . "{$photoId}" . time() . ".jpg");
+                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                        $publicUrl = url(Storage::url($filePath));
+
+                        $data['attachments[name]'] = 'photo.jpg';
+                        $data['attachments[url]'] = $publicUrl;
+
+                        Log::channel('tg-messages')->info('Фото успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+
+
+
                     } elseif (isset($media['voice']) && $media['voice'] === true) {
                         $voiceId = $media['document']['id'];
-                        if (!is_dir($filePathMediaVoice)){
-                            mkdir($filePathMediaVoice, 0755, true);
+
+                        $filePath = "telegram/media/voice/{$voiceId}.ogg";
+
+                        if (!Storage::disk('public')->exists('telegram/media/voice')){
+                            Storage::disk('public')->makeDirectory('telegram/media/voice');
                         }
 
                         Log::info('Получено голосовое сообщение');
-                        $this->downloadToFile($media, $filePathMediaVoice . "{$voiceId}_" . time() . ".ogg");
+                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                        $publicUrl = url(Storage::url($filePath));
+
+                        $data['attachments[name]'] = 'voice.ogg';
+                        $data['attachments[url]'] = $publicUrl;
+
+                        Log::channel('tg-messages')->info('ГОЛОСОВОЕ успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+
+
                     }elseif (isset($media['round']) && $media['round'] === true){
                         $roundId = $media['document']['id'];
-                        if (!is_dir($filePathMediaRoundMessage)){
-                            mkdir($filePathMediaRoundMessage, 0755, true);
+
+                        $filePath = "telegram/media/round/{$roundId}.mp4";
+
+                        if (!Storage::disk('public')->exists('telegram/media/round')){
+                            Storage::disk('public')->makeDirectory('telegram/media/round');
                         }
+
                         Log::info('Получено видеосообщение');
-                        $this->downloadToFile($media, $filePathMediaRoundMessage . "{$roundId}.mp4");
+                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                        $publicUrl = url(Storage::url($filePath));
+
+                        $data['attachments[name]'] = 'videoMessage.mp4';
+                        $data['attachments[url]'] = $publicUrl;
+
+                        Log::channel('tg-messages')->info('КРУЖОК успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+
 
 
                     } elseif (isset($media['document'])) {
                         $documentId = $media['document']['id'];
-                        if (!is_dir($filePathMediaDocument)){
-                            mkdir($filePathMediaDocument, 0755, true);
+
+                        $filePath = "telegram/media/document/{$documentId}.txt";
+
+                        if (!Storage::disk('public')->exists('telegram/media/document')){
+                            Storage::disk('public')->makeDirectory('telegram/media/document');
                         }
 
                         Log::info('Получен документ');
-                        $this->downloadToFile($media, $filePathMediaDocument . "{$documentId}");
+                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                        $publicUrl = url(Storage::url($filePath));
+
+                        $data['attachments[name]'] = 'document.txt';
+                        $data['attachments[url]'] = $publicUrl;
+
+                        Log::channel('tg-messages')->info('ДОКУМЕНТ успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+
 
                     }
 
@@ -94,6 +192,39 @@ class BasicEventHandler extends SimpleEventHandler
                 catch (\Throwable $e){
                     Log::channel('tg-messages')->info("Медиа в сообщении отсутствует");
                 }
+            }
+
+
+            try {
+                if (!empty($message['entities'])) {
+                    foreach ($message['entities'] as $entity) {
+                        if ($entity['_'] === 'messageEntityTextUrl' && $entity['url'] === 'planfix://internal') {
+                            Log::info('Это сообщение из CRM, отправка в Planfix пропущена.', [
+                                'message' => $message,
+                            ]);
+                            return; // Выход из метода, пропускаем отправку
+                        }
+                    }
+                }
+
+
+                $response = Http::asForm()->post('https://testservice123.planfix.ru/webchat/api', $data);
+
+                if ($response->successful()){
+                    Log::info('Сообщение успешно отправлено в PlanFix', [
+                        'response' => $response->json(),
+                    ]);
+                }else {
+                    Log::warning('Ошибка при отправке сообщения в Planfix', [
+                        'status' => $response->status(),
+                        'response' => $response->body(),
+                    ]);
+
+                }
+            }catch (\Throwable $e){
+                Log::error('Не удалось отправить сообщение в Planfix', [
+                    'error' => $e->getMessage(),
+                ]);
             }
 
 //            if ($photoId) {
@@ -118,7 +249,7 @@ class BasicEventHandler extends SimpleEventHandler
 
 
 //            Log::channel('tg-messages')->info("Информация о пользователе:" . json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-//            Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         } else {
             Log::channel('tg-messages')->warning('Обновление без сообщения');

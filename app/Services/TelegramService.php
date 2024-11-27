@@ -5,6 +5,7 @@ namespace App\Services;
 use danog\MadelineProto\API;
 use danog\MadelineProto\EventHandler;
 use danog\MadelineProto\Settings\AppInfo;
+use Illuminate\Support\Facades\Log;
 
 class TelegramService
 {
@@ -22,11 +23,21 @@ class TelegramService
 
     public function listenForMessage()
     {
-        $sessionFile = storage_path('telegram_sessions/user.madeline');
+//        $sessionFile = storage_path('telegram_sessions/user.madeline');
+
+        $sessions = [
+            storage_path('telegram_sessions/79171275883.madeline'),
+            storage_path('telegram_sessions/79178239146.madeline'),
+        ];
 
 
+        $MadelineProtos = [];
+        foreach ($sessions as $session) {
+            $MadelineProtos[] = new API($session);
+        }
 
-        BasicEventHandler::startAndLoop($sessionFile, $this->settings);
+//        BasicEventHandler::startAndLoop($sessionFile, $this->settings);
+        API::startAndLoopMulti($MadelineProtos, BasicEventHandler::class);
 
     }
 

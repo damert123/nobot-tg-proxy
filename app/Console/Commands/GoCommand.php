@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -30,19 +32,22 @@ class GoCommand extends Command
 
     public function handle()
     {
-        dd(Str::random(32));
+//        dd(Str::random(32));
 
-//        // Путь к сессии MadelineProto
+        // Путь к сессии MadelineProto
 //        $sessionFile = storage_path('telegram_sessions/user.madeline');
-//
-//        // Создаем экземпляр MadelineProto
-//        $settings = (new \danog\MadelineProto\Settings\AppInfo)
-//            ->setApiId(env('TELEGRAM_API_ID'))
-//            ->setApiHash(env('TELEGRAM_API_HASH'));
-//
-//        $madeline = new API($sessionFile, $settings);
-//
-//
+
+        $token = 'ml8FbPLWNpaBKvkUaLHYYG4v34WcWnqe';
+
+        $planfix = DB::table('planfix_integrations')->where('token', $token)->first();
+
+        $telegram  = DB::table('telegram_accounts')->where('id', $planfix->telegram_account_id)->first();
+
+        $session = storage_path('telegram_sessions/79171275883.madeline');
+        dd($session);
+
+
+
 //        try {
 //
 //
