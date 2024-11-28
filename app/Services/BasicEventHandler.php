@@ -22,7 +22,6 @@ class BasicEventHandler extends SimpleEventHandler
 
 
         if ($message) {
-
             Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
@@ -32,7 +31,14 @@ class BasicEventHandler extends SimpleEventHandler
 
             // Получаем данные текущего пользователя (менеджера)
             $self = $this->getSelf();
+            Log::channel('tg-messages')->info($self['id'] . "Пришло от этой сессии");
+
             $managerId = $self['id'];
+
+            if ($fromId === $peerId) {
+                Log::channel('tg-messages')->info("from_id и peer_id совпадают. Заменяем peer_id на managerId.");
+                $peerId = $managerId; // Меняем peer_id на managerId
+            }
 
             // Определяем, кто клиент
             $isManagerSender = ($fromId === $managerId);
@@ -63,9 +69,11 @@ class BasicEventHandler extends SimpleEventHandler
                 ->first();
 
             if (!$telegramAccount) {
-                Log::channel('tg-messages')->warning("Не удалось найти Telegram аккаунт с ID: $telegramAccountId");
-
+                Log::channel('tg-messages')->warning("Не удалось найти Telegram аккаунт (пришло сообщение из бесед) с ID: $telegramAccountId");
+                return;
             }
+
+
 
             $planfixIntegration = DB::table('planfix_integrations')
                 ->where('telegram_account_id', $telegramAccount->id)
@@ -73,6 +81,7 @@ class BasicEventHandler extends SimpleEventHandler
 
             if (!$planfixIntegration) {
                 Log::warning("Не удалось найти Planfix интеграцию для аккаунта ID: $peerId");
+                return;
 
             }
 
@@ -93,7 +102,7 @@ class BasicEventHandler extends SimpleEventHandler
 
 
 
-            Log::channel('tg-messages')->info($self['id'] . "UserID");
+
             Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$clientUserName}, имя: {$senderFirstName}, фамилия: {$senderLastName}");
 
 
@@ -226,27 +235,6 @@ class BasicEventHandler extends SimpleEventHandler
                     'error' => $e->getMessage(),
                 ]);
             }
-
-//            if ($photoId) {
-//                // Путь для сохранения
-//
-//                try {
-//                    $photoInfo = $this->getPropicInfo($message);
-//
-//                    $this->downloadToFile($photoInfo, $pathAvatar . "{$userId}.jpg");
-//                    Log::channel('tg-messages')->info("Фото профиля пользователя сохранено в {$pathAvatar} {$userId}.jpg");
-//                   Log::channel('tg-messages')->info("Информация о фото пользователя:" . json_encode($photoInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-//
-//                } catch (\Throwable $e) {
-//
-//                    Log::channel('tg-messages')->error("Ошибка при сохранении фото профиля: {$e->getMessage()}");
-//                }
-//            } else {
-//                Log::channel('tg-messages')->info("Фото профиля пользователя отсутствует");
-//            }
-
-
-
 
 //            Log::channel('tg-messages')->info("Информация о пользователе:" . json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

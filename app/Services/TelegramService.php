@@ -33,7 +33,9 @@ class TelegramService
 
         $MadelineProtos = [];
         foreach ($sessions as $session) {
-            $MadelineProtos[] = new API($session);
+            $api = new API($session);
+            $api->start();
+            $MadelineProtos[] = $api;
         }
 
 //        BasicEventHandler::startAndLoop($sessionFile, $this->settings);
