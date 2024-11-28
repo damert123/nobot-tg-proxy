@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('telegram_accounts', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('phone');
-            $table->bigInteger('telegram_id')->nullable();
-            $table->string('session_path')->nullable();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('telegram_accounts');
+        Schema::dropIfExists('roles');
     }
 };

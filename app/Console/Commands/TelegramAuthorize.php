@@ -79,8 +79,11 @@ class TelegramAuthorize extends Command
 
             try {
                 TelegramAccount::create([
+                    'title' => 'Тест телега',
+                    'phone' => $phone,
                     'telegram_id' => $self['id'],
                     'session_path' => $sessionFile,
+                    'user_id' => 1
                 ]);
                 $this->info('Авторизация успешно завершена.');
             } catch (\Exception $e) {
