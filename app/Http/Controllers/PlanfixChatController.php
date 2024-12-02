@@ -153,23 +153,6 @@ class PlanfixChatController extends Controller
 
             return response()->json(['success' => true]);
 
-//            $madelineProto->messages->sendMessage([
-//                'peer' => $chatId,
-//                'message' => $message,
-//                'entities' => [
-//                    [
-//                        '_' => 'messageEntityTextUrl', // Скрытая ссылка
-//                        'offset' => strlen($message), // Ставим в конец текста
-//                        'length' => 1,                // Один символ
-//                        'url' => 'planfix://internal' // Невидимая метка
-//                    ]
-//                ],
-//            ]);
-//
-//            Log::channel('planfix-messages')->info("Message sent to Telegram chat {$chatId}: {$message}");
-//
-//            return response()->json(['success' => true]);
-
         }catch (\Throwable $e){
             Log::channel('planfix-messages')->error('Failed to send message to Telegram: ' . $e->getMessage());
             return response()->json(['success' => false, 'error' => 'Failed to send message to Telegram'], 500);
