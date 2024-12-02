@@ -407,3 +407,940 @@ PingLoop:       	Ping DC 2.0
 UpdateHandler:  	Parsing updates (updateShort) received via the socket...
 FeedLoop:       	Resumed update feed loop generic
 UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 27 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 27 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+FeedLoop:       	Got channel too long update, getting difference...
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 27 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 24 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 26 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 29 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 29 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 26 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 29 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 26 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 34 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Got channel too long update, getting difference...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001197658063
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001197658063
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001141576790
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001141576790
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001141576790
+FeedLoop:       	Got channel too long update, getting difference...
+Session:        	Garbage collected 36 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+Session:        	Garbage collected 35 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 38 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 27 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+FeedLoop:       	Getdiff fed me message of type message in update feed loop channel -1001404450035...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+FeedLoop:       	Got channel too long update, getting difference...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 34 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 34 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Saving update of type updateMessagePoll
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 34 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 38 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+FeedLoop:       	Got channel too long update, getting difference...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+FeedLoop:       	Got channel too long update, getting difference...
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 29 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	MSGID duplicate (590795) in update feed loop channel -1001404450035
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+Session:        	Garbage collected 22 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 24 outgoing messages in DC 2, 7 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+FeedLoop:       	Got channel too long update, getting difference...
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001237513492
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 26 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 2 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+FeedLoop:       	Got channel too long update, getting difference...
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+Session:        	Garbage collected 31 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 29 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 24 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 22 outgoing messages in DC 2, 6 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 28 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 27 outgoing messages in DC 2, 3 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 29 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 26 outgoing messages in DC 2, 2 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 33 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 35 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Saving update of type updateMessagePoll
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 38 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 28 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Getdiff fed me message of type message in update feed loop channel -1001404450035...
+FeedLoop:       	Getdiff fed me message of type message in update feed loop channel -1001404450035...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+Session:        	Garbage collected 39 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 32 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 36 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 29 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 40 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+FeedLoop:       	Resumed update feed loop channel -1001305678247
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 31 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001305678247
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 37 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 32 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001560620044
+MinDatabase:    	Don't have origin info with min peer 1560620044, this may fail
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateLoop:     	Channel private, exiting getUpdate loop channel -1001560620044
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001560620044
+MinDatabase:    	Don't have origin info with min peer 1560620044, this may fail
+UpdateLoop:     	Channel private, exiting getUpdate loop channel -1001560620044
+FeedLoop:       	Resumed update feed loop channel -1001560620044
+FeedLoop:       	Got channel too long update, getting difference...
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001560620044
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 44 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 36 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001560620044
+FeedLoop:       	Got channel too long update, getting difference...
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+Session:        	Garbage collected 33 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 35 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 30 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 30 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 33 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001722091576
+FeedLoop:       	Resumed update feed loop channel -1001645007692
+MinDatabase:    	Don't have origin info with min peer 1645007692, this may fail
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001633557902
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateLoop:     	Channel private, exiting getUpdate loop channel -1001645007692
+FeedLoop:       	Resumed update feed loop channel -1001633557902
+FeedLoop:       	Resumed update feed loop channel -1001722091576
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001523038545
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1002071649408
+MinDatabase:    	Don't have origin info with min peer 2071649408, this may fail
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+UpdateLoop:     	Channel private, exiting getUpdate loop channel -1002071649408
+Session:        	Garbage collected 41 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 39 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1002071649408
+MinDatabase:    	Don't have origin info with min peer 2071649408, this may fail
+UpdateLoop:     	Channel private, exiting getUpdate loop channel -1002071649408
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001523038545
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001523038545
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+FeedLoop:       	Getdiff fed me message of type message in update feed loop channel -1001404450035...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 43 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 34 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 32 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 33 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Got channel too long update, getting difference...
+Session:        	Garbage collected 39 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 37 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 33 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 33 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateChannelMessageViews
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+Session:        	Garbage collected 36 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 35 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateUserStatus
+Session:        	Garbage collected 35 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 33 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 33 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 36 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop generic
+UpdateHandler:  	Saving update of type updateMessagePoll
+PingLoop:       	Ping DC 2.0
+Session:        	Garbage collected 35 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 36 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+UpdateHandler:  	Parsing updates (updateShort) received via the socket...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+FeedLoop:       	Getdiff fed me message of type message in update feed loop channel -1001404450035...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateNewChannelMessage
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+FeedLoop:       	Got channel too long update, getting difference...
+Session:        	Garbage collected 41 incoming messages in DC 2, 0 left
+Session:        	Garbage collected 36 outgoing messages in DC 2, 0 left
+PingLoop:       	Ping DC 2.0
+UpdateHandler:  	Parsing updates (updates) received via the socket...
+SeqLoop:        	Was fed updates of type updates...
+FeedLoop:       	Resumed update feed loop channel -1001138327678
+UpdateHandler:  	Saving update of type updateEditChannelMessage
+PingLoop:       	Ping DC 2.0
+FeedLoop:       	Resumed update feed loop channel -1001404450035
+UpdateHandler:  	Saving update of type updateDeleteChannelMessages

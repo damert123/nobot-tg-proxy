@@ -57,6 +57,8 @@ class TelegramAuthorize extends Command
             // Отправка запроса на авторизацию
             $madelineProto->phoneLogin($phone);
 
+
+
             // Запрос кода
             $this->info('Введите код, который был отправлен в Telegram');
             $code = $this->ask('Код');

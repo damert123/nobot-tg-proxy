@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PlanfixController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TelegramAccountController;
 use App\Http\Middleware\AdminMiddleware;
@@ -19,10 +20,20 @@ Route::get('/telegram/add', [TelegramAccountController::class, 'create'])->name(
 Route::post('/telegram/add', [TelegramAccountController::class, 'store'])->name('telegram.store');
 Route::get('/telegram/code', [TelegramAccountController::class, 'showCodeForm'])->name('telegram.code');
 Route::post('/telegram/code', [TelegramAccountController::class, 'verifyCode'])->name('telegram.verify');
+Route::post('/telegram/recode', [TelegramAccountController::class, 'resendCode'])->name('telegram.recode');
+Route::get('/telegram/verify-two-factor', [TelegramAccountController::class, 'showTwoFactorCode'])->name('telegram.twofactor');
+Route::post('/telegram/verify-two-factor', [TelegramAccountController::class, 'verifyTwoFactorCode'])->name('telegram.verify.twofactor');
 
 Route::get('/telegram/accounts', [TelegramAccountController::class, 'index'])->name('telegram.index');
 
 Route::delete('/telegram/accounts/{id}', [TelegramAccountController::class, 'destroy'])->name('telegram.destroy');
+
+
+
+Route::get('/planfix/add', [PlanfixController::class, 'create'])->name('planfix.add');
+Route::post('/planfix/add', [PlanfixController::class, 'store'])->name('planfix.store');
+Route::get('/planfix/chats', [PlanfixController::class, 'index'])->name('planfix.index');
+Route::delete('/planfix/chats/{id}', [PlanfixController::class, 'destroy'])->name('planfix.destroy');
 
 
 Route::middleware('auth')->group(function () {

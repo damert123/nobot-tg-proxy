@@ -20,6 +20,9 @@
                     <label for="code" class="block text-gray-700">Код подтверждения:</label>
                     <input type="text" id="code" name="code" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-100 mt-2" required>
 
+                    <label for="password" class="block text-gray-700 mt-4">Пароль (если двухфакторная зашита):</label>
+                    <input type="password" id="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-100 mt-2">
+
                     <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200 mt-4">
                         Подтвердить
                     </button>
@@ -28,3 +31,4 @@
         </div>
     </div>
 @endsection
+

@@ -27,7 +27,6 @@ class TelegramService
 
         $sessions = [
             storage_path('telegram_sessions/79171275883.madeline'),
-            storage_path('telegram_sessions/79178239146.madeline'),
         ];
 
 

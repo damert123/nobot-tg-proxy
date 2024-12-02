@@ -153,7 +153,26 @@ class BasicEventHandler extends SimpleEventHandler
                         Log::channel('tg-messages')->info('ГОЛОСОВОЕ успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
 
 
-                    }elseif (isset($media['round']) && $media['round'] === true){
+                    } elseif (isset($media['video']) && $media['video'] === true){
+                        $videoId = $media['document']['id'];
+
+                        $filePath = "telegram/media/video/{$videoId}.mp4";
+
+                        if (!Storage::disk('public')->exists('telegram/media/video')){
+                            Storage::disk('public')->makeDirectory('telegram/media/video');
+                        }
+
+                        Log::info('Получено видео');
+                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                        $publicUrl = url(Storage::url($filePath));
+
+                        $data['attachments[name]'] = 'video.mp4';
+                        $data['attachments[url]'] = $publicUrl;
+
+                        Log::channel('tg-messages')->info('ВИДЕО успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+
+                    } elseif (isset($media['round']) && $media['round'] === true){
                         $roundId = $media['document']['id'];
 
                         $filePath = "telegram/media/round/{$roundId}.mp4";
@@ -208,8 +227,9 @@ class BasicEventHandler extends SimpleEventHandler
                 if (!empty($message['entities'])) {
                     foreach ($message['entities'] as $entity) {
                         if ($entity['_'] === 'messageEntityTextUrl' && $entity['url'] === 'planfix://internal') {
-                            Log::info('Это сообщение из CRM, отправка в Planfix пропущена.', [
+                            Log::channel('planfix-messages')->info('Это сообщение из CRM, отправка в Planfix пропущена.', [
                                 'message' => $message,
+                                $update
                             ]);
                             return; // Выход из метода, пропускаем отправку
                         }
@@ -217,21 +237,30 @@ class BasicEventHandler extends SimpleEventHandler
                 }
 
 
+                if (strpos($message['message'] ?? '', "\u{200B}") !== false) {
+                    Log::channel('planfix-messages')->info('Это сообщение из CRM, отправка в Planfix пропущена.', [
+                        'message' => $message,
+                        'update' => $update,
+                    ]);
+                    return; // Пропускаем отправку
+                }
+
+
                 $response = Http::asForm()->post('https://testservice123.planfix.ru/webchat/api', $data);
 
                 if ($response->successful()){
-                    Log::info('Сообщение успешно отправлено в PlanFix', [
+                    Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
                         'response' => $response->json(),
                     ]);
                 }else {
-                    Log::warning('Ошибка при отправке сообщения в Planfix', [
+                    Log::channel('planfix-messages')->warning('Ошибка при отправке сообщения в Planfix', [
                         'status' => $response->status(),
                         'response' => $response->body(),
                     ]);
 
                 }
             }catch (\Throwable $e){
-                Log::error('Не удалось отправить сообщение в Planfix', [
+                Log::channel('planfix-messages')->error('Не удалось отправить сообщение в Planfix', [
                     'error' => $e->getMessage(),
                 ]);
             }

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Telegram\StoreRequest;
+use App\Models\PlanfixIntegration;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
+use danog\MadelineProto\RPCError\SessionPasswordNeededError;
+use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TelegramAccountController extends Controller
 {
@@ -28,9 +32,14 @@ class TelegramAccountController extends Controller
 
         $data = $request->validated();
 
+        $sessionFile = storage_path("telegram_sessions/{$data['phone']}.madeline");
+
+
         $telegramAccount = TelegramAccount::create([
             'phone' => $data['phone'],
             'title' => $data['title'],
+            'status' => 'Ожидает код',
+            'session_path' => $sessionFile,
             'user_id' => auth()->id(), // Если аккаунт привязан к пользователю
         ]);
 
@@ -62,10 +71,16 @@ class TelegramAccountController extends Controller
             $madelineProto = new \danog\MadelineProto\API($sessionFile, $settings);
             $madelineProto->phoneLogin($phone);
 
+
+
+
             // Передаём номер телефона в представление
             return view('telegram.code', compact('phone'));
-        } catch (\Exception $e) {
-            return redirect()->route('dashboard')->withErrors('Ошибка отправки кода: ' . $e->getMessage());
+        }
+
+
+        catch (\Exception $e) {
+            return redirect()->route('telegram.add')->withErrors('Ошибка отправки кода: ' . $e->getMessage());
         }
 
     }
@@ -75,6 +90,7 @@ class TelegramAccountController extends Controller
         $validated = $request->validate([
             'phone' => 'required|string|exists:telegram_accounts,phone',
             'code' => 'required|string|min:5|max:5',
+            'password' => 'nullable|string',
         ], [
             'phone.exists' => 'Аккаунт с таким номером телефона не найден.',
             'code.required' => 'Введите код подтверждения.',
@@ -90,7 +106,13 @@ class TelegramAccountController extends Controller
 
             $madelineProto = new API($sessionFile, $settings);
 
-            $madelineProto->completePhoneLogin($validated['code']);
+           $test2fa = $madelineProto->completePhoneLogin($validated['code']);
+
+
+           if ($validated['password']){
+               $madelineProto->complete2faLogin($validated['password']);
+           }
+
 
             $madelineProto->start();
 
@@ -104,19 +126,64 @@ class TelegramAccountController extends Controller
                 ['phone' => $validated['phone']], // Обновляем, если номер телефона уже существует
                 [
                     'telegram_id' => $self['id'],
-                    'session_path' => $sessionFile,
-                    'user_id' => auth()->id(),
+                    'status' => 'Запущен',
                 ]
             );
 
             return redirect()->route('dashboard')->with('success', 'Аккаунт успешно добавлен!');
 
 
-        }catch (\Exception $e){
+        }
+        catch (\Exception $e){
             return back()->withErrors(['code' => 'Ошибка авторизации: ' . $e->getMessage()]);
 
-
         }
+
+
+
+    }
+
+    public function resendCode(Request $request)
+    {
+        $phone = $request->input('phone');
+        $phoneCodeHash = '40dcf1ed51d4b29095';
+
+        if (!$phone){
+            return redirect()->route('telegram.index')->withErrors('Номер телефона отсутствует!');
+        }
+
+        try {
+            $sessionFile = storage_path("telegram_sessions/{$phone}.madeline");
+
+            $settings = (new \danog\MadelineProto\Settings\AppInfo)
+                ->setApiId(env('TELEGRAM_API_ID'))
+                ->setApiHash(env('TELEGRAM_API_HASH'));
+
+            $madelineProto = new API($sessionFile, $settings);
+
+            $madelineProto->auth->resendCode(['phone_number' => $phone, 'phone_code_hash' => $phoneCodeHash]);
+
+            return redirect()->route('telegram.code', ['phone' => $phone])
+                ->with('success', 'Код был повторно отправлен, Пожалуйста, введтие его!');
+
+        }catch (\Exception $e){
+            return  redirect()->route('telegram.index')->withErrors('Ошибки при повторной отправке кода' . $e->getMessage());
+        }
+    }
+
+
+    public function showTwoFactorCode()
+    {
+
+        return view('telegram.twofactor');
+    }
+
+
+    public function verifyTwoFactorCode()
+    {
+
+//        $madelineProto->complete2faLogin('Rotika123');
+
     }
 
     public function destroy($id)
@@ -129,6 +196,8 @@ class TelegramAccountController extends Controller
                 // Удаляем папку с сессией
                 $this->deleteSessionFolder($sessionPath);
             }
+
+            PlanfixIntegration::where('telegram_account_id', $account->id)->delete();
 
             $account->delete();
 
@@ -148,26 +217,28 @@ class TelegramAccountController extends Controller
      * @param string $dir
      * @return void
      */
-//    protected function deleteSessionFolder($dir)
-//    {
-//        if (is_dir($dir)){
-//            $files = array_diff(scandir($dir), ['.', '..']);
-//
-//            foreach ($files as $file){
-//                $filesPath = $dir . DIRECTORY_SEPARATOR . $file;
-//
-//                if (is_dir($filesPath)){
-//                    $this->deleteSessionFolder($filesPath);
-//                }else {
-//                    unlink($filesPath);
-//                }
-//
-//            }
-//
-//            rmdir($dir);
-//        }
-//
-//    }
+    protected function deleteSessionFolder($dir)
+    {
+        if (is_dir($dir)){
+            $files = array_diff(scandir($dir), ['.', '..']);
+
+            foreach ($files as $file){
+                $filesPath = $dir . DIRECTORY_SEPARATOR . $file;
+
+                if (is_dir($filesPath)){
+                    $this->deleteSessionFolder($filesPath);
+                }else {
+                    unlink($filesPath);
+                }
+
+            }
+
+            rmdir($dir);
+        }
+
+    }
+
+
 
 
 }

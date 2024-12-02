@@ -4,10 +4,10 @@
 @section('content')
 
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-6">Все Telegram-аккаунты</h1>
+        <h1 class="text-2xl font-bold mb-6">Все Интеграции Planfix</h1>
 
         <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Список всех подключенных Telegram-аккаунтов</h2>
+            <h2 class="text-xl font-semibold mb-4">Список всех подключенных интеграций Planfix</h2>
 
             @if ($errors->any())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mt-4">
@@ -23,46 +23,39 @@
                 </div>
             @endif
 
-            @if($accounts->isEmpty())
-                <p>Нет подключенных аккаунтов.</p>
+            @if($integrations->isEmpty())
+                <p>Нет подключенных интеграций.</p>
             @else
-                <!-- Таблица аккаунтов -->
+                <!-- Таблица интеграций -->
                 <table class="min-w-full table-auto border-collapse">
                     <thead>
                     <tr class="bg-gray-100">
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">ID</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Название</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Телефон</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Telegram ID</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Provider ID</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Token (Вводить в PLANFIX)</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Telegram</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Статус</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase">Действия</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($accounts as $account)
+                    @foreach($integrations as $integration)
                         <tr class="border-b">
-                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $account->id }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $account->title }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $account->phone }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $account->telegram_id }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $account->status }}</td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $integration->id }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->name }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->provider_id }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->token }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->telegram_account_info  ?? 'Не привязан' }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->status ?? 'Не активен' }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900 flex items-center space-x-4">
-                                @if ($account->status === 'Ожидает код')
-                                    <a href="{{ route('telegram.code', ['phone' => $account->phone]) }}"
-                                       class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                        Ввести код
-                                    </a>
-                                @endif
-                                <form action="{{ route('telegram.destroy', $account->id) }}" method="POST" class="inline-block">
+                                <form action="{{ route('planfix.destroy', $integration->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="bg-red-500 text-white p-2 rounded hover:bg-red-600">
                                         Удалить
                                     </button>
                                 </form>
-                                <button class="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600" onclick="window.location.href='#'">
-                                    Пауза
-                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -71,6 +64,5 @@
             @endif
         </div>
     </div>
-
 
 @endsection

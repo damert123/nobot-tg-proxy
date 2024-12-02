@@ -131,7 +131,14 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/tg-messages.log'),
             'replace_placeholders' => true,
+        ],
+
+        'planfix-messages' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/planfix-messages.log'),
+            'replace_placeholders' => true,
         ]
+
 
     ],
 
