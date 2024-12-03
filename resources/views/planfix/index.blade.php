@@ -47,7 +47,7 @@
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->provider_id }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->token }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->telegram_account_info  ?? 'Не привязан' }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->status ?? 'Не активен' }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ $integration->status ?? 'Активен' }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900 flex items-center space-x-4">
                                 <form action="{{ route('planfix.destroy', $integration->id) }}" method="POST" class="inline-block">
                                     @csrf
