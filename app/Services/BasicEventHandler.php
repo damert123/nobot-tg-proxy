@@ -85,6 +85,12 @@ class BasicEventHandler extends SimpleEventHandler
 
             }
 
+            $telegramProfileLink = $senderUserName
+                ? "https://t.me/$senderUserName"
+                : 'Telegram профиль недоступен';
+            Log::channel('tg-messages')->info($telegramProfileLink);
+
+
             // Данные для CRM
             $data = [
                 'cmd' => 'newMessage',
@@ -92,10 +98,11 @@ class BasicEventHandler extends SimpleEventHandler
                 'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
                 'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
                 'message' => $text ?: 'Файл', // Текст сообщения
-                'title' => $clientUserName, // Заголовок задачи (всегда имя клиента)
+                'title' => $clientFirstName, // Заголовок задачи (всегда имя клиента)
                 'contactId' => $fromId, // ID отправителя
                 'contactName' => $senderFirstName, // Имя отправителя
                 'contactLastName' => $senderLastName, // Фамилия отправителя (необязательно)
+                'contactData' => "Telegram: $telegramProfileLink",
             ];
 
 
@@ -252,7 +259,19 @@ class BasicEventHandler extends SimpleEventHandler
                     Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
                         'response' => $response->json(),
                     ]);
-                }else {
+
+//                    if (!empty($filePath)) {
+//                        if (Storage::disk('public')->exists($filePath)) {
+//                            Storage::disk('public')->delete($filePath);
+//                            Log::channel('planfix-messages')->info("Файл успешно удален: $filePath");
+//                        } else {
+//                            Log::channel('planfix-messages')->warning("Файл для удаления не найден: $filePath");
+//                        }
+//                    }
+
+                }
+
+                else {
                     Log::channel('planfix-messages')->warning('Ошибка при отправке сообщения в Planfix', [
                         'status' => $response->status(),
                         'response' => $response->body(),

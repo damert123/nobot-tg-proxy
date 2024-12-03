@@ -12,6 +12,7 @@
             <a href="/" class="hover:underline">Главная</a>
             @auth
                 <a href="{{ route('dashboard') }}" class="hover:underline">Панель управления</a>
+                <a href="{{ route('user.index') }}" class="hover:underline">Пользователи</a>
             @endauth
         </nav>
 

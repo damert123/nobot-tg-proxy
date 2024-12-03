@@ -60,9 +60,21 @@
                                         Удалить
                                     </button>
                                 </form>
-                                <button class="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600" onclick="window.location.href='#'">
-                                    Пауза
-                                </button>
+                                @if ($account->status === 'Пауза')
+                                        <form action="{{route('telegram.start', $account->id)}}" method="POST">
+                                            @csrf
+                                    <button type="submit" class="bg-green-500 text-white p-2 rounded hover:bg-green-600">
+                                        Старт
+                                    </button>
+                                        </form>
+                                @else
+                                        <form action="{{route('telegram.stop', $account->id)}}" method="POST">
+                                            @csrf
+                                        <button type="submit" class="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600">
+                                        Пауза
+                                         </button>
+                                        </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

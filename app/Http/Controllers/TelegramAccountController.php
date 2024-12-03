@@ -9,6 +9,7 @@ use danog\MadelineProto\API;
 use danog\MadelineProto\RPCError\SessionPasswordNeededError;
 use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class TelegramAccountController extends Controller
@@ -126,7 +127,7 @@ class TelegramAccountController extends Controller
                 ['phone' => $validated['phone']], // Обновляем, если номер телефона уже существует
                 [
                     'telegram_id' => $self['id'],
-                    'status' => 'Запущен',
+                    'status' => 'Активен',
                 ]
             );
 
@@ -236,6 +237,51 @@ class TelegramAccountController extends Controller
             rmdir($dir);
         }
 
+    }
+
+    public function start(int $accountId)
+    {
+        // Получаем аккаунт по ID
+        $account = TelegramAccount::findOrFail($accountId);
+
+        // Проверяем, что сессия не активна
+        if ($account->status === 'Активен') {
+            return redirect()->route('telegram.index')->with('error', 'Сессия уже активна.');
+        }
+
+        // Статус сессии меняем на "Активен"
+        $account->status = 'Активен';
+        $account->save();
+
+        // Запуск сессии с использованием MadelineProto
+
+        Artisan::call('telegram:restart');
+
+        return redirect()->route('telegram.index')->with('success', 'Сессия была успешно запущена.');
+    }
+
+    public function stop(int $accountId)
+    {
+        // Получаем аккаунт по ID
+        $account = TelegramAccount::findOrFail($accountId);
+
+        // Проверяем, что сессия не активна
+        if ($account->status === 'Пауза') {
+            return redirect()->route('telegram.index')->with('error', 'Сессия уже на паузе.');
+        }
+
+        // Статус сессии меняем на "Активен"
+        $account->status = 'Пауза';
+        $account->save();
+
+        // Запуск сессии с использованием MadelineProto
+        $sessionPath = $account->session_path;
+        if (file_exists($sessionPath)) {
+            $MadelineProto = new API($sessionPath);
+            $MadelineProto->stop(); // Запуск сессии
+        }
+
+        return redirect()->route('telegram.index')->with('success', 'Сессия была поставлена на паузу.');
     }
 
 

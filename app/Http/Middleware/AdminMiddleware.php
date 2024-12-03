@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
@@ -15,13 +16,27 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()->is_admin){
-            return $next($request);
-        }
-        return response([
-            'message' => 'forbidden'
-        ], Response::HTTP_FORBIDDEN);
 
-//        return redirect('/'); // или страницу с ошибкой
+        if (!auth()->check()){
+            return response([
+                'message' => 'Unauthorized'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $userId = auth()->id();
+
+        $hasAdminRole = DB::table('roles')
+            ->where('user_id', $userId)
+            ->where('title', 'admin')
+            ->exists();
+
+        if (!$hasAdminRole){
+            return response([
+                'message' => 'Access denied: not admin'
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        return $next($request);
+
     }
 }

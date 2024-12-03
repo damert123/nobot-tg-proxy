@@ -1344,3 +1344,559 @@ UpdateHandler:  	Saving update of type updateEditChannelMessage
 PingLoop:       	Ping DC 2.0
 FeedLoop:       	Resumed update feed loop channel -1001404450035
 UpdateHandler:  	Saving update of type updateDeleteChannelMessages
+Logger:         	MadelineProto 8.3.6
+Logger:         	Copyright (C) 2016-2024 Daniil Gentili
+Logger:         	Licensed under AGPLv3
+Logger:         	https://github.com/danog/MadelineProto
+Serialization:  	Got exclusive session lock!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 8 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 8 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 5 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 3 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 2 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 3 outgoing messages in DC 2, 1 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 5 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+AbstractServer, manager33814: 	Accepted IPC client connection!
+MTProto, manager33814:        	The bot is already running!
+MTProto, manager33814:        	!!! Внимание: не настроен ни один юзер для сообщения ошибок, пожалуйста добавьте этот метод в Event Handler !!!
+MTProto, manager33814:        	!!! public function getReportPeers() { return '@yourtelegramusername'; } !!!
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+AbstractServer, manager33814: 	Accepted IPC client connection!
+MTProto, manager33814:        	The bot is already running!
+MTProto, manager33814:        	!!! Внимание: не настроен ни один юзер для сообщения ошибок, пожалуйста добавьте этот метод в Event Handler !!!
+MTProto, manager33814:        	!!! public function getReportPeers() { return '@yourtelegramusername'; } !!!
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+AbstractServer, manager33814: 	Accepted IPC client connection!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 5 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 3 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+AbstractServer, manager33814: 	Accepted IPC client connection!
+MTProto, manager33814:        	The bot is already running!
+MTProto, manager33814:        	!!! Внимание: не настроен ни один юзер для сообщения ошибок, пожалуйста добавьте этот метод в Event Handler !!!
+MTProto, manager33814:        	!!! public function getReportPeers() { return '@yourtelegramusername'; } !!!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+PingLoop, manager33814:       	Ping DC 2.0
+AbstractServer, manager33814: 	Accepted IPC client connection!
+MTProto, manager33814:        	The bot is already running!
+MTProto, manager33814:        	!!! Внимание: не настроен ни один юзер для сообщения ошибок, пожалуйста добавьте этот метод в Event Handler !!!
+MTProto, manager33814:        	!!! public function getReportPeers() { return '@yourtelegramusername'; } !!!
+Session, manager33814:        	Garbage collected 3 incoming messages in DC 2, 0 left
+Session, manager33814:        	Garbage collected 4 outgoing messages in DC 2, 0 left
+PingLoop, manager33814:       	Ping DC 2.0
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/safe.php.lock...
+SessionPaths, manager33814:   	Waiting for exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+SessionPaths, manager33814:   	Got exclusive lock of /var/www/test-service-int-planfix/storage/telegram_sessions/79171275883.madeline/lightState.php.lock...
+APIWrapper, manager33814:     	Saved session!
+UpdateHandler, manager33814:  	Parsing updates (updateShort) received via the socket...
+FeedLoop, manager33814:       	Resumed update feed loop generic
+UpdateHandler, manager33814:  	Saving update of type updateUserStatus
+PingLoop, manager33814:       	Ping DC 2.0
+UpdateHandler, manager33814:  	Parsing updates (updateShortMessage) received via the socket...
+FeedLoop, manager33814:       	Resumed update feed loop generic
+UpdateHandler, manager33814:  	Saving update of type updateNewMessage

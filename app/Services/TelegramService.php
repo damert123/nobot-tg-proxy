@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\EventHandler;
 use danog\MadelineProto\Settings\AppInfo;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TelegramService
@@ -23,16 +25,20 @@ class TelegramService
 
     public function listenForMessage()
     {
-//        $sessionFile = storage_path('telegram_sessions/user.madeline');
 
-        $sessions = [
-            storage_path('telegram_sessions/79171275883.madeline'),
-        ];
+        $sessions = DB::table('telegram_accounts')
+            ->whereNotNull('session_path')
+            ->where('status', 'Активен')
+            ->pluck('session_path');
 
+        if ($sessions->isEmpty()) {
+            return; // Можно добавить логирование или сообщение
+        }
 
         $MadelineProtos = [];
-        foreach ($sessions as $session) {
-            $api = new API($session);
+        foreach ($sessions as $sessionPath) {
+
+            $api = new API($sessionPath);
             $api->start();
             $MadelineProtos[] = $api;
         }
