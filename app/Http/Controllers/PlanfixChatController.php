@@ -84,7 +84,9 @@ class PlanfixChatController extends Controller
                         ],
                     ]);
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
-                    $madelineProto->messages->readHistory($chatId);
+                    $madelineProto->messages->readHistory([
+                        'peer' => $chatId
+                    ]);
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
                     $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
@@ -107,7 +109,9 @@ class PlanfixChatController extends Controller
                             ]
                         ],
                     ]);
-                    $madelineProto->messages->readHistory($chatId);
+                    $madelineProto->messages->readHistory([
+                        'peer' => $chatId
+                    ]);
 
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
@@ -135,7 +139,9 @@ class PlanfixChatController extends Controller
                             ]
                         ],
                     ]);
-                    $madelineProto->messages->readHistory($chatId);
+                    $madelineProto->messages->readHistory([
+                        'peer' => $chatId
+                    ]);
 
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
@@ -154,7 +160,9 @@ class PlanfixChatController extends Controller
                         ]
                     ],
                 ]);
-                $madelineProto->messages->readHistory($chatId);
+                $madelineProto->messages->readHistory([
+                    'peer' => $chatId
+                ]);
                 Log::channel('planfix-messages')->info("Text message sent to Telegram chat {$chatId}: {$message}");
             }
 
