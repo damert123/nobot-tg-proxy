@@ -21,6 +21,8 @@ class PlanfixChatController extends Controller
             return response()->json(['success' => false, 'error' => 'Missing required fields.'], 400);
         }
 
+
+
         $chatId = $data['chatId'];
         $message = $data['message'] ?? ''; // Текст сообщения (может быть null)
         $attachments = $data['attachments'] ?? null; // Вложения
@@ -82,7 +84,7 @@ class PlanfixChatController extends Controller
                         ],
                     ]);
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
-
+                    $madelineProto->messages->readHistory($chatId);
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
                     $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
@@ -105,6 +107,8 @@ class PlanfixChatController extends Controller
                             ]
                         ],
                     ]);
+                    $madelineProto->messages->readHistory($chatId);
+
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
 
@@ -131,6 +135,8 @@ class PlanfixChatController extends Controller
                             ]
                         ],
                     ]);
+                    $madelineProto->messages->readHistory($chatId);
+
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
 
@@ -148,6 +154,7 @@ class PlanfixChatController extends Controller
                         ]
                     ],
                 ]);
+                $madelineProto->messages->readHistory($chatId);
                 Log::channel('planfix-messages')->info("Text message sent to Telegram chat {$chatId}: {$message}");
             }
 
