@@ -222,6 +222,7 @@ class BasicEventHandler extends SimpleEventHandler
                         } else {
                             // Логируем и игнорируем другие типы документов
                             Log::info("Документ с MIME-типом {$document['mime_type']} пропущен.");
+                            return;
                         }
 
 
