@@ -162,6 +162,7 @@ class BasicEventHandler extends SimpleEventHandler
 
                     } elseif (isset($media['video']) && $media['video'] === true){
                         $videoId = $media['document']['id'];
+                        $videoSize = $media['document']['size'];
 
                         $filePath = "telegram/media/video/{$videoId}.mp4";
 
@@ -169,15 +170,23 @@ class BasicEventHandler extends SimpleEventHandler
                             Storage::disk('public')->makeDirectory('telegram/media/video');
                         }
 
-                        Log::info('Получено видео');
-                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+                        if ($videoSize > 50 * 1024 * 1024) { // Проверка на размер (50 МБ)
+                            Log::info('Получено большое видео, оно не будет сохранено.');
 
-                        $publicUrl = url(Storage::url($filePath));
 
-                        $data['attachments[name]'] = 'video.mp4';
-                        $data['attachments[url]'] = $publicUrl;
+                            $textMessage = $data['message'] ?: 'Файл';
+                            $data['message'] = $textMessage . "\n(⚠️ Вам отправлено большое видео, смотрите в Телеграмме)";
+                        } else {
+                            Log::info('Получено видео');
+                            $this->downloadToFile($media, Storage::disk('public')->path($filePath));
 
-                        Log::channel('tg-messages')->info('ВИДЕО успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+                            $publicUrl = url(Storage::url($filePath));
+
+                            $data['attachments[name]'] = 'video.mp4';
+                            $data['attachments[url]'] = $publicUrl;
+
+                            Log::channel('tg-messages')->info('ВИДЕО успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
+                        }
 
                     } elseif (isset($media['round']) && $media['round'] === true){
                         $roundId = $media['document']['id'];
@@ -238,7 +247,7 @@ class BasicEventHandler extends SimpleEventHandler
                                 'message' => $message,
                                 $update
                             ]);
-                            return; // Выход из метода, пропускаем отправку
+                            return;
                         }
                     }
                 }
