@@ -13,11 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class BasicEventHandler extends SimpleEventHandler
 {
-
-
-
     public function onUpdateNewMessage(array $update): void
     {
+        $this->setReportPeers(406210384);
+
         $message = $update['message'] ?? null;
 
 
@@ -105,14 +104,7 @@ class BasicEventHandler extends SimpleEventHandler
                 'contactData' => "Telegram: $telegramProfileLink",
             ];
 
-
-
-
-
-
             Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$clientUserName}, имя: {$senderFirstName}, фамилия: {$senderLastName}");
-
-
 
             if (isset($message['media'])){
                 try {
@@ -172,8 +164,6 @@ class BasicEventHandler extends SimpleEventHandler
 
                         if ($videoSize > 50 * 1024 * 1024) { // Проверка на размер (50 МБ)
                             Log::info('Получено большое видео, оно не будет сохранено.');
-
-
                             $textMessage = $data['message'] ?: 'Файл';
                             $data['message'] = $textMessage . "\n(⚠️ Вам отправлено большое видео, смотрите в Телеграмме)";
                         } else {
@@ -300,5 +290,8 @@ class BasicEventHandler extends SimpleEventHandler
             Log::channel('tg-messages')->warning('Обновление без сообщения');
         }
     }
+
+
+
 
 }
