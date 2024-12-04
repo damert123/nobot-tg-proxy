@@ -110,10 +110,10 @@ class TelegramAccountController extends Controller
 
            $test2fa = $madelineProto->completePhoneLogin($validated['code']);
 
-            if ($test2fa['_'] === 'account.password') {
-                redirect()->route('telegram.twofactor');
-//                $authorization = $madelineProto->complete2falogin(Tools::readLine('Please enter your password (hint '.$test2fa['hint'].'): '));
-            }
+//            if ($test2fa['_'] === 'account.password') {
+//                redirect()->route('telegram.twofactor');
+////                $authorization = $madelineProto->complete2falogin(Tools::readLine('Please enter your password (hint '.$test2fa['hint'].'): '));
+//            }
 
 
            if ($validated['password']){
