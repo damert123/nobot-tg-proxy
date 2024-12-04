@@ -23,7 +23,6 @@ class BasicEventHandler extends SimpleEventHandler
         if ($message) {
             Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-
             $text = $message['message'] ?? 'Без текста';
             $peerId = $message['peer_id'] ?? null;
             $fromId = $message['from_id'] ?? null;
@@ -200,23 +199,30 @@ class BasicEventHandler extends SimpleEventHandler
 
 
                     } elseif (isset($media['document'])) {
-                        $documentId = $media['document']['id'];
+                        $document = $media['document'];
 
-                        $filePath = "telegram/media/document/{$documentId}.txt";
+                        if ($document['mime_type'] === 'application/pdf') {
+                            $documentId = $document['id'];
+                            $filePath = "telegram/media/document/{$documentId}.pdf";
 
-                        if (!Storage::disk('public')->exists('telegram/media/document')){
-                            Storage::disk('public')->makeDirectory('telegram/media/document');
+                            // Создаем директорию, если ее нет
+                            if (!Storage::disk('public')->exists('telegram/media/document')) {
+                                Storage::disk('public')->makeDirectory('telegram/media/document');
+                            }
+
+                            Log::info('Получен PDF-документ');
+                            $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                            $publicUrl = url(Storage::url($filePath));
+
+                            $data['attachments[name]'] = 'document.pdf';
+                            $data['attachments[url]'] = $publicUrl;
+
+                            Log::channel('tg-messages')->info('PDF-документ успешно сохранен и ссылка сгенерирована', ['url' => $publicUrl]);
+                        } else {
+                            // Логируем и игнорируем другие типы документов
+                            Log::info("Документ с MIME-типом {$document['mime_type']} пропущен.");
                         }
-
-                        Log::info('Получен документ');
-                        $this->downloadToFile($media, Storage::disk('public')->path($filePath));
-
-                        $publicUrl = url(Storage::url($filePath));
-
-                        $data['attachments[name]'] = 'document.txt';
-                        $data['attachments[url]'] = $publicUrl;
-
-                        Log::channel('tg-messages')->info('ДОКУМЕНТ успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
 
 
                     }
