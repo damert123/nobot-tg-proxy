@@ -49,7 +49,10 @@ class PlanfixChatController extends Controller
             }
 
 //            $session = storage_path('telegram_sessions/79171275883.madeline');
-
+            if ($telegramAccount->status === 'Пауза') {
+                Log::channel('planfix-messages')->info("Telegram session is on pause for account ID: {$telegramAccount->id}");
+                return response()->json(['success' => false, 'error' => 'Telegram session is on pause.'], 400);
+            }
 
 
             $madelineProto =  new API($telegramAccount->session_path);
