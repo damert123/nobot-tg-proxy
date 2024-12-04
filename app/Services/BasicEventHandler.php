@@ -15,7 +15,7 @@ class BasicEventHandler extends SimpleEventHandler
 {
     public function onUpdateNewMessage(array $update): void
     {
-        $this->setReportPeers(406210384);
+//        $this->setReportPeers(406210384);
 
         $message = $update['message'] ?? null;
 

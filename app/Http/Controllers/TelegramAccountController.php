@@ -8,6 +8,7 @@ use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\RPCError\SessionPasswordNeededError;
 use danog\MadelineProto\Settings\AppInfo;
+use danog\MadelineProto\Tools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -108,6 +109,11 @@ class TelegramAccountController extends Controller
             $madelineProto = new API($sessionFile, $settings);
 
            $test2fa = $madelineProto->completePhoneLogin($validated['code']);
+
+            if ($test2fa['_'] === 'account.password') {
+                redirect()->route('telegram.twofactor');
+//                $authorization = $madelineProto->complete2falogin(Tools::readLine('Please enter your password (hint '.$test2fa['hint'].'): '));
+            }
 
 
            if ($validated['password']){
