@@ -21,15 +21,12 @@ class PlanfixChatController extends Controller
             return response()->json(['success' => false, 'error' => 'Missing required fields.'], 400);
         }
 
-
-
         $chatId = $data['chatId'];
         $message = $data['message'] ?? ''; // Текст сообщения (может быть null)
         $attachments = $data['attachments'] ?? null; // Вложения
         $token = $data['token'];
 
         try {
-
             $planfixIntegration = DB::table('planfix_integrations')
                 ->where('token', $token)
                 ->first();
@@ -62,34 +59,34 @@ class PlanfixChatController extends Controller
             $madelineProto->getPwrChat($chatId);
 
             if ($attachments) {
-
                 $fileUrl = $attachments['url'];
                 $fileName = $attachments['name'];
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-
-
                 if (in_array($fileExtension, ['png', 'jpg', 'jpeg'])){
-                    $madelineProto->messages->sendMedia([
+                  $resultPNG = $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
                             '_' => 'inputMediaUploadedPhoto', // Для изображений
                             'file' => $fileUrl,
                         ],
                         'message' => $message . "\u{200B}", // Скрытый символ
-                        'entities' => [
-                            [
-                                '_' => 'messageEntityTextUrl', // Тип сущности
-                                'offset' => 0,                // Позиция в тексте
-                                'length' => 1,                // Длина символа
-                                'url' => 'planfix://internal' // Метка
-                            ]
-                        ],
+                        'entities' => null,
                     ]);
-                    Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
+                    Log::channel('planfix-messages')->info("КАРТИНКА ИЗ PLANFIX to Telegram chat", [$resultPNG['updates'][1]['message']['media']['photo']['id']]);
+
+                    $idMessageMedia = $resultPNG['updates'][1]['message']['media']['photo']['id'];
+
+                    DB::table('id_message_to_tg_telegram')->insert([
+                        'message_id' => $idMessageMedia
+                    ]);
+
                     $madelineProto->messages->readHistory([
                         'peer' => $chatId
                     ]);
+
+
+
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
                     $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
@@ -112,6 +109,9 @@ class PlanfixChatController extends Controller
                             ]
                         ],
                     ]);
+
+
+
                     $madelineProto->messages->readHistory([
                         'peer' => $chatId
                     ]);
@@ -119,7 +119,7 @@ class PlanfixChatController extends Controller
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
 
-                elseif (in_array($fileExtension, ['ogg', 'ogg.ogx'])){
+                elseif (in_array($fileExtension, ['ogg', 'ogg.ogx', 'ogx'])){
                     $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [

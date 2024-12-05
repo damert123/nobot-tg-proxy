@@ -89,25 +89,64 @@ class BasicEventHandler extends SimpleEventHandler
             Log::channel('tg-messages')->info($telegramProfileLink);
 
 
-            // Данные для CRM
-            $data = [
-                'cmd' => 'newMessage',
-                'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
-                'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
-                'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
-                'message' => $text ?: 'Файл', // Текст сообщения
-                'title' => $clientFirstName, // Заголовок задачи (всегда имя клиента)
-                'contactId' => $fromId, // ID отправителя
-                'contactName' => $senderFirstName, // Имя отправителя
-                'contactLastName' => $senderLastName, // Фамилия отправителя (необязательно)
-                'contactData' => "Telegram: $telegramProfileLink",
+            $dataGetTask = [
+                'cmd' => 'getTask',
+                'providerId' => $planfixIntegration->provider_id,
+                'planfix_token' => $planfixIntegration->planfix_token,
+                'chatId' => $clientId,
             ];
+
+            $responseGetTask = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $dataGetTask);
+
+            if ($responseGetTask->successful()) {
+                Log::channel('planfix-messages')->info('ТАСКА УСПЕШНО ПОЛУЧЕНА', [
+                    'response' => $responseGetTask->json(),
+                ]);
+                $data = [
+                    'cmd' => 'newMessage',
+                    'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
+                    'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
+                    'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
+                    'message' => $text ?: 'Файл', // Текст сообщения
+                    'title' => $clientFirstName, // Заголовок задачи (всегда имя клиента)
+                    'contactId' => $fromId, // ID отправителя
+                    'contactName' => $senderFirstName, // Имя отправителя
+                    'contactLastName' => $senderLastName, // Фамилия отправителя (необязательно)
+                    'contactData' => "Telegram: $telegramProfileLink",
+                ];
+            }else{
+                $data = [
+                    'cmd' => 'newMessage',
+                    'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
+                    'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
+                    'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
+                    'message' => $text ?: 'Файл', // Текст сообщения
+                    'title' => $clientFirstName, // Заголовок задачи (всегда имя клиента)
+                    'contactId' => $clientId, // ID отправителя
+                    'contactName' => $clientFirstName, // Имя отправителя
+                    'contactLastName' => $clientLastName, // Фамилия отправителя (необязательно)
+                    'contactData' => "Telegram: $telegramProfileLink",
+                ];
+            }
+
+
+            // Данные для CRM
+
+
+
 
             Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$clientUserName}, имя: {$senderFirstName}, фамилия: {$senderLastName}");
 
             if (isset($message['media'])){
                 try {
+
                     $media = $message['media'];
+
+                    $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $media['photo']['id'])->exists();
+
+                    if ($idMessageIgnore){
+                        return;
+                    }
 
                     if (isset($media['photo'])) {
                         $photoId = $media['photo']['id'];
@@ -130,9 +169,17 @@ class BasicEventHandler extends SimpleEventHandler
                         Log::channel('tg-messages')->info('Фото успешно сохранено и ссылка сгенерирована', ['url' => $publicUrl]);
 
 
-
                     } elseif (isset($media['voice']) && $media['voice'] === true) {
+
+
+
                         $voiceId = $media['document']['id'];
+
+                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $voiceId)->exists();
+
+                        if ($idMessageIgnore){
+                            return;
+                        }
 
                         $filePath = "telegram/media/voice/{$voiceId}.ogg";
 
@@ -153,6 +200,11 @@ class BasicEventHandler extends SimpleEventHandler
 
                     } elseif (isset($media['video']) && $media['video'] === true){
                         $videoId = $media['document']['id'];
+                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $videoId)->exists();
+
+                        if ($idMessageIgnore){
+                            return;
+                        }
                         $videoSize = $media['document']['size'];
 
                         $filePath = "telegram/media/video/{$videoId}.mp4";
@@ -180,6 +232,12 @@ class BasicEventHandler extends SimpleEventHandler
                     } elseif (isset($media['round']) && $media['round'] === true){
                         $roundId = $media['document']['id'];
 
+                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $roundId)->exists();
+
+                        if ($idMessageIgnore){
+                            return;
+                        }
+
                         $filePath = "telegram/media/round/{$roundId}.mp4";
 
                         if (!Storage::disk('public')->exists('telegram/media/round')){
@@ -200,6 +258,12 @@ class BasicEventHandler extends SimpleEventHandler
 
                     } elseif (isset($media['document'])) {
                         $document = $media['document'];
+
+                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $document)->exists();
+
+                        if ($idMessageIgnore){
+                            return;
+                        }
 
                         if ($document['mime_type'] === 'application/pdf') {
                             $documentId = $document['id'];
