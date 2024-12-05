@@ -119,7 +119,7 @@ class PlanfixChatController extends Controller
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
 
-                elseif (in_array($fileExtension, ['ogg'])){
+                elseif (in_array($fileExtension, ['ogg', 'ogg.ogx'])){
                     $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
