@@ -132,9 +132,6 @@ class BasicEventHandler extends SimpleEventHandler
 
             // Данные для CRM
 
-
-
-
             Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$clientUserName}, имя: {$senderFirstName}, фамилия: {$senderLastName}");
 
             if (isset($message['media'])){
@@ -142,10 +139,22 @@ class BasicEventHandler extends SimpleEventHandler
 
                     $media = $message['media'];
 
-                    $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $media['photo']['id'])->exists();
+                    $mediaId = null;
+                    foreach ($media as $key => $value) {
+                        if (is_array($value) && isset($value['id'])) {
+                            $mediaId = $value['id'];
+                            break;
+                        }
+                    }
 
-                    if ($idMessageIgnore){
-                        return;
+                    // Если ID найден, проверяем его в БД
+                    if ($mediaId !== null) {
+                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)->exists();
+
+                        if ($idMessageIgnore) {
+                            DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)->delete();
+                            return; // Пропускаем обработку, если ID уже есть в БД
+                        }
                     }
 
                     if (isset($media['photo'])) {
@@ -175,12 +184,6 @@ class BasicEventHandler extends SimpleEventHandler
 
                         $voiceId = $media['document']['id'];
 
-                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $voiceId)->exists();
-
-                        if ($idMessageIgnore){
-                            return;
-                        }
-
                         $filePath = "telegram/media/voice/{$voiceId}.ogg";
 
                         if (!Storage::disk('public')->exists('telegram/media/voice')){
@@ -200,11 +203,7 @@ class BasicEventHandler extends SimpleEventHandler
 
                     } elseif (isset($media['video']) && $media['video'] === true){
                         $videoId = $media['document']['id'];
-                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $videoId)->exists();
 
-                        if ($idMessageIgnore){
-                            return;
-                        }
                         $videoSize = $media['document']['size'];
 
                         $filePath = "telegram/media/video/{$videoId}.mp4";
@@ -213,7 +212,7 @@ class BasicEventHandler extends SimpleEventHandler
                             Storage::disk('public')->makeDirectory('telegram/media/video');
                         }
 
-                        if ($videoSize > 50 * 1024 * 1024) { // Проверка на размер (50 МБ)
+                        if ($videoSize > 20 * 1024 * 1024) { // Проверка на размер (50 МБ)
                             Log::info('Получено большое видео, оно не будет сохранено.');
                             $textMessage = $data['message'] ?: 'Файл';
                             $data['message'] = $textMessage . "\n(⚠️ Вам отправлено большое видео, смотрите в Телеграмме)";
@@ -232,11 +231,6 @@ class BasicEventHandler extends SimpleEventHandler
                     } elseif (isset($media['round']) && $media['round'] === true){
                         $roundId = $media['document']['id'];
 
-                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $roundId)->exists();
-
-                        if ($idMessageIgnore){
-                            return;
-                        }
 
                         $filePath = "telegram/media/round/{$roundId}.mp4";
 
@@ -259,11 +253,6 @@ class BasicEventHandler extends SimpleEventHandler
                     } elseif (isset($media['document'])) {
                         $document = $media['document'];
 
-                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $document)->exists();
-
-                        if ($idMessageIgnore){
-                            return;
-                        }
 
                         if ($document['mime_type'] === 'application/pdf') {
                             $documentId = $document['id'];
@@ -310,6 +299,15 @@ class BasicEventHandler extends SimpleEventHandler
                             ]);
                             return;
                         }
+                    }
+                }
+
+                if ($message['id'] != null){
+                    $idTextMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])->exists();
+
+                    if ($idTextMessageIgnore) {
+                        DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])->delete();
+                        return;
                     }
                 }
 

@@ -86,9 +86,8 @@ class PlanfixChatController extends Controller
                     ]);
 
 
-
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
-                    $madelineProto->messages->sendMedia([
+                    $resultMP4 = $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
                             '_' => 'inputMediaUploadedDocument',
@@ -110,6 +109,13 @@ class PlanfixChatController extends Controller
                         ],
                     ]);
 
+                    Log::channel('planfix-messages')->info("ВИДЕО ИЗ PLANFIX to Telegram chat", [$resultMP4['updates'][1]['message']['media']['document']['id']]);
+
+                    $idMessageMedia = $resultMP4['updates'][1]['message']['media']['document']['id'];
+
+                    DB::table('id_message_to_tg_telegram')->insert([
+                        'message_id' => $idMessageMedia
+                    ]);
 
 
                     $madelineProto->messages->readHistory([
@@ -120,7 +126,44 @@ class PlanfixChatController extends Controller
                 }
 
                 elseif (in_array($fileExtension, ['ogg', 'ogg.ogx', 'ogx'])){
-                    $madelineProto->messages->sendMedia([
+                    $madelineProto->messages->readHistory([
+                        'peer' => $chatId
+                    ]);
+
+                    function estimateDurationBySize($fileUrl)
+                    {
+                        // Получаем размер файла (в байтах)
+                        $headers = get_headers($fileUrl, 1);
+                        $fileSize = $headers['Content-Length'] ?? 0;
+
+                        // Преобразуем в килобайты
+                        $fileSizeKB = $fileSize / 1024;
+
+                        // Предполагаем, что 40 КБ = 10 секунд
+                        return ($fileSizeKB / 40) * 10; // Длительность в секундах
+                    }
+
+                    $duration = estimateDurationBySize($fileUrl);
+
+                    Log::channel('planfix-messages')->info('ДЛИТЕЛЬНОСТЬ ГОЛОСОВОЙ' . $duration);
+
+                    $typingDuration = (int)$duration;
+                    $interval = 5;
+                    $startTime = time();
+
+
+
+                    while (time() - $startTime < $typingDuration) {
+                        $madelineProto->messages->setTyping([
+                            'peer' => $chatId,
+                            'action' => [
+                                '_' => 'sendMessageRecordAudioAction',
+                            ]
+                        ]);
+                        sleep($interval);
+                    }
+
+                    $resultOgg = $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
                             '_' => 'inputMediaUploadedDocument',
@@ -142,16 +185,55 @@ class PlanfixChatController extends Controller
                             ]
                         ],
                     ]);
-                    $madelineProto->messages->readHistory([
-                        'peer' => $chatId
+
+                    Log::channel('planfix-messages')->info("ГОЛОСОВОЕ ИЗ PLANFIX to Telegram chat", [$resultOgg['updates'][1]['message']['media']['document']['id']]);
+
+                    $idMessageMedia = $resultOgg['updates'][1]['message']['media']['document']['id'];
+
+                    DB::table('id_message_to_tg_telegram')->insert([
+                        'message_id' => $idMessageMedia
                     ]);
+
 
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
 
             } elseif ($message) {
-                // Отправка текстового сообщения, если вложений нет
-                $madelineProto->messages->sendMessage([
+
+                $madelineProto->messages->readHistory([
+                    'peer' => $chatId
+                ]);
+
+                $messageLength = mb_strlen($message); // Определяем длину сообщения
+                $typingDuration = 0;
+
+                if ($messageLength < 20) {
+                    $typingDuration = 3;
+                } elseif ($messageLength < 100) {
+                    $typingDuration = 8;
+                } elseif ($messageLength < 300) {
+                    $typingDuration = 15;
+                } elseif ($messageLength < 500) {
+                    $typingDuration = 20;
+                } else {
+                    $typingDuration = 30;
+                }
+
+                $interval = 5; // Интервал между повторными вызовами (можно менять для оптимизации)
+                $startTime = time();
+
+                while (time() - $startTime < $typingDuration) {
+                    $madelineProto->messages->setTyping([
+                        'peer' => $chatId,
+                        'action' => [
+                            '_' => 'sendMessageTypingAction',
+                        ],
+                    ]);
+                    sleep($interval);
+                }
+
+
+               $resultMessage = $madelineProto->messages->sendMessage([
                     'peer' => $chatId,
                     'message' => $message,
                     'entities' => [
@@ -163,9 +245,16 @@ class PlanfixChatController extends Controller
                         ]
                     ],
                 ]);
-                $madelineProto->messages->readHistory([
-                    'peer' => $chatId
+
+                Log::channel('planfix-messages')->info("ТЕКСТ ИЗ PLANFIX to Telegram chat", [$resultMessage['id']]);
+
+                $idMessageMedia = $resultMessage['id'];
+
+                DB::table('id_message_to_tg_telegram')->insert([
+                    'message_id' => $idMessageMedia
                 ]);
+
+
                 Log::channel('planfix-messages')->info("Text message sent to Telegram chat {$chatId}: {$message}");
             }
 
