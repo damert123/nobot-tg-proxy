@@ -78,7 +78,7 @@ class PlanfixChatController extends Controller
                             'message' => $message . "\u{200B}", // Скрытый символ
                             'entities' => null,
                         ]);
-                    };
+
                     Log::channel('planfix-messages')->info("КАРТИНКА ИЗ PLANFIX to Telegram chat", [$resultPNG['updates'][1]['message']['media']['photo']['id']]);
 
                     $idMessageMedia = $resultPNG['updates'][1]['message']['media']['photo']['id'];
@@ -90,6 +90,8 @@ class PlanfixChatController extends Controller
                     $madelineProto->messages->readHistory([
                         'peer' => $chatId
                     ]);
+
+                    };
 
 
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
@@ -116,7 +118,7 @@ class PlanfixChatController extends Controller
                                 ]
                             ],
                         ]);
-                    };
+
 
                     Log::channel('planfix-messages')->info("ВИДЕО ИЗ PLANFIX to Telegram chat", [$resultMP4['updates'][1]['message']['media']['document']['id']]);
 
@@ -131,7 +133,8 @@ class PlanfixChatController extends Controller
                         'peer' => $chatId
                     ]);
 
-                    Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
+                    Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}");
+                    };
                 }
 
                 elseif (in_array($fileExtension, ['ogg', 'ogg.ogx', 'ogx'])){
@@ -194,7 +197,7 @@ class PlanfixChatController extends Controller
                                 ]
                             ],
                         ]);
-                    };
+
 
                     Log::channel('planfix-messages')->info("ГОЛОСОВОЕ ИЗ PLANFIX to Telegram chat", [$resultOgg['updates'][1]['message']['media']['document']['id']]);
 
@@ -205,7 +208,8 @@ class PlanfixChatController extends Controller
                     ]);
 
 
-                    Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
+                    Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}");
+                    };
                 }
 
                 foreach ($queue as $task) {
