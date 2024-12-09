@@ -6,6 +6,7 @@ use danog\MadelineProto\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Revolt\EventLoop;
 
 class PlanfixChatController extends Controller
 {
@@ -200,7 +201,7 @@ class PlanfixChatController extends Controller
                 }
 
             } elseif ($message) {
-                sleep(2);
+                sleep(3);
 
                 $madelineProto->messages->readHistory([
                     'peer' => $chatId
@@ -220,6 +221,8 @@ class PlanfixChatController extends Controller
                 } else {
                     $typingDuration = 30;
                 }
+
+                \Revolt\EventLoop::queue(function () use ($madelineProto, $chatId, $typingDuration, $message) {
 
                 $interval = 5; // Интервал между повторными вызовами (можно менять для оптимизации)
                 $startTime = time();
@@ -258,7 +261,9 @@ class PlanfixChatController extends Controller
 
 
                 Log::channel('planfix-messages')->info("Text message sent to Telegram chat {$chatId}: {$message}");
+                });
             }
+
 
             return response()->json(['success' => true]);
 
