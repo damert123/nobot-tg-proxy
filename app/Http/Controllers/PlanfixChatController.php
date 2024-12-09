@@ -64,7 +64,7 @@ class PlanfixChatController extends Controller
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
                 if (in_array($fileExtension, ['png', 'jpg', 'jpeg'])){
-                    $madelineProto->sleep(5);
+                    sleep(5);
                   $resultPNG = $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
@@ -161,7 +161,7 @@ class PlanfixChatController extends Controller
                                 '_' => 'sendMessageRecordAudioAction',
                             ]
                         ]);
-                        $madelineProto->sleep(3);
+
                     }
 
                     $resultOgg = $madelineProto->messages->sendMedia([
@@ -233,7 +233,7 @@ class PlanfixChatController extends Controller
                             '_' => 'sendMessageTypingAction',
                         ],
                     ]);
-                    $madelineProto->sleep($interval);
+
                 }
 
 
