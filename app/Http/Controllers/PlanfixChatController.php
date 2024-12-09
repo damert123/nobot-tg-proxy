@@ -59,21 +59,26 @@ class PlanfixChatController extends Controller
             $madelineProto->getPwrChat($chatId);
 
             if ($attachments) {
+                $queue = [];
+
                 $fileUrl = $attachments['url'];
                 $fileName = $attachments['name'];
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
                 if (in_array($fileExtension, ['png', 'jpg', 'jpeg'])){
-                    sleep(3);
-                  $resultPNG = $madelineProto->messages->sendMedia([
-                        'peer' => $chatId,
-                        'media' => [
-                            '_' => 'inputMediaUploadedPhoto', // Для изображений
-                            'file' => $fileUrl,
-                        ],
-                        'message' => $message . "\u{200B}", // Скрытый символ
-                        'entities' => null,
-                    ]);
+                    $queue[] = function () use ($madelineProto, $chatId, $message, $fileUrl) {
+
+                        sleep(3);
+                        $resultPNG = $madelineProto->messages->sendMedia([
+                            'peer' => $chatId,
+                            'media' => [
+                                '_' => 'inputMediaUploadedPhoto', // Для изображений
+                                'file' => $fileUrl,
+                            ],
+                            'message' => $message . "\u{200B}", // Скрытый символ
+                            'entities' => null,
+                        ]);
+                    };
                     Log::channel('planfix-messages')->info("КАРТИНКА ИЗ PLANFIX to Telegram chat", [$resultPNG['updates'][1]['message']['media']['photo']['id']]);
 
                     $idMessageMedia = $resultPNG['updates'][1]['message']['media']['photo']['id'];
@@ -88,27 +93,30 @@ class PlanfixChatController extends Controller
 
 
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
-                    $resultMP4 = $madelineProto->messages->sendMedia([
-                        'peer' => $chatId,
-                        'media' => [
-                            '_' => 'inputMediaUploadedDocument',
-                            'file' => $fileUrl,
-                            'attributes' => [
-                                [
-                                    '_' => 'documentAttributeVideo',
+                    $queue[] = function () use ($madelineProto, $chatId, $message, $fileUrl) {
+
+                        $resultMP4 = $madelineProto->messages->sendMedia([
+                            'peer' => $chatId,
+                            'media' => [
+                                '_' => 'inputMediaUploadedDocument',
+                                'file' => $fileUrl,
+                                'attributes' => [
+                                    [
+                                        '_' => 'documentAttributeVideo',
+                                    ]
                                 ]
-                            ]
-                        ],
-                        'message' => $message . "\u{200B}", // Скрытый символ
-                        'entities' => [
-                            [
-                                '_' => 'messageEntityTextUrl', // Тип сущности
-                                'offset' => 0,                // Позиция в тексте
-                                'length' => 1,                // Длина символа
-                                'url' => 'planfix://internal' // Метка
-                            ]
-                        ],
-                    ]);
+                            ],
+                            'message' => $message . "\u{200B}", // Скрытый символ
+                            'entities' => [
+                                [
+                                    '_' => 'messageEntityTextUrl', // Тип сущности
+                                    'offset' => 0,                // Позиция в тексте
+                                    'length' => 1,                // Длина символа
+                                    'url' => 'planfix://internal' // Метка
+                                ]
+                            ],
+                        ]);
+                    };
 
                     Log::channel('planfix-messages')->info("ВИДЕО ИЗ PLANFIX to Telegram chat", [$resultMP4['updates'][1]['message']['media']['document']['id']]);
 
@@ -143,49 +151,50 @@ class PlanfixChatController extends Controller
                         // Предполагаем, что 40 КБ = 10 секунд
                         return ($fileSizeKB / 40) * 10; // Длительность в секундах
                     }
+                    $queue[] = function () use ($madelineProto, $chatId, $fileUrl, $message) {
 
-                    $duration = estimateDurationBySize($fileUrl);
+                        $duration = estimateDurationBySize($fileUrl);
 
-                    Log::channel('planfix-messages')->info('ДЛИТЕЛЬНОСТЬ ГОЛОСОВОЙ' . $duration);
+                        Log::channel('planfix-messages')->info('ДЛИТЕЛЬНОСТЬ ГОЛОСОВОЙ' . $duration);
 
-                    $typingDuration = (int)$duration;
-                    $interval = 5;
-                    $startTime = time();
+                        $typingDuration = (int)$duration;
+                        $interval = 5;
+                        $startTime = time();
 
 
-
-                    while (time() - $startTime < $typingDuration) {
-                        $madelineProto->messages->setTyping([
-                            'peer' => $chatId,
-                            'action' => [
-                                '_' => 'sendMessageRecordAudioAction',
-                            ]
-                        ]);
-                        sleep($interval);
-                    }
-
-                    $resultOgg = $madelineProto->messages->sendMedia([
-                        'peer' => $chatId,
-                        'media' => [
-                            '_' => 'inputMediaUploadedDocument',
-                            'file' => $fileUrl,
-                            'attributes' => [
-                                [
-                                    '_' => 'documentAttributeAudio',
-                                    'voice' => true
+                        while (time() - $startTime < $typingDuration) {
+                            $madelineProto->messages->setTyping([
+                                'peer' => $chatId,
+                                'action' => [
+                                    '_' => 'sendMessageRecordAudioAction',
                                 ]
-                            ]
-                        ],
-                        'message' => $message . "\u{200B}", // Скрытый символ
-                        'entities' => [
-                            [
-                                '_' => 'messageEntityTextUrl', // Тип сущности
-                                'offset' => 0,                // Позиция в тексте
-                                'length' => 1,                // Длина символа
-                                'url' => 'planfix://internal' // Метка
-                            ]
-                        ],
-                    ]);
+                            ]);
+                            sleep($interval);
+                        }
+
+                        $resultOgg = $madelineProto->messages->sendMedia([
+                            'peer' => $chatId,
+                            'media' => [
+                                '_' => 'inputMediaUploadedDocument',
+                                'file' => $fileUrl,
+                                'attributes' => [
+                                    [
+                                        '_' => 'documentAttributeAudio',
+                                        'voice' => true
+                                    ]
+                                ]
+                            ],
+                            'message' => $message . "\u{200B}", // Скрытый символ
+                            'entities' => [
+                                [
+                                    '_' => 'messageEntityTextUrl', // Тип сущности
+                                    'offset' => 0,                // Позиция в тексте
+                                    'length' => 1,                // Длина символа
+                                    'url' => 'planfix://internal' // Метка
+                                ]
+                            ],
+                        ]);
+                    };
 
                     Log::channel('planfix-messages')->info("ГОЛОСОВОЕ ИЗ PLANFIX to Telegram chat", [$resultOgg['updates'][1]['message']['media']['document']['id']]);
 
@@ -197,6 +206,14 @@ class PlanfixChatController extends Controller
 
 
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
+                }
+
+                foreach ($queue as $task) {
+                    try {
+                        $task(); // Выполнение каждой задачи последовательно
+                    } catch (\Throwable $e) {
+                        Log::error('Ошибка при отправке вложения: ' . $e->getMessage());
+                    }
                 }
 
             } elseif ($message) {
