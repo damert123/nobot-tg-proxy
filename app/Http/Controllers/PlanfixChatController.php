@@ -59,6 +59,10 @@ class PlanfixChatController extends Controller
             $madelineProto->getPwrChat($chatId);
 
             if ($attachments) {
+
+                $madelineProto->sleep(3);
+
+
                 $fileUrl = $attachments['url'];
                 $fileName = $attachments['name'];
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
