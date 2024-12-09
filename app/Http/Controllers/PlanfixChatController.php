@@ -64,6 +64,7 @@ class PlanfixChatController extends Controller
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
                 if (in_array($fileExtension, ['png', 'jpg', 'jpeg'])){
+                    sleep(3);
                   $resultPNG = $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
