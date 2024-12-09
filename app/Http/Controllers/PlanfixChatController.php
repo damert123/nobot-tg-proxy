@@ -6,7 +6,6 @@ use danog\MadelineProto\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Revolt\EventLoop;
 
 class PlanfixChatController extends Controller
 {
@@ -65,7 +64,7 @@ class PlanfixChatController extends Controller
                 $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
                 if (in_array($fileExtension, ['png', 'jpg', 'jpeg'])){
-                    $madelineProto->sleep(3);
+                    $madelineProto->sleep(5);
                   $resultPNG = $madelineProto->messages->sendMedia([
                         'peer' => $chatId,
                         'media' => [
@@ -222,7 +221,7 @@ class PlanfixChatController extends Controller
                     $typingDuration = 30;
                 }
 
-                \Revolt\EventLoop::queue(function () use ($madelineProto, $chatId, $typingDuration, $message) {
+
 
                 $interval = 5; // Интервал между повторными вызовами (можно менять для оптимизации)
                 $startTime = time();
@@ -261,9 +260,7 @@ class PlanfixChatController extends Controller
 
 
                 Log::channel('planfix-messages')->info("Text message sent to Telegram chat {$chatId}: {$message}");
-                });
             }
-
 
             return response()->json(['success' => true]);
 
