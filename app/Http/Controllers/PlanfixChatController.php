@@ -60,8 +60,7 @@ class PlanfixChatController extends Controller
 
             if ($attachments) {
 
-                $madelineProto->sleep(3);
-
+                sleep(5);
 
                 $fileUrl = $attachments['url'];
                 $fileName = $attachments['name'];
