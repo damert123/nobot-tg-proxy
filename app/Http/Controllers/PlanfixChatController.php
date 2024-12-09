@@ -89,7 +89,6 @@ class PlanfixChatController extends Controller
                         'peer' => $chatId
                     ]);
 
-                    sleep(1);
 
 
                 }elseif (in_array($fileExtension, ['mp4', 'mkv', 'mov', 'avi'])){
@@ -130,7 +129,6 @@ class PlanfixChatController extends Controller
                         'peer' => $chatId
                     ]);
 
-                    sleep(1);
 
 
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
@@ -205,7 +203,6 @@ class PlanfixChatController extends Controller
                         'message_id' => $idMessageMedia
                     ]);
 
-                    sleep(2);
 
 
 
@@ -263,11 +260,6 @@ class PlanfixChatController extends Controller
                     ],
                 ]);
 
-                sleep(1);
-                $resHistory = $madelineProto->messages->getHistory([
-                    'peer' => $chatId
-                ]);
-                Log::channel('planfix-messages')->info("ИСТОРИЯ", [$resHistory]);
 
                 Log::channel('planfix-messages')->info("ТЕКСТ ИЗ PLANFIX to Telegram chat", [$resultMessage['id']]);
 
