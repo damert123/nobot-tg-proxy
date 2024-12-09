@@ -264,8 +264,10 @@ class PlanfixChatController extends Controller
                 ]);
 
                 sleep(1);
-                $resHistory = $madelineProto->messages->getHistory($chatId);
-                Log::channel('planfix-messages')->info("ИСТОРИЯ", [$resHistory]);
+                $resHistory = $madelineProto->messages->getHistory([
+                    'peer' => $chatId
+                ]);
+                Log::channel('planfix-messages')->info("ИСТОРИЯ", [$resHistory['id']]);
 
                 Log::channel('planfix-messages')->info("ТЕКСТ ИЗ PLANFIX to Telegram chat", [$resultMessage['id']]);
 
