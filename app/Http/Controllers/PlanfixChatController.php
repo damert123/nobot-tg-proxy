@@ -200,7 +200,7 @@ class PlanfixChatController extends Controller
                 }
 
             } elseif ($message) {
-                $madelineProto->sleep(2);
+                sleep(2);
 
                 $madelineProto->messages->readHistory([
                     'peer' => $chatId
