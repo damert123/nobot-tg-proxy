@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => 'required|string|unique:telegram_accounts,phone|min:11|max:11',
+            'phone' => 'required|string|unique:telegram_accounts,phone',
             'title' => 'required|string|max:255|unique:telegram_accounts,title',
         ];
     }
