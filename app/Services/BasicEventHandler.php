@@ -108,7 +108,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
                     'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
                     'message' => $text ?: 'Файл', // Текст сообщения
-                    'title' => $clientFirstName, // Заголовок задачи (всегда имя клиента)
+                    'title' => $clientFirstName . ' ' . $clientLastName, // Заголовок задачи (всегда имя клиента)
                     'contactId' => $fromId, // ID отправителя
                     'contactName' => $senderFirstName, // Имя отправителя
                     'contactLastName' => $senderLastName, // Фамилия отправителя (необязательно)
@@ -121,7 +121,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
                     'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
                     'message' => $text ?: 'Файл', // Текст сообщения
-                    'title' => $clientFirstName, // Заголовок задачи (всегда имя клиента)
+                    'title' => $clientFirstName . ' ' . $clientLastName, // Заголовок задачи (всегда имя клиента)
                     'contactId' => $clientId, // ID отправителя
                     'contactName' => $clientFirstName, // Имя отправителя
                     'contactLastName' => $clientLastName, // Фамилия отправителя (необязательно)
