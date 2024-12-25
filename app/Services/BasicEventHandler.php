@@ -115,6 +115,9 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactData' => "Telegram: $telegramProfileLink",
                 ];
             }else{
+                Log::channel('planfix-messages')->info('ТАСКА НЕНАЙДЕНА СОЗДАЕМ НОВУЮ', [
+                    'response' => $responseGetTask->json(),
+                ]);
                 $data = [
                     'cmd' => 'newMessage',
                     'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
