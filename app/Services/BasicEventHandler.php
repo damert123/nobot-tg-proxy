@@ -19,9 +19,9 @@ class BasicEventHandler extends SimpleEventHandler
 
         $message = $update['message'] ?? null;
 
-
         if ($message) {
             Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
 
             $text = $message['message'] ?? 'Без текста';
             $peerId = $message['peer_id'] ?? null;
@@ -29,22 +29,32 @@ class BasicEventHandler extends SimpleEventHandler
 
             // Получаем данные текущего пользователя (менеджера)
             $self = $this->getSelf();
-            Log::channel('tg-messages')->info($self['id'] . "Пришло от этой сессии");
-
             $managerId = $self['id'];
 
+            Log::channel('tg-messages')->info("Получено новое сообщение", [
+                'peer_id' => $peerId,
+                'from_id' => $fromId,
+                'manager_id' => $managerId,
+                'message' => $text,
+            ]);
+            Log::channel('tg-messages')->info("$managerId Пришло от этой сессии");
+
+            // Если `from_id` и `peer_id` совпадают, меняем `peer_id` на ID менеджера
             if ($fromId === $peerId) {
                 Log::channel('tg-messages')->info("from_id и peer_id совпадают. Заменяем peer_id на managerId.");
-                $peerId = $managerId; // Меняем peer_id на managerId
+                $peerId = $managerId;
+                Log::channel('tg-messages')->info("Коррекция peer_id: совпадение с from_id", [
+                    'from_id' => $fromId,
+                    'peer_id' => $peerId,
+                    'new_peer_id' => $managerId,
+                ]);
             }
 
-            // Определяем, кто клиент
+            // Определяем, кто отправитель
             $isManagerSender = ($fromId === $managerId);
             $clientId = $isManagerSender ? $peerId : $fromId;
 
             // Определяем, какой ID использовать для поиска аккаунта Telegram
-            // Если пишет менеджер, то ищем по from_id (ID менеджера)
-            // Если пишет клиент, то ищем по peer_id (ID менеджера)
             $telegramAccountId = $isManagerSender ? $fromId : $peerId;
 
             // Получаем информацию о клиенте
@@ -53,13 +63,25 @@ class BasicEventHandler extends SimpleEventHandler
             $clientLastName = $clientInfo['User']['last_name'] ?? '';
             $clientUserName = $clientInfo['User']['username'] ?? '';
 
+            Log::channel('tg-messages')->info("Информация о клиенте", [
+                'client_id' => $clientId,
+                'first_name' => $clientFirstName,
+                'last_name' => $clientLastName,
+                'username' => $clientUserName,
+            ]);
+
             // Получаем информацию об отправителе
             $senderInfo = $this->getInfo($fromId);
             $senderFirstName = $senderInfo['User']['first_name'] ?? '';
             $senderLastName = $senderInfo['User']['last_name'] ?? '';
             $senderUserName = $senderInfo['User']['username'] ?? '';
 
-
+            Log::channel('tg-messages')->info("Информация об отправителе", [
+                'sender_id' => $fromId,
+                'first_name' => $senderFirstName,
+                'last_name' => $senderLastName,
+                'username' => $senderUserName,
+            ]);
 
             // Находим Telegram аккаунт по peerId
             $telegramAccount = DB::table('telegram_accounts')
@@ -71,8 +93,6 @@ class BasicEventHandler extends SimpleEventHandler
                 return;
             }
 
-
-
             $planfixIntegration = DB::table('planfix_integrations')
                 ->where('telegram_account_id', $telegramAccount->id)
                 ->first();
@@ -80,15 +100,15 @@ class BasicEventHandler extends SimpleEventHandler
             if (!$planfixIntegration) {
                 Log::warning("Не удалось найти Planfix интеграцию для аккаунта ID: $peerId");
                 return;
-
             }
 
             $telegramProfileLink = $senderUserName
                 ? "https://t.me/$senderUserName"
                 : 'Telegram профиль недоступен';
+
             Log::channel('tg-messages')->info($telegramProfileLink);
 
-
+            // Получаем задачу из Planfix
             $dataGetTask = [
                 'cmd' => 'getTask',
                 'providerId' => $planfixIntegration->provider_id,
@@ -98,43 +118,49 @@ class BasicEventHandler extends SimpleEventHandler
 
             $responseGetTask = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $dataGetTask);
 
-            if ($responseGetTask->successful()) {
+            if ($responseGetTask->successful() && !empty($responseGetTask->json())) {
                 Log::channel('planfix-messages')->info('ТАСКА УСПЕШНО ПОЛУЧЕНА', [
                     'response' => $responseGetTask->json(),
                 ]);
+
                 $data = [
                     'cmd' => 'newMessage',
-                    'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
-                    'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
-                    'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
-                    'message' => $text ?: 'Файл', // Текст сообщения
-                    'title' => $clientFirstName . ' ' . $clientLastName, // Заголовок задачи (всегда имя клиента)
-                    'contactId' => $fromId, // ID отправителя
-                    'contactName' => $senderFirstName, // Имя отправителя
-                    'contactLastName' => $senderLastName, // Фамилия отправителя (необязательно)
+                    'providerId' => $planfixIntegration->provider_id,
+                    'chatId' => $clientId,
+                    'planfix_token' => $planfixIntegration->planfix_token,
+                    'message' => $text ?: 'Файл',
+                    'title' => $clientFirstName . ' ' . $clientLastName,
+                    'contactId' => $fromId,
+                    'contactName' => $senderFirstName,
+                    'contactLastName' => $senderLastName,
                     'contactData' => "Telegram: $telegramProfileLink",
                 ];
-            }else{
-                Log::channel('planfix-messages')->info('ТАСКА НЕНАЙДЕНА СОЗДАЕМ НОВУЮ', [
+            } else {
+                Log::channel('planfix-messages')->info('ТАСКА НЕ НАЙДЕНА. СОЗДАЁМ НОВУЮ', [
                     'response' => $responseGetTask->json(),
                 ]);
+                Log::channel('planfix-messages')->info("Создаётся новая задача", [
+                    'client_id' => $clientId,
+                    'contact_name' => $clientFirstName,
+                    'message' => $text,
+                ]);
+
+                // При создании новой задачи устанавливаем клиента как отправителя
                 $data = [
                     'cmd' => 'newMessage',
-                    'providerId' => $planfixIntegration->provider_id, // Уникальный идентификатор системы
-                    'chatId' => $clientId, // Уникальный ID чата (всегда ID клиента)
-                    'planfix_token' => $planfixIntegration->planfix_token, // Токен, указывается в .env
-                    'message' => $text ?: 'Файл', // Текст сообщения
-                    'title' => $clientFirstName . ' ' . $clientLastName, // Заголовок задачи (всегда имя клиента)
-                    'contactId' => $clientId, // ID отправителя
-                    'contactName' => $clientFirstName, // Имя отправителя
-                    'contactLastName' => $clientLastName, // Фамилия отправителя (необязательно)
+                    'providerId' => $planfixIntegration->provider_id,
+                    'chatId' => $clientId,
+                    'planfix_token' => $planfixIntegration->planfix_token,
+                    'message' => $text ?: 'Файл',
+                    'title' => $clientFirstName . ' ' . $clientLastName,
+                    'contactId' => $clientId, // Используем clientId для нового сообщения
+                    'contactName' => $clientFirstName,
+                    'contactLastName' => $clientLastName,
                     'contactData' => "Telegram: $telegramProfileLink",
                 ];
             }
 
-
-            // Данные для CRM
-
+            // Логируем финальное сообщение
             Log::channel('tg-messages')->info("Новое сообщение: {$text}, от пользователя: {$fromId}, username: {$clientUserName}, имя: {$senderFirstName}, фамилия: {$senderLastName}");
 
             if (isset($message['media'])){
@@ -356,7 +382,12 @@ class BasicEventHandler extends SimpleEventHandler
             }
 
 //            Log::channel('tg-messages')->info("Информация о пользователе:" . json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-            Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            Log::channel('tg-messages')->info("Обработка сообщения завершена", [
+                'client_id' => $clientId,
+                'from_id' => $fromId,
+                'task_found' => $responseGetTask->successful(),
+                'final_message_data' => $data,
+            ]);
 
         } else {
             Log::channel('tg-messages')->warning('Обновление без сообщения');
