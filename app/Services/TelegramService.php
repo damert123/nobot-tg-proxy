@@ -27,9 +27,10 @@ class TelegramService
     {
 
         $sessions = DB::table('telegram_accounts')
-            ->whereNotNull('session_path')
-            ->where('status', 'Активен')
-            ->pluck('session_path');
+            ->join('planfix_integrations', 'telegram_accounts.id', '=', 'planfix_integrations.telegram_account_id')
+            ->whereNotNull('telegram_accounts.session_path')
+            ->where('telegram_accounts.status', 'Активен')
+            ->pluck('telegram_accounts.session_path');
 
         if ($sessions->isEmpty()) {
             return; // Можно добавить логирование или сообщение

@@ -137,7 +137,15 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/planfix-messages.log'),
             'replace_placeholders' => true,
+        ],
+
+        'top-up-messages' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/top-up-messages.log'),
+            'replace_placeholders' => true,
         ]
+
+
 
 
     ],
