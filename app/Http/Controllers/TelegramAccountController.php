@@ -42,7 +42,7 @@ class TelegramAccountController extends Controller
             'title' => $data['title'],
             'status' => 'Ожидает код',
             'session_path' => $sessionFile,
-            'user_id' => auth()->id(), // Если аккаунт привязан к пользователю
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('telegram.code', ['phone' => $telegramAccount->phone])

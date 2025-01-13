@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\EventHandler;
+use danog\MadelineProto\Logger;
 use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -21,6 +22,8 @@ class TelegramService
         $this->settings = (new AppInfo)
             ->setApiId(env('TELEGRAM_API_ID'))
             ->setApiHash(env('TELEGRAM_API_HASH'));
+
+
     }
 
     public function listenForMessage()
@@ -43,6 +46,9 @@ class TelegramService
             $api->start();
             $MadelineProtos[] = $api;
         }
+
+
+
 
 //        BasicEventHandler::startAndLoop($sessionFile, $this->settings);
         API::startAndLoopMulti($MadelineProtos, BasicEventHandler::class);
