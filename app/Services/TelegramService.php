@@ -44,19 +44,14 @@ class TelegramService
 
             $api = new API($sessionPath);
 
-            $loggerSettings = (new \danog\MadelineProto\Settings\Logger)
-                ->setType(Logger::FILE_LOGGER)
-                ->setExtra('/home/developer/nobot-tg-proxy/MadelineProto.log') // Указываем путь явно
-                ->setMaxSize(50 * 1024 * 1024);
+            $loggerSettings = (new \danog\MadelineProto\Settings\Logger())
+                ->setType(Logger::$default);
             $api->updateSettings($loggerSettings);
 
             $api->start();
 
             $MadelineProtos[] = $api;
         }
-
-
-
 
 //        BasicEventHandler::startAndLoop($sessionFile, $this->settings);
         API::startAndLoopMulti($MadelineProtos, BasicEventHandler::class);
