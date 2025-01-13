@@ -50,7 +50,7 @@ class TelegramService
                     // логирование отключено
                 });
 
-            $api->updateSettings(['logger' => $loggerSettings]);
+            $api->updateSettings($loggerSettings);
 
             $api->start();
 
