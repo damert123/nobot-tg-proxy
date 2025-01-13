@@ -45,8 +45,8 @@ class TelegramService
             $api = new API($sessionPath);
 
             $loggerSettings = (new \danog\MadelineProto\Settings\Logger())
-                ->setType(\danog\MadelineProto\Logger::LOGGER_ECHO);
-
+                ->setType(\danog\MadelineProto\Logger::LOGGER_FILE)
+                ->setExtra('/dev/null'); // Логи никуда не записываются
             $api->updateSettings($loggerSettings);
 
             $api->start();
