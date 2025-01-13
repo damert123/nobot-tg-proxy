@@ -9,6 +9,7 @@ use danog\MadelineProto\Logger;
 use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use danog\MadelineProto\Settings\Logger as LoggerSettings;
 
 class TelegramService
 {
@@ -22,8 +23,6 @@ class TelegramService
         $this->settings = (new AppInfo)
             ->setApiId(env('TELEGRAM_API_ID'))
             ->setApiHash(env('TELEGRAM_API_HASH'));
-
-
     }
 
     public function listenForMessage()
@@ -36,13 +35,22 @@ class TelegramService
             ->pluck('telegram_accounts.session_path');
 
         if ($sessions->isEmpty()) {
-            return; // Можно добавить логирование или сообщение
+            return;
         }
 
         $MadelineProtos = [];
         foreach ($sessions as $sessionPath) {
 
             $api = new API($sessionPath);
+
+
+            $loggerSettings = (new LoggerSettings)
+                ->setType(Logger::CALLABLE_LOGGER)
+                ->setExtra(function ($level, $message) {
+                    // логирование отключено
+                });
+
+            $api->updateSettings(['logger' => $loggerSettings]);
 
             $api->start();
 
