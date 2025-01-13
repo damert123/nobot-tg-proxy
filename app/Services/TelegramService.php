@@ -43,7 +43,15 @@ class TelegramService
         foreach ($sessions as $sessionPath) {
 
             $api = new API($sessionPath);
+
+            $loggerSettings = (new \danog\MadelineProto\Settings\Logger)
+                ->setType(\danog\MadelineProto\Logger::FILE_LOGGER)
+                ->setExtra(storage_path('logs/MadelineProto_' . basename($sessionPath) . '.log'))
+                ->setMaxSize(50 * 1024 * 1024);
+            $api->updateSettings($loggerSettings);
+
             $api->start();
+
             $MadelineProtos[] = $api;
         }
 
