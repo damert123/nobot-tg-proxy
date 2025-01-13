@@ -44,13 +44,6 @@ class TelegramService
 
             $api = new API($sessionPath);
 
-            Logger::$default = new Logger([
-                'logger' => Logger::LOGGER_CALLABLE,
-                'extra' => function ($message, $level) {
-                    // Ничего не делаем
-                },
-            ]);
-
             $api->start();
 
             $MadelineProtos[] = $api;
