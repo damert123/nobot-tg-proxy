@@ -45,8 +45,8 @@ class TelegramService
             $api = new API($sessionPath);
 
             $loggerSettings = (new \danog\MadelineProto\Settings\Logger)
-                ->setType(\danog\MadelineProto\Logger::FILE_LOGGER)
-                ->setExtra(storage_path('logs/MadelineProto_' . basename($sessionPath) . '.log'))
+                ->setType(Logger::FILE_LOGGER)
+                ->setExtra('/home/developer/nobot-tg-proxy/MadelineProto.log') // Указываем путь явно
                 ->setMaxSize(50 * 1024 * 1024);
             $api->updateSettings($loggerSettings);
 
