@@ -25,27 +25,27 @@ class PlanfixToTelegramController extends Controller
 
             $this->planfixService->validateWebhookData($data);
 
-            response()->json(['status' => 'received'], 200)->send();
+//            response()->json(['status' => 'received'], 200)->send();
+//
+//            fastcgi_finish_request();
+//
+//            $token = $data['token'];
+//            $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
+//
+//            $madelineProto = $this->planfixService->initializeModelineProto($telegramAccount->session_path);
+//
+//            $chatId = $data['chatId'];
+//            $message = $data['message'] ?? null;
+//
+//            if ($message){
+//                $this->planfixService->sendMessage($madelineProto, $chatId, $message);
+//            }
+//
+//            if (!empty($data['attachments'])){
+//                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
+//            }
 
-            fastcgi_finish_request();
-
-            $token = $data['token'];
-            $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
-
-            $madelineProto = $this->planfixService->initializeModelineProto($telegramAccount->session_path);
-
-            $chatId = $data['chatId'];
-            $message = $data['message'] ?? null;
-
-            if ($message){
-                $this->planfixService->sendMessage($madelineProto, $chatId, $message);
-            }
-
-            if (!empty($data['attachments'])){
-                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
-            }
-
-
+            return response()->json(['status' => 'received'], 200);
         }catch (\Exception $e){
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
