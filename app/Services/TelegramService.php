@@ -44,13 +44,6 @@ class TelegramService
             $api = new API($sessionPath);
 
 
-            $loggerSettings = (new LoggerSettings)
-                ->setType(Logger::FILE_LOGGER) // Устанавливаем тип логгера
-                ->setExtra('/var/log/madelineproto.log') // Указываем путь к файлу лога
-                ->setMaxSize(50*1024*1024); // Устанавливаем максимальный размер файла лога
-
-            $api->updateSettings($loggerSettings);
-
             $api->start();
 
             $MadelineProtos[] = $api;
