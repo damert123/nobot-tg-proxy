@@ -115,6 +115,9 @@ class PlanfixService
                 'media' => [
                     '_' => $mediaType,
                     'file' => $fileUrl,
+                    'attributes' => [
+                        ['_' => 'documentAttributeAudio', 'voice' => true],
+                    ],
                 ],
                 'message' => $message ?? '',
             ]);
