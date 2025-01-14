@@ -131,6 +131,8 @@ class PlanfixService
             }
 
             Log::channel('planfix-messages')->info("Вложение из CRM отправлено в чат {$chatId}: {$fileName}");
+            Log::channel('planfix-messages')->info("Отправка медиа: URL = {$fileUrl}, Extension = {$fileExtension}, MediaType = {$mediaType}");
+
 
         } catch (\Throwable $e) {
             Log::channel('planfix-messages')->error("Ошибка при отправке вложения в Telegram: {$e->getMessage()}");

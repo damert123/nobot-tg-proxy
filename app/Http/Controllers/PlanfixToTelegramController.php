@@ -45,7 +45,6 @@ class PlanfixToTelegramController extends Controller
                 $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
             }
 
-            return response()->json(['status' => 'success'], 200);
 
         }catch (\Exception $e){
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
