@@ -25,6 +25,10 @@ class PlanfixToTelegramController extends Controller
 
             $this->planfixService->validateWebhookData($data);
 
+            response()->json(['status' => 'received'], 200)->send();
+
+            fastcgi_finish_request();
+
             $token = $data['token'];
             $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
 
