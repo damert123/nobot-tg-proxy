@@ -143,7 +143,15 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/top-up-messages.log'),
             'replace_placeholders' => true,
+        ],
+
+        'queue-messages' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/queue-messages.log'),
+            'replace_placeholders' => true,
         ]
+
+
 
 
 

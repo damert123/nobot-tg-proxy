@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTelegramMessageJob;
 use App\Services\PlanfixService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +25,8 @@ class PlanfixToTelegramController extends Controller
             $data = $request->all();
 
             $this->planfixService->validateWebhookData($data);
+
+            ProcessTelegramMessageJob::dispatch($data);
 
 //            response()->json(['status' => 'received'], 200)->send();
 //

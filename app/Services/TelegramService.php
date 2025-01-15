@@ -43,7 +43,6 @@ class TelegramService
 
             $api = new API($sessionPath);
 
-
             $api->start();
 
             $MadelineProtos[] = $api;

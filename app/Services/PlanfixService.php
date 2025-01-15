@@ -55,35 +55,40 @@ class PlanfixService
 
     public function sendMessage(API $madelineProto, string $chatId, string $message): void
     {
-        $madelineProto->messages->readHistory([
-            'peer' => $chatId,
-        ]);
+        try {
+            $madelineProto->messages->readHistory([
+                'peer' => $chatId,
+            ]);
 
-        $messageLength = mb_strlen($message);
-        $typingDuration = $this->calculateTypingDuration($messageLength);
+            $messageLength = mb_strlen($message);
+            $typingDuration = $this->calculateTypingDuration($messageLength);
 
-        $this->simulateTyping($madelineProto, $chatId, $typingDuration, 'sendMessageTypingAction');
+            $this->simulateTyping($madelineProto, $chatId, $typingDuration, 'sendMessageTypingAction');
 
-        $resultMessage = $madelineProto->messages->sendMessage([
-            'peer' => $chatId,
-            'message' => $message,
-            'entities' => [
-                [
-                    '_' => 'messageEntityTextUrl',
-                    'offset' => strlen($message),
-                    'length' => 1,
-                    'url' => 'planfix://internal' // Невидимая метка
-                ]
-            ],
-        ]);
+            $resultMessage = $madelineProto->messages->sendMessage([
+                'peer' => $chatId,
+                'message' => $message,
+                'entities' => [
+                    [
+                        '_' => 'messageEntityTextUrl',
+                        'offset' => strlen($message),
+                        'length' => 1,
+                        'url' => 'planfix://internal'
+                    ]
+                ],
+            ]);
 
-        $idMessageMedia = $resultMessage['id'];
+            $idMessageMedia = $resultMessage['id'];
 
-        DB::table('id_message_to_tg_telegram')->insert([
-            'message_id' => $idMessageMedia
-        ]);
+            DB::table('id_message_to_tg_telegram')->insert([
+                'message_id' => $idMessageMedia
+            ]);
 
-        Log::channel('planfix-messages')->info("СООБЩЕНИЕ из CRM отправлено в чат {$chatId}: {$message}");
+            Log::channel('planfix-messages')->info("СООБЩЕНИЕ из CRM отправлено в чат {$chatId}: {$message}");
+        } catch (\Exception $e) {
+            Log::channel('planfix-messages')->error("Ошибка отправки сообщения в чат {$chatId}: {$e->getMessage()}");
+            throw new \Exception("Ошибка отправки сообщения: {$e->getMessage()}");
+        }
 
     }
 
