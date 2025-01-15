@@ -26,7 +26,15 @@ class PlanfixToTelegramController extends Controller
 
             $this->planfixService->validateWebhookData($data);
 
-            ProcessTelegramMessageJob::dispatch($data);
+            $chatId = $data['chatId'] ?? null;
+
+            // Убедитесь, что chatId существует
+            if (!$chatId) {
+                throw new \Exception('chatId is required');
+            }
+
+
+            ProcessTelegramMessageJob::dispatch($data)->onQueue("chat_{$chatId}");;
 
 
 //            response()->json(['status' => 'received'], 200)->send();
