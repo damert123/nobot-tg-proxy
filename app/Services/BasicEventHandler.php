@@ -116,7 +116,7 @@ class BasicEventHandler extends SimpleEventHandler
                 'chatId' => $clientId,
             ];
 
-            $responseGetTask = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $dataGetTask);
+            $responseGetTask = Http::asForm()->post('https://test888.planfix.ru/webchat/api', $dataGetTask);
 
             if ($responseGetTask->successful() && !empty($responseGetTask->json())) {
                 Log::channel('planfix-messages')->info('ТАСКА УСПЕШНО ПОЛУЧЕНА', [
@@ -350,7 +350,7 @@ class BasicEventHandler extends SimpleEventHandler
                 }
 
 
-                $response = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $data);
+                $response = Http::asForm()->post('https://test888.planfix.ru/webchat/api', $data);
 
                 if ($response->successful()){
                     Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
