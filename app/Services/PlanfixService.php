@@ -162,7 +162,13 @@ class PlanfixService
 
         $fileSizeKB = $fileSize / 1024;
 
-        return intval(($fileSizeKB / 40) * 10);
+        if ($fileSizeKB > 480) {
+            return 120;
+        }
+
+        $durationInSeconds = intval(($fileSizeKB / 40) * 10);
+
+        return $durationInSeconds;
     }
 
     private function simulateTyping(API $madelineProto, string $chatId, int $duration, string $actionType): void
