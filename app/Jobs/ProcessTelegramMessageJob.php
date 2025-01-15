@@ -11,8 +11,6 @@ class ProcessTelegramMessageJob implements ShouldQueue
 {
     use Queueable;
 
-    public $tries = 3;
-
     protected $data;
 
     public $timeout = 300;
