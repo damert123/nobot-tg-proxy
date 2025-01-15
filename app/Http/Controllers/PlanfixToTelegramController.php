@@ -34,7 +34,7 @@ class PlanfixToTelegramController extends Controller
             }
 
 
-            ProcessTelegramMessageJob::dispatch($data)->onQueue("chat_{$chatId}");;
+            ProcessTelegramMessageJob::dispatch($data);
 
 
 //            response()->json(['status' => 'received'], 200)->send();
