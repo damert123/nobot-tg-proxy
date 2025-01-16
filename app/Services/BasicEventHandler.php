@@ -104,7 +104,11 @@ class BasicEventHandler extends SimpleEventHandler
 
             $telegramProfileLink = $senderUserName
                 ? "https://t.me/$senderUserName"
-                : 'Telegram профиль недоступен';
+                : "https://t.me/$fromId";
+
+            $clientTelegramProfileLink = $clientUserName
+                ? "https://t.me/$clientUserName"
+                : "https://t.me/$clientId";
 
             Log::channel('tg-messages')->info($telegramProfileLink);
 
@@ -133,7 +137,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactId' => $fromId,
                     'contactName' => $senderFirstName,
                     'contactLastName' => $senderLastName,
-                    'contactData' => "Telegram: $telegramProfileLink",
+                    'telegramUserName' => "$telegramProfileLink",
                 ];
             } else {
                 Log::channel('planfix-messages')->info('ТАСКА НЕ НАЙДЕНА. СОЗДАЁМ НОВУЮ', [
@@ -156,7 +160,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactId' => $clientId, // Используем clientId для нового сообщения
                     'contactName' => $clientFirstName,
                     'contactLastName' => $clientLastName,
-                    'contactData' => "Telegram: $telegramProfileLink",
+                    'telegramUserName' => "$clientTelegramProfileLink",
                 ];
             }
 
