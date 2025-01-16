@@ -31,7 +31,8 @@ class ProcessTelegramMessageJob implements ShouldQueue
      * Execute the job.
      */
     public function handle(PlanfixService $planfixService): void
-    {
+    {;
+
 
         try {
             $token = $this->data['token'];
