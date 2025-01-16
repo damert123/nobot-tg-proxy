@@ -6,6 +6,7 @@ use App\Jobs\ProcessTelegramMessageJob;
 use App\Services\PlanfixService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class PlanfixToTelegramController extends Controller
 {
@@ -26,6 +27,7 @@ class PlanfixToTelegramController extends Controller
 
             $this->planfixService->validateWebhookData($data);
 
+
             $chatId = $data['chatId'] ?? null;
 
             // Убедитесь, что chatId существует
@@ -34,8 +36,8 @@ class PlanfixToTelegramController extends Controller
             }
 
 
-            ProcessTelegramMessageJob::dispatch($data);
 
+            ProcessTelegramMessageJob::dispatch($data);
 
 //            response()->json(['status' => 'received'], 200)->send();
 //
@@ -57,16 +59,12 @@ class PlanfixToTelegramController extends Controller
 //                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
 //            }
 
+
             return response()->json(['status' => 'received'], 200);
         }catch (\Exception $e){
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
-
-
-
-
-
 
     }
 }
