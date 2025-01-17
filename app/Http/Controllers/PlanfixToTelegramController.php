@@ -25,37 +25,29 @@ class PlanfixToTelegramController extends Controller
             Log::channel('planfix-messages')->info('Planfix webhook received:', $request->all());
 
             $data = $request->all();
-
             $this->planfixService->validateWebhookData($data);
 
             $chatId = $data['chatId'] ?? null;
 
-            Log::info('ProcessTelegramMessageJob started for chat ID: ' . $chatId);
-
-            // Убедитесь, что chatId существует
             if (!$chatId) {
                 throw new \Exception('chatId is required');
             }
 
-            $queueKey = "queue:chat:$chatId";
-
-            // Добавляем сообщение в очередь Redis
-            Redis::command('RPUSH', [$queueKey, json_encode($data)]);
-
             $lockKey = "lock:chat:$chatId";
 
-            if (!Redis::command('exists', [$lockKey])){
-                //Блок на 5 мин
-                Redis::command('SET', [$lockKey, true, 'EX', 300]);
-                // пускаем джобу
-                ProcessTelegramMessageJob::dispatch($chatId);
-            }else{
+            // Проверяем, заблокирован ли этот чат
+            if (!Redis::command('exists', [$lockKey])) {
+                // Устанавливаем блокировку на 5 минут (300 секунд)
+                Redis::command('set', [$lockKey, true, 'EX', 300]);
+
+                // Запускаем джобу
+                ProcessTelegramMessageJob::dispatch($data);
+            } else {
                 Log::channel('queue-messages')->warning("Chat $chatId is already locked by another worker.");
             }
 
             return response()->json(['status' => 'received'], 200);
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
