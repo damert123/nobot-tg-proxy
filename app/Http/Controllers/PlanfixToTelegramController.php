@@ -32,17 +32,18 @@ class PlanfixToTelegramController extends Controller
                 throw new \Exception('chatId is required');
             }
 
+            $queueKey = "queue:chat:$chatId";
             $lockKey = "lock:chat:$chatId";
 
-            // Проверяем, заблокирован ли этот чат
-            if (!Redis::command('exists', [$lockKey])) {
-                // Устанавливаем блокировку на 5 минут (300 секунд)
-                Redis::command('set', [$lockKey, true, 'EX', 300]);
 
-                // Запускаем джобу
-                ProcessTelegramMessageJob::dispatch($data);
-            } else {
-                Log::channel('queue-messages')->warning("Chat $chatId is already locked by another worker.");
+            $res = Redis::command('RPUSH', [$queueKey, json_encode($data)]);
+
+            Log::channel('queue-messages')->warning("DATA $res");
+
+
+            // Если нет блокировки, запускаем обработку очереди
+            if (!Redis::command('exists', [$lockKey])) {
+                ProcessTelegramMessageJob::dispatch($chatId);
             }
 
             return response()->json(['status' => 'received'], 200);

@@ -12,44 +12,55 @@ class ProcessTelegramMessageJob implements ShouldQueue
 {
     use Queueable;
 
-    protected string $chatId;
-    protected $data;
+    protected $chatId;
 
     public $timeout = 300;
 
     public $queue; // Устанавливаем очередь
 
-    /**
-     * Create a new job instance.
-     *
-     * @param array $data
-     */
-    public function __construct(array $data)
+    public function __construct(int $chatId)
     {
-        $this->data = $data;
+        $this->chatId = $chatId;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(PlanfixService $planfixService): void
     {
-        $chatId = $this->data['chatId'];
+        $chatId = $this->chatId;
+        $queueKey = "queue:chat:$chatId";
         $lockKey = "lock:chat:$chatId";
 
         try {
-            $token = $this->data['token'];
-            $telegramAccount = $planfixService->getIntegrationAndAccount($token);
-            $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
+            // Устанавливаем блокировку
+            Redis::command('set', [$lockKey, true, 'EX', 300]);
 
-            $message = $this->data['message'] ?? null;
+            while (true) {
+                $messageData = Redis::command('LPOP', [$queueKey]);
 
-            if ($message) {
-                $planfixService->sendMessage($madelineProto, $chatId, $message);
-            }
+                if (!$messageData) {
+                    // Очередь пуста — снимаем блокировку
+                    Redis::command('del', [$lockKey]);
+                    break;
+                }
 
-            if (!empty($this->data['attachments'])) {
-                $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
+                $data = json_decode($messageData, true);
+
+                if ($data === null) {
+                    throw new \Exception('Failed to decode message data: ' . json_last_error_msg());
+                }
+
+                $token = $data['token'];
+                $telegramAccount = $planfixService->getIntegrationAndAccount($token);
+                $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
+
+                $message = $data['message'] ?? null;
+
+                if ($message) {
+                    $planfixService->sendMessage($madelineProto, $chatId, $message);
+                }
+
+                if (!empty($data['attachments'])) {
+                    $planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message);
+                }
             }
         } catch (\Exception $e) {
             Log::channel('queue-messages')->error("Ошибка в джобе: {$e->getMessage()}");
@@ -62,7 +73,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     public function failed(\Exception $exception)
     {
-        $chatId = $this->data['chatId'];
+        $chatId = $this->chatId;
         $lockKey = "lock:chat:$chatId";
 
         // Снимаем блокировку при ошибке
