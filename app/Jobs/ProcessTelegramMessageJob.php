@@ -36,17 +36,18 @@ class ProcessTelegramMessageJob implements ShouldQueue
             while (true) {
                 $messageData = Redis::command('LPOP', [$queueKey]);
 
-                if (!$messageData) {
-                    // Очередь пуста — снимаем блокировку
-                    Redis::command('del', [$lockKey]);
-                    break;
+                if ($messageData === null) {
+                    Log::channel('queue-messages')->info("Очередь пуста: $queueKey.");
+                    return; // Очередь пуста, выходим.
                 }
 
                 $data = json_decode($messageData, true);
 
                 if ($data === null) {
-                    throw new \Exception('Failed to decode message data: ' . json_last_error_msg());
+                    throw new \Exception('Ошибка декодирования данных: ' . json_last_error_msg());
                 }
+
+                Log::channel('queue-messages')->info("Успешно извлечены данные из Redis: ", $data);
 
                 $token = $data['token'];
                 $telegramAccount = $planfixService->getIntegrationAndAccount($token);
