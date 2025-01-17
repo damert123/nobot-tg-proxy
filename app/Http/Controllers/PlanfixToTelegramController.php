@@ -20,6 +20,7 @@ class PlanfixToTelegramController extends Controller
     public function handle(Request $request)
     {
 
+
         try {
             Log::channel('planfix-messages')->info('Planfix webhook received:', $request->all());
 
@@ -28,6 +29,8 @@ class PlanfixToTelegramController extends Controller
             $this->planfixService->validateWebhookData($data);
 
             $chatId = $data['chatId'] ?? null;
+
+            Log::info('ProcessTelegramMessageJob started for chat ID: ' . $chatId);
 
             // Убедитесь, что chatId существует
             if (!$chatId) {
