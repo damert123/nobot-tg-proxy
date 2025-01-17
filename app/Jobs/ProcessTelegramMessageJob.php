@@ -48,6 +48,9 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
             $data = json_decode($messageData, true);
 
+            Log::channel('queue-messages')->error("MESSAGE DATA: $messageData");
+            Log::channel('queue-messages')->error("DATA: $messageData");
+
             if ($data === null) {
                 throw new \Exception('Failed to decode message data from Redis: ' . json_last_error_msg());
             }
