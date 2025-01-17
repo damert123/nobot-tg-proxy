@@ -30,18 +30,24 @@ class ProcessTelegramMessageJob implements ShouldQueue
         $lockKey = "lock:chat:$chatId";
 
         try {
-            // Устанавливаем блокировку
-            Redis::command('set', [$lockKey, true, 'EX', 300]);
+            // Проверяем и устанавливаем блокировку
+            if (!Redis::command('set', [$lockKey, true, 'NX', 'EX', 300])) {
+                Log::channel('queue-messages')->info("Очередь $chatId уже обрабатывается другим воркером.");
+                return;
+            }
+
+            Log::channel('queue-messages')->info("Начата обработка очереди для чата $chatId");
 
             while (true) {
-                $messageData = Redis::command('LPOP', [$queueKey]);
+                // Используем BRPOP с таймаутом
+                $messageData = Redis::command('BRPOP', [$queueKey, 10]);
 
-                if ($messageData === null) {
-                    Log::channel('queue-messages')->info("Очередь пуста: $queueKey.");
-                    return; // Очередь пуста, выходим.
+                if (!$messageData) {
+                    Log::channel('queue-messages')->info("Очередь пуста для чата $chatId.");
+                    break;
                 }
 
-                $data = json_decode($messageData, true);
+                $data = json_decode($messageData[1], true);
 
                 if ($data === null) {
                     throw new \Exception('Ошибка декодирования данных: ' . json_last_error_msg());
@@ -49,6 +55,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
                 Log::channel('queue-messages')->info("Успешно извлечены данные из Redis: ", $data);
 
+                // Обработка сообщения
                 $token = $data['token'];
                 $telegramAccount = $planfixService->getIntegrationAndAccount($token);
                 $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
@@ -69,6 +76,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
         } finally {
             // Снимаем блокировку
             Redis::command('del', [$lockKey]);
+            Log::channel('queue-messages')->info("Обработка очереди завершена для чата $chatId.");
         }
     }
 

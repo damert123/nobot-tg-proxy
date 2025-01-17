@@ -19,7 +19,6 @@ class PlanfixToTelegramController extends Controller
 
     public function handle(Request $request)
     {
-
         try {
             Log::channel('planfix-messages')->info('Planfix webhook received:', $request->all());
 
@@ -33,24 +32,18 @@ class PlanfixToTelegramController extends Controller
             }
 
             $queueKey = "queue:chat:$chatId";
-            $lockKey = "lock:chat:$chatId";
 
+            Redis::command('RPUSH', [$queueKey, json_encode($data)]);
 
-            $res = Redis::command('RPUSH', [$queueKey, json_encode($data)]);
+            Log::channel('queue-messages')->info("Сообщение добавлено в очередь для чата $chatId");
 
-            Log::channel('queue-messages')->warning("DATA $res");
-
-
-            // Если нет блокировки, запускаем обработку очереди
-            if (!Redis::command('exists', [$lockKey])) {
-                ProcessTelegramMessageJob::dispatch($chatId);
-            }
+            // Всегда запускаем джобу для обработки очереди
+            ProcessTelegramMessageJob::dispatch($chatId);
 
             return response()->json(['status' => 'received'], 200);
         } catch (\Exception $e) {
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
-
     }
 }
