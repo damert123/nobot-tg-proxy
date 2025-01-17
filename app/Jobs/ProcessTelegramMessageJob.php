@@ -12,7 +12,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 {
     use Queueable;
 
-    protected $data;
+    protected string $chatId;
 
     public $timeout = 300;
 
@@ -23,9 +23,9 @@ class ProcessTelegramMessageJob implements ShouldQueue
      *
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(string $chatId)
     {
-        $this->data = $data;
+        $this->chatId = $chatId;
     }
 
     /**
@@ -33,9 +33,9 @@ class ProcessTelegramMessageJob implements ShouldQueue
      */
     public function handle(PlanfixService $planfixService): void
     {
-        $chatId = $this->data['chatId'];
-        $lockKey = "lock:chat:$chatId";
+        $chatId = $this->chatId;
         $queueKey = "queue:chat:$chatId";
+        $lockKey = "lock:chat:$chatId";
 
         try {
 
@@ -46,12 +46,18 @@ class ProcessTelegramMessageJob implements ShouldQueue
                 return;
             }
 
-            $token = $this->data['token'];
+            $data = json_decode($messageData, true);
+
+            if (!isset($data['token'])) {
+                throw new \Exception('Token is missing in the job data.');
+            }
+
+            $token = $data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
 
-            $message = $this->data['message'] ?? null;
+            $message = $data['message'] ?? null;
 
             if ($message) {
                 $planfixService->sendMessage($madelineProto, $chatId, $message);
@@ -59,7 +65,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
 
             if (!empty($this->data['attachments'])) {
-                $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
+                $planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message);
             }
 
             if (Redis::command('LLEN', [$queueKey]) > 0) {
@@ -79,8 +85,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     public function failed(\Exception $exception)
     {
-        $chatId = $this->data['chatId'];
-        $lockKey = "lock:chat:$chatId";
+        $lockKey = "lock:chat:{$this->chatId}";
 
         // Снимаем блокировку при ошибке
         Redis::command('del', [$lockKey]);
