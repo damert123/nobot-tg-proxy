@@ -48,6 +48,10 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
             $data = json_decode($messageData, true);
 
+            if ($data === null) {
+                throw new \Exception('Failed to decode message data from Redis: ' . json_last_error_msg());
+            }
+
             if (!isset($data['token'])) {
                 throw new \Exception('Token is missing in the job data.');
             }
