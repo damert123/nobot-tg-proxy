@@ -35,8 +35,17 @@ class ProcessTelegramMessageJob implements ShouldQueue
     {
         $chatId = $this->data['chatId'];
         $lockKey = "lock:chat:$chatId";
+        $queueKey = "queue:chat:$chatId";
 
         try {
+
+            $messageData = Redis::command('LPOP', [$queueKey]);
+            if (!$messageData) {
+                // Если очередь пуста, снимаем блокировку
+                Redis::command('del', [$lockKey]);
+                return;
+            }
+
             $token = $this->data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
@@ -51,6 +60,13 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
             if (!empty($this->data['attachments'])) {
                 $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
+            }
+
+            if (Redis::command('LLEN', [$queueKey]) > 0) {
+                ProcessTelegramMessageJob::dispatch($chatId);
+            } else {
+                // Если очередь пуста, снимаем блокировку
+                Redis::command('del', [$lockKey]);
             }
 
         } catch (\Exception $e) {
