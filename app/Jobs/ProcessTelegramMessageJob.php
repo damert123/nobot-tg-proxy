@@ -24,7 +24,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
      *
      * @param array $data
      */
-    public function __construct(string $data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
