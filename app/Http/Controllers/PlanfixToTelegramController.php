@@ -38,7 +38,7 @@ class PlanfixToTelegramController extends Controller
 
             if (!Redis::command('exists', [$lockKey])){
                 //Блок на 5 мин
-                Redis::command('set', [$lockKey, true, 'EX', 300]);
+                Redis::command('SET', [$lockKey, true, 'EX', 300]);
                 // пускаем джобу
                 ProcessTelegramMessageJob::dispatch($data);
             }else{
