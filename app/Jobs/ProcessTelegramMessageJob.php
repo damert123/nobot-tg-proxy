@@ -6,6 +6,7 @@ use App\Services\PlanfixService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class ProcessTelegramMessageJob implements ShouldQueue
 {
@@ -31,15 +32,16 @@ class ProcessTelegramMessageJob implements ShouldQueue
      * Execute the job.
      */
     public function handle(PlanfixService $planfixService): void
-    {;
-
+    {
+        $chatId = $this->data['chatId'];
+        $lockKey = "lock:chat:$chatId";
 
         try {
             $token = $this->data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
-            $chatId = $this->data['chatId'];
+
             $message = $this->data['message'] ?? null;
 
             if ($message) {
@@ -54,11 +56,19 @@ class ProcessTelegramMessageJob implements ShouldQueue
         } catch (\Exception $e) {
             Log::channel('queue-messages')->error("Ошибка в джобе: {$e->getMessage()}");
             throw $e;
+        }finally {
+            Redis::command('del', [$lockKey]);
         }
     }
 
     public function failed(\Exception $exception)
     {
+        $chatId = $this->data['chatId'];
+        $lockKey = "lock:chat:$chatId";
+
+        // Снимаем блокировку при ошибке
+        Redis::command('del', [$lockKey]);
+
         Log::channel('queue-messages')->error("Ошибка выполнения джобы: {$exception->getMessage()}");
 
     }
