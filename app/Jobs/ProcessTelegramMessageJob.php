@@ -35,11 +35,10 @@ class ProcessTelegramMessageJob implements ShouldQueue
             while (true) {
                 // Read one message from the stream using Redis::command
                 $messages = Redis::command('XREAD', [
-                    'STREAMS',
-                    [
-                        $streamKey,
-                        $lastId,
-                    ]
+                    null, // COUNT (необязательно, можно оставить null)
+                    null, // BLOCK (ждать сообщения, либо оставить null)
+                    [$streamKey], // STREAMS
+                    [$lastId], // Последний прочитанный ID
                 ]);
 
 
