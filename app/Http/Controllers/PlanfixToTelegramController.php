@@ -40,8 +40,12 @@ class PlanfixToTelegramController extends Controller
                 'message' => json_encode($data),
             ]);
 
-            Redis::connection()->client()->rawCommand('XADD', $streamKey, '*', 'cmd', 'newMessage', 'data', json_encode($data));
-
+            Redis::command('XADD', [
+                $streamKey,
+                '*',
+                'chatId', $chatId,
+                'data', json_encode($data),
+            ]);
 
             Log::channel('queue-messages')->info("Message added to stream $streamKey");
 
