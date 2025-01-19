@@ -7,6 +7,8 @@ use App\Services\PlanfixService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use Predis\Command\Redis\XREAD;
+use Predis\Command\RedisFactory;
 
 class PlanfixToTelegramController extends Controller
 {
@@ -48,6 +50,8 @@ class PlanfixToTelegramController extends Controller
                     'data' => json_encode($data),
                 ]
             ]);
+
+
 
 
             Log::channel('queue-messages')->info("Message added to stream $streamKey");

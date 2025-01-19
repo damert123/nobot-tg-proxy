@@ -7,6 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use Predis\Command\Redis\XADD;
+use Predis\Command\Redis\XREAD;
 
 class ProcessTelegramMessageJob implements ShouldQueue
 {
@@ -39,6 +41,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
                         $lastId,
                     ]
                 ]);
+
 
                 if (empty($messages)) {
                     Log::channel('queue-messages')->info("No messages in stream $streamKey, exiting.");
