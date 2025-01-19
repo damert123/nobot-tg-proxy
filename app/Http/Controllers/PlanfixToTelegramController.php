@@ -31,18 +31,17 @@ class PlanfixToTelegramController extends Controller
                 throw new \Exception('chatId is required');
             }
 
-            $queueKey = "queue:chat:$chatId";
+            $streamKey = "stream:chat:$chatId";
+            Redis::command('XADD', [$streamKey, '*', 'data', json_encode($data)]);
 
-            Redis::command('RPUSH', [$queueKey, json_encode($data)]);
+            Log::channel('queue-messages')->info("Message added to stream $streamKey");
 
-            Log::channel('queue-messages')->info("Сообщение добавлено в очередь для чата $chatId");
-
-            // Всегда запускаем джобу для обработки очереди
+            // Dispatch a job to process this chat's stream
             ProcessTelegramMessageJob::dispatch($chatId);
 
             return response()->json(['status' => 'received'], 200);
         } catch (\Exception $e) {
-            Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
+            Log::channel('planfix-messages')->error("Webhook processing error: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
