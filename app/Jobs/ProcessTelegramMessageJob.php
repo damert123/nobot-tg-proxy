@@ -32,7 +32,13 @@ class ProcessTelegramMessageJob implements ShouldQueue
         try {
             while (true) {
                 // Read one message from the stream using Redis::command
-                $messages = Redis::command('XREAD', ['STREAMS', $streamKey, $lastId]);
+                $messages = Redis::command('XREAD', [
+                    'STREAMS',
+                    [
+                        $streamKey,
+                        $lastId,
+                    ]
+                ]);
 
                 if (empty($messages)) {
                     Log::channel('queue-messages')->info("No messages in stream $streamKey, exiting.");
