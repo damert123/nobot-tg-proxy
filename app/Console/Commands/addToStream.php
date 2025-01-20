@@ -31,25 +31,27 @@ class addToStream extends Command
         // XADD - добавление записи
         $this->info("Adding message to stream...");
 
-        $response = Redis::command('XADD', [
+        $response = Redis::connection()->client()->rawCommand(
+            'XADD',
             $streamName,
-            '*',                // Генерация уникального ID
-            'name', 'Test message', // Поля и их значения
-            'time', now()->toDateTimeString(),
-        ]);
+            '*',
+            'name', 'Test message',
+            'time', now()->toDateTimeString()
+        );
 
         $this->info("Message added with ID: $response");
 
         // XREAD - чтение записей
         $this->info("Reading messages from stream...");
-
-        $response = Redis::command('XREAD', [
-            'COUNT', 5,         // Чтение до 5 записей
-            'STREAMS',          // Потоки
-            $streamName, '0',   // Название потока и стартовый ID
-        ]);
+        $messages = Redis::connection()->client()->rawCommand(
+            'XREAD',
+            'COUNT', 5,
+            'STREAMS',
+            $streamName,
+            '0'
+        );
 
         $this->info("Stream content:");
-        dd($response); // Вывод содержимого потока
+        dd($messages);
     }
 }
