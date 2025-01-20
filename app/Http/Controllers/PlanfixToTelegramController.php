@@ -35,8 +35,7 @@ class PlanfixToTelegramController extends Controller
                 '*',
                 'chat_id', $data['chatId'],
                 'token', $data['token'],
-                'message', $data['message'] ?? '',
-                'attachments', json_encode($data['attachments'] ?? [])
+                'message', $data['message'] ?? ''
             ]);
 
             return response()->json(['status' => 'received'], 200);
