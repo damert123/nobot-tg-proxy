@@ -35,17 +35,20 @@ class addToStream extends Command
             'time' => now(),
         ];
 
-        // Правильное преобразование массива в параметры команды XADD
+        // Правильное добавление параметров в команду XADD
         $args = [$streamName, '*']; // имя потока и символ * для авто-генерации id
 
-        // Добавление каждого поля и его значения
         foreach ($message as $key => $value) {
+            // Добавляем пару ключ-значение
             $args[] = $key;
             $args[] = $value;
         }
 
         $this->info("Adding message to stream...");
-        Redis::command('XADD', $args);
+        $response = Redis::command('XADD', $args);
+
+        // Проверим результат добавления
+        $this->info("Message added with ID: " . $response);
 
         // XREAD - чтение записей
         $this->info("Reading messages from stream...");
