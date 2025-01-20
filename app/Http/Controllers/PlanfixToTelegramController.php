@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessTelegramMessageJob;
+use App\Models\MessagePlanfix;
 use App\Services\PlanfixService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -27,21 +28,14 @@ class PlanfixToTelegramController extends Controller
             $data = $request->all();
             $this->planfixService->validateWebhookData($data);
 
-            $chatId = $data['chatId'] ?? null;
-
-            if (!$chatId) {
-                throw new \Exception('chatId is required');
-            }
-
-            $streamKey = "stream:chat:$chatId";
-
-            Redis::command('XADD', [
-                $streamKey,
-                '*',
-                'data',
-                $data,
+            $message = MessagePlanfix::create([
+                'chat_id' => $data['chat_id'],
+                'token' => $data['token'],
+                'message' => $data['message'] ?? null,
+                'attachments' => $data['attachments'] ?? null,
             ]);
 
+            ProcessTelegramMessageJob::dispatch($message->chat_id);
 
             return response()->json(['status' => 'received'], 200);
         } catch (\Exception $e) {

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\MessagePlanfix;
 use App\Services\PlanfixService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -23,72 +24,57 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     public function handle()
     {
-        $chatId = $this->chatId;
-        $streamKey = "stream:chat:$chatId";
-        $lastId = '0';
+        $message = MessagePlanfix::where('chat_id', $this->chatId)
+            ->where('status', 'pending')
+            ->orderBy('created_at')
+            ->lockForUpdate()
+            ->first();
+
+        if (!$message) {
+            return; // Если сообщений нет, выходим
+        }
 
         try {
-            while (true) {
-                $messages = Redis::command('XREADGROUP', [
-                    'GROUP',
-                    "group_$chatId",
-                    "consumer_$chatId",
-                    'COUNT',
-                    1,
-                    'BLOCK',
-                    5000, // Ждём 5 секунд, если нет сообщений
-                    'STREAMS',
-                    $streamKey,
-                    $lastId,
-                ]);
+            // Инициализация и отправка сообщения
+            $this->processMessage($message);
 
-                if (empty($messages)) {
-                    Log::channel('queue-messages')->info("No messages in stream $streamKey.");
-                    break;
-                }
+            // Обновляем статус на completed
+            $message->update(['status' => 'completed']);
 
-                foreach ($messages[0][1] as $entry) {
-                    $id = $entry[0];
-                    $data = json_decode($entry[1][1], true);
+            // Добавляем следующее сообщение в очередь
+            $nextMessage = MessagePlanfix::where('chat_id', $this->chatId)
+                ->where('status', 'pending')
+                ->orderBy('created_at')
+                ->first();
 
-                    if (!$data) {
-                        Log::channel('queue-messages')->error("Failed to decode message for $chatId: $entry");
-                        continue;
-                    }
-
-                    Log::channel('queue-messages')->info("Processing message for chat $chatId: ", $data);
-
-                    // Обработка сообщения
-                    $this->processMessage($data, $chatId);
-
-                    // Подтверждение обработки
-                    Redis::command('XACK', [$streamKey, "group_$chatId", $id]);
-                    $lastId = $id;
-                }
+            if ($nextMessage) {
+                self::dispatch($this->chatId);
             }
         } catch (\Exception $e) {
-            Log::channel('queue-messages')->error("Error processing stream for chat $chatId: {$e->getMessage()}");
+            // Обновляем статус на failed в случае ошибки
+            $message->update(['status' => 'failed']);
+            Log::error("Ошибка обработки сообщения для чата {$this->chatId}: {$e->getMessage()}");
         }
     }
 
-    protected function processMessage(array $data, int $chatId): void
+    protected function processMessage(MessagePlanfix $message): void
     {
-        // Инициализация MadelineProto и отправка сообщения
         try {
             $planfixService = app(PlanfixService::class);
-            $token = $data['token'];
-            $telegramAccount = $planfixService->getIntegrationAndAccount($token);
+            $telegramAccount = $planfixService->getIntegrationAndAccount($message->token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
-            if (!empty($data['message'])) {
-                $planfixService->sendMessage($madelineProto, $chatId, $data['message']);
+            // Отправка сообщения
+            if (!empty($message->message)) {
+                $planfixService->sendMessage($madelineProto, $message->chat_id, $message->message);
             }
 
-            if (!empty($data['attachments'])) {
-                $planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $data['message'] ?? null);
+            // Отправка вложений
+            if (!empty($message->attachments)) {
+                $planfixService->sendAttachment($madelineProto, $message->chat_id, $message->attachments, $message->message);
             }
         } catch (\Exception $e) {
-            Log::channel('queue-messages')->error("Failed to process message for chat $chatId: {$e->getMessage()}");
+            throw new \Exception("Ошибка отправки сообщения: {$e->getMessage()}");
         }
     }
 }
