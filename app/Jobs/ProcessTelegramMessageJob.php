@@ -20,32 +20,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     public function handle()
     {
-        $redis = app('redis');
-        $group = 'telegram_group';
-        $consumer = 'consumer_' . uniqid();
 
-        // Убедимся, что группа существует
-        Redis::command('XGROUP', ['CREATE', $this->streamKey, $group, '0', 'MKSTREAM']);
-
-        while (true) {
-            $messages = Redis::command('XREADGROUP', [$group, $consumer, 'STREAMS', $this->streamKey, '>']);
-
-            if (!empty($messages[$this->streamKey])) {
-                foreach ($messages[$this->streamKey] as $id => $message) {
-                    try {
-                        $this->processMessage($message);
-
-                        // Подтверждаем обработку сообщения
-                        Redis::command('XACK', [$this->streamKey, $group, $id]);
-                    } catch (\Exception $e) {
-                        Log::error("Ошибка обработки сообщения: {$e->getMessage()}");
-                    }
-                }
-            } else {
-                // Если сообщений нет, подождать перед повторной проверкой
-                sleep(1);
-            }
-        }
     }
 
 

@@ -28,11 +28,7 @@ class PlanfixToTelegramController extends Controller
             $data = $request->all();
             $this->planfixService->validateWebhookData($data);
 
-            $streamKey = "chat:{$data['chatId']}";
 
-            Redis::command('XADD', [
-                'chat_id', $data['chatId'],
-            ]);
 
             return response()->json(['status' => 'received'], 200);
         } catch (\Exception $e) {
