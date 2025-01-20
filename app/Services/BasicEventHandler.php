@@ -138,6 +138,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactName' => $senderFirstName,
                     'contactLastName' => $senderLastName,
                     'telegramUserName' => "$telegramProfileLink",
+                    'contactData' => "Telegram: {$telegramProfileLink}"
                 ];
             } else {
                 Log::channel('planfix-messages')->info('ТАСКА НЕ НАЙДЕНА. СОЗДАЁМ НОВУЮ', [
@@ -161,6 +162,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactName' => $clientFirstName,
                     'contactLastName' => $clientLastName,
                     'telegramUserName' => "$clientTelegramProfileLink",
+                    'contactData' => "Telegram: {$clientTelegramProfileLink}"
                 ];
             }
 
