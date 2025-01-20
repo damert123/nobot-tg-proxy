@@ -26,8 +26,8 @@ class addToStream extends Command
      */
     public function handle()
     {
+        // Настройки
         $streamName = 'mystream';
-
 
         // XADD - добавление записи
         $message = [
@@ -35,14 +35,19 @@ class addToStream extends Command
             'time' => now(),
         ];
 
+        // Правильное преобразование массива в параметры команды XADD
+        $args = [$streamName, '*']; // имя потока и символ * для авто-генерации id
+
+        // Добавление каждого поля и его значения
+        foreach ($message as $key => $value) {
+            $args[] = $key;
+            $args[] = $value;
+        }
+
         $this->info("Adding message to stream...");
+        Redis::command('XADD', $args);
 
-        Redis::command('XADD', [
-            $streamName,
-            '*', // Идентификатор автоматически создается
-            ...array_map(fn($key, $value) => [$key, $value], array_keys($message), $message)
-        ]);
-
+        // XREAD - чтение записей
         $this->info("Reading messages from stream...");
         $response = Redis::command('XREAD', [
             'BLOCK', 0, // Без блокировки
@@ -50,6 +55,7 @@ class addToStream extends Command
             'STREAMS', $streamName, '0'
         ]);
 
+        // Выводим результат
         $this->info("Stream content:");
         dd($response); // Выведет содержимое потока
     }
