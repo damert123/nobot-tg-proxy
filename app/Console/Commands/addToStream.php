@@ -23,6 +23,7 @@ class addToStream extends Command
 
     /**
      * Execute the console command.
+     * @throws \RedisException
      */
     public function handle()
     {
@@ -39,12 +40,14 @@ class addToStream extends Command
 //            'time', now()->toDateTimeString()
 //        );
 
-        $response = Redis::command('XADD', [
+        $response = Redis::connection()->client()->xAdd(
             $streamName,
-            '*',
-            'name', 'Test message',
-            'time', now()->toDateTimeString()
-        ]);
+            '*', // Автогенерация ID
+            [
+                'name' => 'Test message',
+                'time' => now()->toDateTimeString(),
+            ]
+        );
 
         $this->info("Message added with ID: $response");
 
