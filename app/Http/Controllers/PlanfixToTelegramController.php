@@ -29,10 +29,10 @@ class PlanfixToTelegramController extends Controller
             $data = $request->all();
             $this->planfixService->validateWebhookData($data);
 
-            $streamKey = "chat:{$data['chat_id']}";
+            $streamKey = "chat:{$data['chatId']}";
 
             $this->redis->command('XADD', [['*'], [
-                'chat_id' => $data['chat_id'],
+                'chat_id' => $data['chatId'],
                 'token' => $data['token'],
                 'message' => $data['message'] ?? null,
                 'attachments' => json_encode($data['attachments'] ?? [])
