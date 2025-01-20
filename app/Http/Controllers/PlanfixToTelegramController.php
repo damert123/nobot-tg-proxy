@@ -14,6 +14,7 @@ use Predis\Command\RedisFactory;
 class PlanfixToTelegramController extends Controller
 {
     protected PlanfixService $planfixService;
+    protected Redis $redis;
 
     public function __construct(PlanfixService $planfixService)
     {
@@ -28,14 +29,15 @@ class PlanfixToTelegramController extends Controller
             $data = $request->all();
             $this->planfixService->validateWebhookData($data);
 
-            $message = MessagePlanfix::create([
+            $streamKey = "chat:{$data['chat_id']}";
+
+            $this->redis->command('XADD', [['*'], [
                 'chat_id' => $data['chat_id'],
                 'token' => $data['token'],
                 'message' => $data['message'] ?? null,
-                'attachments' => $data['attachments'] ?? null,
+                'attachments' => json_encode($data['attachments'] ?? [])
+                ]
             ]);
-
-            ProcessTelegramMessageJob::dispatch($message->chat_id);
 
             return response()->json(['status' => 'received'], 200);
         } catch (\Exception $e) {

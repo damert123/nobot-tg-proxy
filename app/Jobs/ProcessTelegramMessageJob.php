@@ -15,66 +15,55 @@ class ProcessTelegramMessageJob implements ShouldQueue
 {
     use Queueable;
 
-    protected $chatId;
 
-    public function __construct(int $chatId)
-    {
-        $this->chatId = $chatId;
-    }
+    protected $streamKey = 'telegram_stream';
 
     public function handle()
     {
-        $message = MessagePlanfix::where('chat_id', $this->chatId)
-            ->where('status', 'pending')
-            ->orderBy('created_at')
-            ->lockForUpdate()
-            ->first();
+        $redis = app('redis');
+        $group = 'telegram_group';
+        $consumer = 'consumer_' . uniqid();
 
-        if (!$message) {
-            return; // Если сообщений нет, выходим
-        }
+        // Убедимся, что группа существует
+        Redis::command('XGROUP', ['CREATE', $this->streamKey, $group, '0', 'MKSTREAM']);
 
-        try {
-            // Инициализация и отправка сообщения
-            $this->processMessage($message);
+        while (true) {
+            $messages = Redis::command('XREADGROUP', [$group, $consumer, 'STREAMS', $this->streamKey, '>']);
 
-            // Обновляем статус на completed
-            $message->update(['status' => 'completed']);
+            if (!empty($messages[$this->streamKey])) {
+                foreach ($messages[$this->streamKey] as $id => $message) {
+                    try {
+                        $this->processMessage($message);
 
-            // Добавляем следующее сообщение в очередь
-            $nextMessage = MessagePlanfix::where('chat_id', $this->chatId)
-                ->where('status', 'pending')
-                ->orderBy('created_at')
-                ->first();
-
-            if ($nextMessage) {
-                self::dispatch($this->chatId);
+                        // Подтверждаем обработку сообщения
+                        Redis::command('XACK', [$this->streamKey, $group, $id]);
+                    } catch (\Exception $e) {
+                        Log::error("Ошибка обработки сообщения: {$e->getMessage()}");
+                    }
+                }
+            } else {
+                // Если сообщений нет, подождать перед повторной проверкой
+                sleep(1);
             }
-        } catch (\Exception $e) {
-            // Обновляем статус на failed в случае ошибки
-            $message->update(['status' => 'failed']);
-            Log::error("Ошибка обработки сообщения для чата {$this->chatId}: {$e->getMessage()}");
         }
     }
 
-    protected function processMessage(MessagePlanfix $message): void
+
+    protected function processMessage(array $message): void
     {
-        try {
-            $planfixService = app(PlanfixService::class);
-            $telegramAccount = $planfixService->getIntegrationAndAccount($message->token);
-            $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
+        $planfixService = app(PlanfixService::class);
+        $chatId = $message['chat_id'];
+        $token = $message['token'];
+        $telegramAccount = $planfixService->getIntegrationAndAccount($token);
+        $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
-            // Отправка сообщения
-            if (!empty($message->message)) {
-                $planfixService->sendMessage($madelineProto, $message->chat_id, $message->message);
-            }
+        if (!empty($message['message'])) {
+            $planfixService->sendMessage($madelineProto, $chatId, $message['message']);
+        }
 
-            // Отправка вложений
-            if (!empty($message->attachments)) {
-                $planfixService->sendAttachment($madelineProto, $message->chat_id, $message->attachments, $message->message);
-            }
-        } catch (\Exception $e) {
-            throw new \Exception("Ошибка отправки сообщения: {$e->getMessage()}");
+        if (!empty($message['attachments'])) {
+            $attachments = json_decode($message['attachments'], true);
+            $planfixService->sendAttachment($madelineProto, $chatId, $attachments, $message['message'] ?? null);
         }
     }
 }
