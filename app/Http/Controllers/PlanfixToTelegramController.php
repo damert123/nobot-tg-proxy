@@ -39,7 +39,7 @@ class PlanfixToTelegramController extends Controller
                 $streamKey,
                 '*',
                 'data',
-                json_encode($data),
+                $data,
             ]);
 
 
