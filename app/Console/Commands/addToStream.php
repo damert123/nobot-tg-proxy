@@ -31,13 +31,20 @@ class addToStream extends Command
         // XADD - добавление записи
         $this->info("Adding message to stream...");
 
-        $response = Redis::connection()->client()->rawCommand(
-            'XADD',
+//        $response = Redis::connection()->client()->rawCommand(
+//            'XADD',
+//            $streamName,
+//            '*',
+//            'name', 'Test message',
+//            'time', now()->toDateTimeString()
+//        );
+
+        $response = Redis::command('XADD', [
             $streamName,
             '*',
             'name', 'Test message',
             'time', now()->toDateTimeString()
-        );
+        ]);
 
         $this->info("Message added with ID: $response");
 
