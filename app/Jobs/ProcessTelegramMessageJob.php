@@ -16,16 +16,12 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     protected $chatId;
 
-    public $timeout = 300;
-
-    public $queue; // Устанавливаем очередь
-
     public function __construct(int $chatId)
     {
         $this->chatId = $chatId;
     }
 
-    public function handle(PlanfixService $planfixService): void
+    public function handle()
     {
         $chatId = $this->chatId;
         $streamKey = "stream:chat:$chatId";
@@ -33,53 +29,66 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
         try {
             while (true) {
-                // Read one message from the stream using Redis::command
-                $messages = Redis::command('XREAD', [
-                    null, // COUNT (необязательно, можно оставить null)
-                    null, // BLOCK (ждать сообщения, либо оставить null)
-                    [$streamKey], // STREAMS
-                    [$lastId], // Последний прочитанный ID
+                $messages = Redis::command('XREADGROUP', [
+                    'GROUP',
+                    "group_$chatId",
+                    "consumer_$chatId",
+                    'COUNT',
+                    1,
+                    'BLOCK',
+                    5000, // Ждём 5 секунд, если нет сообщений
+                    'STREAMS',
+                    $streamKey,
+                    $lastId,
                 ]);
 
-
                 if (empty($messages)) {
-                    Log::channel('queue-messages')->info("No messages in stream $streamKey, exiting.");
-                    return; // Exit if no messages
+                    Log::channel('queue-messages')->info("No messages in stream $streamKey.");
+                    break;
                 }
 
                 foreach ($messages[0][1] as $entry) {
                     $id = $entry[0];
-                    $lastId = $id;
                     $data = json_decode($entry[1][1], true);
 
                     if (!$data) {
-                        Log::channel('queue-messages')->error("Failed to decode message from stream $streamKey: $entry");
+                        Log::channel('queue-messages')->error("Failed to decode message for $chatId: $entry");
                         continue;
                     }
 
                     Log::channel('queue-messages')->info("Processing message for chat $chatId: ", $data);
 
-                    // Process the message
-                    $token = $data['token'];
-                    $telegramAccount = $planfixService->getIntegrationAndAccount($token);
-                    $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
+                    // Обработка сообщения
+                    $this->processMessage($data, $chatId);
 
-                    $message = $data['message'] ?? null;
-                    if ($message) {
-                        $planfixService->sendMessage($madelineProto, $chatId, $message);
-                    }
-
-                    if (!empty($data['attachments'])) {
-                        $planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message);
-                    }
-
-                    // Acknowledge message processing completion
+                    // Подтверждение обработки
                     Redis::command('XACK', [$streamKey, "group_$chatId", $id]);
+                    $lastId = $id;
                 }
             }
         } catch (\Exception $e) {
-            Log::channel('queue-messages')->error("Error processing chat $chatId stream: {$e->getMessage()}");
-            throw $e;
+            Log::channel('queue-messages')->error("Error processing stream for chat $chatId: {$e->getMessage()}");
+        }
+    }
+
+    protected function processMessage(array $data, int $chatId): void
+    {
+        // Инициализация MadelineProto и отправка сообщения
+        try {
+            $planfixService = app(PlanfixService::class);
+            $token = $data['token'];
+            $telegramAccount = $planfixService->getIntegrationAndAccount($token);
+            $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
+
+            if (!empty($data['message'])) {
+                $planfixService->sendMessage($madelineProto, $chatId, $data['message']);
+            }
+
+            if (!empty($data['attachments'])) {
+                $planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $data['message'] ?? null);
+            }
+        } catch (\Exception $e) {
+            Log::channel('queue-messages')->error("Failed to process message for chat $chatId: {$e->getMessage()}");
         }
     }
 }

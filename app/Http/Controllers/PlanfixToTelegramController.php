@@ -35,27 +35,13 @@ class PlanfixToTelegramController extends Controller
 
             $streamKey = "stream:chat:$chatId";
 
-
-            Log::info('Adding to stream:', [
-                'streamKey' => $streamKey,
-                'chatId' => $chatId,
-                'message' => json_encode($data),
-            ]);
-
             Redis::command('XADD', [
-                $streamKey, // Название потока
-                '*', // ID сообщения (автоматическое создание)
-                [
-                    'chatId' => $chatId, // Поля сообщения
-                    'data' => json_encode($data),
-                ],
+                $streamKey,
+                '*',
+                'data',
+                json_encode($data),
             ]);
 
-
-            Log::channel('queue-messages')->info("Message added to stream $streamKey");
-
-            // Dispatch a job to process this chat's stream
-            ProcessTelegramMessageJob::dispatch($chatId);
 
             return response()->json(['status' => 'received'], 200);
         } catch (\Exception $e) {
