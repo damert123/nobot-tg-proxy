@@ -34,28 +34,8 @@ class PlanfixToTelegramController extends Controller
             }
 
 
-            ProcessTelegramMessageJob::dispatch($data)->onQueue("chat_{$chatId}");;
+            ProcessTelegramMessageJob::dispatch($data);
 
-
-//            response()->json(['status' => 'received'], 200)->send();
-//
-//            fastcgi_finish_request();
-//
-//            $token = $data['token'];
-//            $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
-//
-//            $madelineProto = $this->planfixService->initializeModelineProto($telegramAccount->session_path);
-//
-//            $chatId = $data['chatId'];
-//            $message = $data['message'] ?? null;
-//
-//            if ($message){
-//                $this->planfixService->sendMessage($madelineProto, $chatId, $message);
-//            }
-//
-//            if (!empty($data['attachments'])){
-//                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
-//            }
 
             return response()->json(['status' => 'received'], 200);
         }catch (\Exception $e){

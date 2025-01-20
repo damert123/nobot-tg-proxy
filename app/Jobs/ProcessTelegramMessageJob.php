@@ -13,8 +13,6 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     protected $data;
 
-    public $timeout = 300;
-
     public $queue; // Устанавливаем очередь
 
     /**
