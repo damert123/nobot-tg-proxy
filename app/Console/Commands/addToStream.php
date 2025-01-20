@@ -39,8 +39,8 @@ class addToStream extends Command
 
         Redis::command('XADD', [
             $streamName,
-            '*',
-            ...$message
+            '*', // Идентификатор автоматически создается
+            ...array_map(fn($key, $value) => [$key, $value], array_keys($message), $message)
         ]);
 
         $this->info("Reading messages from stream...");
