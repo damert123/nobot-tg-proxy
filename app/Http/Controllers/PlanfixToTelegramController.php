@@ -31,7 +31,6 @@ class PlanfixToTelegramController extends Controller
             $streamKey = "chat:{$data['chatId']}";
 
             Redis::command('XADD', [
-                '*',
                 'chat_id', $data['chatId'],
             ]);
 
