@@ -14,7 +14,6 @@ use Predis\Command\RedisFactory;
 class PlanfixToTelegramController extends Controller
 {
     protected PlanfixService $planfixService;
-    protected Redis $redis;
 
     public function __construct(PlanfixService $planfixService)
     {
@@ -31,7 +30,7 @@ class PlanfixToTelegramController extends Controller
 
             $streamKey = "chat:{$data['chatId']}";
 
-            $this->redis->command('XADD', [['*'], [
+            Redis::command('XADD', [['*'], [
                 'chat_id' => $data['chatId'],
                 'token' => $data['token'],
                 'message' => $data['message'] ?? null,
