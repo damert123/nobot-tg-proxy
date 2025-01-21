@@ -67,6 +67,8 @@ class QueueListen extends Command
                 continue;
             }
 
+            $message->setStatusInProgress();
+
             ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
         }
     }
