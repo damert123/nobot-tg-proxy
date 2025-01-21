@@ -40,13 +40,16 @@ class QueueListen extends Command
         }
 
         $message = MessageEntity::findFirstPendingByChatId($chatId);
+        $chat = ChatEntity::getById($chatId)->getChatId();
+
+
 
         if (!$message){
             $this->info("В чате {$chatId} нет сообщений со статусом pending.");
             return;
         }
 
-        ProcessTelegramMessageJob::dispatch($message->getModel()->toArray());
+        ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat);
 
         $this->info("Сообщение из чата {$chatId} отправлено в джобу");
     }

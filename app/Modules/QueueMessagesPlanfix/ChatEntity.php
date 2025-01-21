@@ -17,9 +17,14 @@ class ChatEntity
 
     public static function setChat(string $chatId): self
     {
-        $chat = Chat::firstOrCreate(['id' => $chatId]);
+        $chat = Chat::firstOrCreate(['chat_id' => $chatId]);
 
         return new self($chat);
+    }
+
+    public function getChatId(): int
+    {
+        return $this->chat->chat_id; // Возвращаем ID чата из модели
     }
 
     public function getId(): int
@@ -37,6 +42,11 @@ class ChatEntity
         $chat = Chat::query()->orderBy('created_at')->value('id');
 
         return $chat;
+    }
+
+    public static function getById (int $id): ?self
+    {
+        return Chat::query()->where('id', $id);
     }
 
     public function getModel(): Chat
