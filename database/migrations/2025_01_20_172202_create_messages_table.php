@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('token');
             $table->text('message')->nullable();
             $table->json('attachments')->nullable();
-            $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
