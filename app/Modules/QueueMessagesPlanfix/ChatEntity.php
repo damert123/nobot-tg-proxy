@@ -22,6 +22,11 @@ class ChatEntity
         return new self($chat);
     }
 
+    public function getId(): int
+    {
+        return $this->chat->id;
+    }
+
     public static function hasInProgressMessages(string $chatId): bool
     {
         return MessageEntity::existsByChatIdAndStatus($chatId, 'in_progress');

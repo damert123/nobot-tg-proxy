@@ -38,7 +38,7 @@ class PlanfixToTelegramController extends Controller
             $chat = ChatEntity::setChat($chatId);
 
             $message = MessageEntity::setMessage([
-                'chat_id' => $chatId,
+                'chat_id' => $chat->getId(),
                 $data
             ]);
 
