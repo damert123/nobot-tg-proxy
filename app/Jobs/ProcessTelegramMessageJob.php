@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Modules\QueueMessagesPlanfix\MessageEntity;
 use App\Services\PlanfixService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -36,16 +37,23 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
-            $chatId = $this->data['chatId'];
+            $chatId = $this->data['chat_id'];
             $message = $this->data['message'] ?? null;
+            $id = $this->data['id'];
 
             if ($message) {
                 $planfixService->sendMessage($madelineProto, $chatId, $message);
             }
 
-
             if (!empty($this->data['attachments'])) {
                 $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
+            }
+
+            $messageEntity = MessageEntity::getMessageById($id);
+            if ($messageEntity) {
+                $messageEntity->updateStatus('completed');
+            } else {
+                Log::channel('queue-messages')->warning("Сообщение с ID $id не найдено.");
             }
 
         } catch (\Exception $e) {

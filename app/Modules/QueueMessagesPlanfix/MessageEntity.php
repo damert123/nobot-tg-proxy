@@ -32,11 +32,11 @@ class MessageEntity
             ->exists();
     }
 
-    public static function findFirstByChatIdAndStatus(int $chatId, string $status): ?self
+    public static function findFirstPendingByChatId(int $chatId): ?self
     {
         $message = Message::query()
             ->where('chat_id', $chatId)
-            ->where('status', $status)
+            ->where('status', 'pending')
             ->orderBy('created_at')
             ->first();
 
@@ -48,6 +48,30 @@ class MessageEntity
     {
         $this->message->status = $status;
         return $this->message->saveOrFail();
+    }
+
+    public static function setMessage (array $data): self
+    {
+        $message = Message::create([
+            'chat_id' => $data['chat_id'],
+            'token' => $data['token'],
+            'message' => $data['message'],
+            'attachments' => $data['attachments'],
+        ]);
+
+        return new self($message);
+    }
+
+    public static function getMessageById(int $id): ?self
+    {
+        $message = Message::find($id);
+
+        return $message ? new self($message) : null;
+    }
+
+    public function getModel(): Message
+    {
+        return $this->message;
     }
 
 

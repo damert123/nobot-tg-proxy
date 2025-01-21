@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessTelegramMessageJob;
+use App\Modules\QueueMessagesPlanfix\ChatEntity;
+use App\Modules\QueueMessagesPlanfix\MessageEntity;
 use App\Services\PlanfixService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -33,8 +35,17 @@ class PlanfixToTelegramController extends Controller
                 throw new \Exception('chatId is required');
             }
 
+            $chat = ChatEntity::setChat($chatId);
 
-            ProcessTelegramMessageJob::dispatch($data);
+            $message = MessageEntity::setMessage([
+                'chat_id' => $chatId,
+                $data
+            ]);
+
+            Log::channel('planfix-messages')->info('СООБЩЕНИЕ УСПЕШНО ПОЛУЧЕНО:', [
+                'chat' => $chat->getModel()->toArray(),
+                'message' => $message->getModel()->toArray(),
+            ]);
 
 
             return response()->json(['status' => 'received'], 200);
@@ -42,11 +53,6 @@ class PlanfixToTelegramController extends Controller
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
-
-
-
-
-
 
     }
 }

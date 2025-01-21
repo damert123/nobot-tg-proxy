@@ -14,10 +14,31 @@ class ChatEntity
         $this->chat = $chat;
     }
 
-    public static function hasInProgressMessages(string $chatId ): bool
+
+    public static function setChat(string $chatId): self
+    {
+        $chat = Chat::firstOrCreate(['id' => $chatId]);
+
+        return new self($chat);
+    }
+
+    public static function hasInProgressMessages(string $chatId): bool
     {
         return MessageEntity::existsByChatIdAndStatus($chatId, 'in_progress');
     }
+
+    public static function getOrderByChatId(): ?string
+    {
+        $chat = Chat::query()->orderBy('created_at')->value('id');
+
+        return $chat;
+    }
+
+    public function getModel(): Chat
+    {
+        return $this->chat;
+    }
+
 
 
 
