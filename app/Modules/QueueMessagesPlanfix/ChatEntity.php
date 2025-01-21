@@ -74,7 +74,7 @@ class ChatEntity
         $entities = [];
 
         foreach ($chats as $chat) {
-            $entities = new self($chat);
+            $entities [] = new self($chat);
         }
 
         return $entities;
