@@ -23,4 +23,8 @@ class Message extends Model
         'attachments',
         'status'
     ];
+
+    protected $casts = [
+        'attachments' => 'array',
+    ];
 }
