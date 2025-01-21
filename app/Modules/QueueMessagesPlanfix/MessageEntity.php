@@ -6,6 +6,9 @@ use App\Models\Message;
 
 class MessageEntity
 {
+    private const IN_PROGRESS = 'in_progress';
+    const PENDING = 'pending';
+    const COMPLETED = 'completed';
     private Message $message;
     public function __construct(Message $message)
     {
@@ -36,11 +39,18 @@ class MessageEntity
     {
         $message = Message::query()
             ->where('chat_id', $chatId)
-            ->where('status', 'pending')
+            ->where('status', self::PENDING)
             ->orderBy('created_at')
             ->first();
 
         return $message ? new self($message) : null;
+    }
+
+    public static function existsInProgressMessages(ChatEntity $chatEntity):bool
+    {
+        return Message::where('chat_id',$chatEntity->getId())
+            ->where('status',self::IN_PROGRESS)
+            ->exists();
     }
 
 
@@ -74,6 +84,19 @@ class MessageEntity
         return $this->message;
     }
 
+    public function setStatusInProgress():void
+    {
+        $this->message->status = self::IN_PROGRESS;
+
+        $this->message->saveOrFail();
+    }
+
+    public function setStatusCompleted():void
+    {
+        $this->message->status = self::COMPLETED;
+
+        $this->message->saveOrFail();
+    }
 
 
 }

@@ -14,6 +14,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     protected $data;
     protected $chatId;
+    private MessageEntity $messageEntity;
 
     public $queue; // Устанавливаем очередь
 
@@ -22,10 +23,11 @@ class ProcessTelegramMessageJob implements ShouldQueue
      *
      * @param array $data
      */
-    public function __construct(array $data, int $chatId)
+    public function __construct(array $data, int $chatId, MessageEntity $messageEntity)
     {
         $this->data = $data;
         $this->chatId = $chatId;
+        $this->messageEntity = $messageEntity;
     }
 
     /**
@@ -33,6 +35,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
      */
     public function handle(PlanfixService $planfixService): void
     {
+        $this->messageEntity->setStatusInProgress();
 
         try {
             $token = $this->data['token'];
@@ -43,6 +46,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $message = $this->data['message'] ?? null;
             $id = $this->data['id'];
 
+
             if ($message) {
                 $planfixService->sendMessage($madelineProto, $chatId, $message);
             }
@@ -51,14 +55,10 @@ class ProcessTelegramMessageJob implements ShouldQueue
                 $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
             }
 
-            $messageEntity = MessageEntity::getMessageById($id);
-            if ($messageEntity) {
-                $messageEntity->updateStatus('completed');
-            } else {
-                Log::channel('queue-messages')->warning("Сообщение с ID $id не найдено.");
-            }
+            $this->messageEntity->setStatusCompleted();
 
         } catch (\Exception $e) {
+            $this->messageEntity->setStatusCompleted();
             Log::channel('queue-messages')->error("Ошибка в джобе: {$e->getMessage()}");
             throw $e;
         }

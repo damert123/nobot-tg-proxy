@@ -28,29 +28,46 @@ class QueueListen extends Command
      */
     public function handle()
     {
-        $chatId = ChatEntity::getOrderByChatId();
+//        $chatId = ChatEntity::getOrderByChatId();
+//
+//        if (!$chatId){
+//            $this->info('Нет чатов для обработки');
+//            return;
+//        }
+//
+//        if (ChatEntity::hasInProgressMessages($chatId)){
+//            $this->info("Сообщения в чате {$chatId} уже обрабатываются");
+//        }
+//
+//        $message = MessageEntity::findFirstPendingByChatId($chatId);
+//        $chat = ChatEntity::getById($chatId)->getChatId();
+//
+//
+//
+//        if (!$message){
+//            $this->info("В чате {$chatId} нет сообщений со статусом pending.");
+//            return;
+//        }
+//
+//        ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat);
+//
+//        $this->info("Сообщение из чата {$chatId} отправлено в джобу");
 
-        if (!$chatId){
-            $this->info('Нет чатов для обработки');
-            return;
+
+        $chats = ChatEntity::getAll();
+
+        foreach ($chats as $chat){
+            if($chat->hasInProgressMessages()){
+                continue;
+            }
+
+            $message = $chat->getFirstMessageInPending();
+
+            if($message === null){
+                continue;
+            }
+
+            ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId());
         }
-
-        if (ChatEntity::hasInProgressMessages($chatId)){
-            $this->info("Сообщения в чате {$chatId} уже обрабатываются");
-        }
-
-        $message = MessageEntity::findFirstPendingByChatId($chatId);
-        $chat = ChatEntity::getById($chatId)->getChatId();
-
-
-
-        if (!$message){
-            $this->info("В чате {$chatId} нет сообщений со статусом pending.");
-            return;
-        }
-
-        ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat);
-
-        $this->info("Сообщение из чата {$chatId} отправлено в джобу");
     }
 }

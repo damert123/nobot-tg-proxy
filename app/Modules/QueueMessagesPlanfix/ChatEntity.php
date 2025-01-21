@@ -9,6 +9,7 @@ class ChatEntity
 {
 
     private Chat $chat;
+
     public function __construct(Chat $chat)
     {
         $this->chat = $chat;
@@ -32,10 +33,10 @@ class ChatEntity
         return $this->chat->id;
     }
 
-    public static function hasInProgressMessages(string $chatId): bool
-    {
-        return MessageEntity::existsByChatIdAndStatus($chatId, 'in_progress');
-    }
+//    public static function hasInProgressMessages(string $chatId): bool
+//    {
+//        return MessageEntity::existsByChatIdAndStatus($chatId, 'in_progress');
+//    }
 
     public static function getOrderByChatId(): ?string
     {
@@ -44,13 +45,12 @@ class ChatEntity
         return $chat;
     }
 
-    public static function getById (int $id): ?self
+    public static function getById(int $id): ?self
     {
         $chat = Chat::query()->find($id); // Используем find для поиска по первичному ключу
 
         return $chat ? new self($chat) : null; // Возвращаем экземпляр ChatEntity или null
     }
-
 
 
     public function getModel(): Chat
@@ -59,6 +59,29 @@ class ChatEntity
     }
 
 
+    public function hasInProgressMessages(): bool
+    {
+        return MessageEntity::existsInProgressMessages($this);
+    }
 
+    /**
+     * @return self[]
+     */
+    public static function getAll(): array
+    {
+        $chats = Chat::get()->all();
 
+        $entities = [];
+
+        foreach ($chats as $chat) {
+            $entities = new self($chat);
+        }
+
+        return $entities;
+    }
+
+    public function getFirstMessageInPending(): ?MessageEntity
+    {
+        return MessageEntity::findFirstPendingByChatId($this->getId());
+    }
 }
