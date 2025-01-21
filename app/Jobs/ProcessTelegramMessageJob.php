@@ -13,6 +13,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
     use Queueable;
 
     protected $data;
+    protected $chatId;
 
     public $queue; // Устанавливаем очередь
 
@@ -24,6 +25,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
     public function __construct(array $data, int $chatId)
     {
         $this->data = $data;
+        $this->chatId = $chatId;
     }
 
     /**
@@ -33,7 +35,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
     {
 
         try {
-            $token = $this->data['token'];
+            $token = $this->chatId;
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
