@@ -39,7 +39,7 @@ class PlanfixToTelegramController extends Controller
 
             $message = MessageEntity::setMessage([
                 'chat_id' => $chat->getId(),
-                $data
+                ...$data
             ]);
 
             Log::channel('planfix-messages')->info('СООБЩЕНИЕ УСПЕШНО ПОЛУЧЕНО:', [
