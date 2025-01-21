@@ -35,11 +35,11 @@ class ProcessTelegramMessageJob implements ShouldQueue
     {
 
         try {
-            $token = $this->chatId;
+            $token = $this->data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
 
-            $chatId = $this->data['chat_id'];
+            $chatId = $this->chatId;
             $message = $this->data['message'] ?? null;
             $id = $this->data['id'];
 
