@@ -92,14 +92,15 @@ class PlanfixService
 
     }
 
-    public function sendAttachment(API $madelineProto, string $chatId, array $attachment, ?string $message): void
+    public function sendAttachment(API $madelineProto, string $chatId, array|string $attachment, ?string $message): void
     {
-
+        if (is_string($attachment)) {
+            $attachment = json_decode($attachment, true);
+        }
         $madelineProto->messages->readHistory([
             'peer' => $chatId,
         ]);
 
-        sleep(5);
         try {
             $fileUrl = $attachment['url'];
             $fileName = $attachment['name'];
