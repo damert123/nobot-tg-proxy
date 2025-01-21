@@ -9,6 +9,8 @@ class MessageEntity
     private const IN_PROGRESS = 'in_progress';
     const PENDING = 'pending';
     const COMPLETED = 'completed';
+
+    const ERROR = 'error';
     private Message $message;
     public function __construct(Message $message)
     {
@@ -66,7 +68,7 @@ class MessageEntity
             'chat_id' => $data['chat_id'],
             'token' => $data['token'],
             'message' => $data['message'],
-            'attachments' => $data['attachments'] ?? null,
+            'attachments' => isset($data['attachments']) ? json_encode($data['attachments']) : null,
         ]);
 
         return new self($message);
@@ -98,5 +100,12 @@ class MessageEntity
         $this->message->saveOrFail();
     }
 
+
+    public function setStatusError():void
+    {
+        $this->message->status = self::ERROR;
+
+        $this->message->saveOrFail();
+    }
 
 }

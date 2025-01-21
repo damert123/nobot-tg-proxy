@@ -58,7 +58,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $this->messageEntity->setStatusCompleted();
 
         } catch (\Exception $e) {
-            $this->messageEntity->setStatusCompleted();
+            $this->messageEntity->setStatusError();
             Log::channel('queue-messages')->error("Ошибка в джобе: {$e->getMessage()}");
             throw $e;
         }
