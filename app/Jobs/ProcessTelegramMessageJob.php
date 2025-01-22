@@ -52,12 +52,8 @@ class ProcessTelegramMessageJob implements ShouldQueue
             }
 
             if (!empty($this->data['attachments'])) {
-                $attachments = json_decode($this->data['attachments'], true);
-                Log::channel('queue-messages')->info('МАССИВ ИЛИ НЕТ ?', $attachments);
-                if (!is_array($attachments)) {
-                    throw new \Exception('Не удалось декодировать attachments. Возможно, это невалидный JSON.');
-                }
-                $planfixService->sendAttachment($madelineProto, $chatId, $attachments, $message);
+                Log::channel('queue-messages')->info('МАССИВ ИЛИ НЕТ ?', $this->data['attachments']);
+                $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
             }
 
             $this->messageEntity->setStatusCompleted();
