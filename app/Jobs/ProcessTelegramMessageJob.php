@@ -68,9 +68,4 @@ class ProcessTelegramMessageJob implements ShouldQueue
         }
     }
 
-    public function failed(\Throwable $exception)
-    {
-        Log::channel('queue-messages')->error("Ошибка выполнения джобы: {$exception->getMessage()}");
-
-    }
 }
