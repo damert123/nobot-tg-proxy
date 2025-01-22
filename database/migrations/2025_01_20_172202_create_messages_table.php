@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('chat_id');
             $table->string('token');
             $table->text('message')->nullable();
-            $table->json('attachments')->nullable();
+            $table->text('attachments')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
         });
