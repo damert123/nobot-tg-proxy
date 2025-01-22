@@ -53,6 +53,8 @@ class ProcessTelegramMessageJob implements ShouldQueue
             }
 
             if (!empty($this->data['attachments'])) {
+                $attachments = $this->data['attachments'];
+                $attachments = json_decode($attachments, true);
                 $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
             }
 
@@ -65,7 +67,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
         }
     }
 
-    public function failed(\Exception $exception)
+    public function failed(\Throwable $exception)
     {
         Log::channel('queue-messages')->error("Ошибка выполнения джобы: {$exception->getMessage()}");
 
