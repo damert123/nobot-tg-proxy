@@ -68,7 +68,7 @@ class MessageEntity
             'chat_id' => $data['chat_id'],
             'token' => $data['token'],
             'message' => $data['message'],
-            'attachments' => isset($data['attachments']) ? $data['attachments'] : null,
+            'attachments' => isset($data['attachments']) ? json_encode($data['attachments']) : null,
         ]);
 
         return new self($message);

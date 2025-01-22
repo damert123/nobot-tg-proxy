@@ -27,9 +27,12 @@ class TestJson extends Command
     public function handle()
     {
         $message = Message::find(1)->toArray();
-        dd($message);
+
         $atach = $message['attachments'];
+
         $ress = json_decode($atach, true);
+
+        dd($ress['url']);
 
         $res = is_array($ress);
         dd($ress);
