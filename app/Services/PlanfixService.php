@@ -92,7 +92,7 @@ class PlanfixService
 
     }
 
-    public function sendAttachment(API $madelineProto, string $chatId, array|string $attachment, ?string $message): void
+    public function sendAttachment(API $madelineProto, string $chatId, array $attachment, ?string $message): void
     {
         $madelineProto->messages->readHistory([
             'peer' => $chatId,
