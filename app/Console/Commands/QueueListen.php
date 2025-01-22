@@ -6,6 +6,7 @@ use App\Jobs\ProcessTelegramMessageJob;
 use App\Modules\QueueMessagesPlanfix\ChatEntity;
 use App\Modules\QueueMessagesPlanfix\MessageEntity;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class QueueListen extends Command
 {
@@ -28,31 +29,6 @@ class QueueListen extends Command
      */
     public function handle()
     {
-//        $chatId = ChatEntity::getOrderByChatId();
-//
-//        if (!$chatId){
-//            $this->info('Нет чатов для обработки');
-//            return;
-//        }
-//
-//        if (ChatEntity::hasInProgressMessages($chatId)){
-//            $this->info("Сообщения в чате {$chatId} уже обрабатываются");
-//        }
-//
-//        $message = MessageEntity::findFirstPendingByChatId($chatId);
-//        $chat = ChatEntity::getById($chatId)->getChatId();
-//
-//
-//
-//        if (!$message){
-//            $this->info("В чате {$chatId} нет сообщений со статусом pending.");
-//            return;
-//        }
-//
-//        ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat);
-//
-//        $this->info("Сообщение из чата {$chatId} отправлено в джобу");
-
 
         $chats = ChatEntity::getAll();
 
@@ -68,7 +44,7 @@ class QueueListen extends Command
             }
 
             $message->setStatusInProgress();
-
+            Log::channel('queue-messages')->info('Данные перед отправкой в джобу', $message->getModel()->toArray());
             ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
         }
     }
