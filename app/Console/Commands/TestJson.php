@@ -27,7 +27,8 @@ class TestJson extends Command
     public function handle()
     {
         $message = Message::first()->toArray();
-        dd($message);
+        $res = is_array($message['attachments']);
+        dd($res);
                                         // Замените 1 на ID нужного сообщения
         if ($message) {
             $attachments = json_decode($message->attachments, true);
