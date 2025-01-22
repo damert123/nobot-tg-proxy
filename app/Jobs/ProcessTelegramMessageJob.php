@@ -52,6 +52,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
             }
 
             if (!empty($this->data['attachments'])) {
+                Log::channel('queue-messages')->info('МАССИВ ИЛИ НЕТ ?', $this->data['attachments']);
                 $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
             }
 
