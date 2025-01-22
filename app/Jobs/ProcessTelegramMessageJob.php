@@ -35,8 +35,9 @@ class ProcessTelegramMessageJob implements ShouldQueue
      */
     public function handle(PlanfixService $planfixService): void
     {
+        Log::channel('queue-messages')->info("Получены данные {$this->data}");
         $this->messageEntity->setStatusInProgress();
-        Log::channel('queue-messages')->error('Получены данные в джобе', $this->data);
+
 
         try {
             $token = $this->data['token'];
