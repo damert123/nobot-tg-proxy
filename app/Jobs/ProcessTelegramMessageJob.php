@@ -35,11 +35,12 @@ class ProcessTelegramMessageJob implements ShouldQueue
      */
     public function handle(PlanfixService $planfixService): void
     {
-        Log::channel('queue-messages')->info("Получены данные {$this->data}");
+        Log::channel('queue-messages')->info("Получены данные 2");
         $this->messageEntity->setStatusInProgress();
 
 
         try {
+            Log::channel('queue-messages')->info("Получены данные 1");
             $token = $this->data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
