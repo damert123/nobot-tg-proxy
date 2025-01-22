@@ -26,7 +26,7 @@ class TestJson extends Command
      */
     public function handle()
     {
-        $message = Message::find(); // Замените 1 на ID нужного сообщения
+        $message = Message::find(10); // Замените 1 на ID нужного сообщения
         if ($message) {
             $attachments = json_decode($message->attachments, true);
             $this->info('Decoded JSON:');
