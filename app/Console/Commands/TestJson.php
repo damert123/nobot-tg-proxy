@@ -28,7 +28,8 @@ class TestJson extends Command
     {
         $message = Message::first()->toArray();
         $res = is_array($message['attachments']);
-        dd($res);
+        $ress = json_encode($message['attachments']);
+        dd($ress);
                                         // Замените 1 на ID нужного сообщения
         if ($message) {
             $attachments = json_decode($message->attachments, true);
