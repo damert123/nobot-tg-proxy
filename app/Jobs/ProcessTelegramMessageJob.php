@@ -36,7 +36,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
     public function handle(PlanfixService $planfixService): void
     {
         $this->messageEntity->setStatusInProgress();
-
+        Log::info('МАССИВ ИЛИ НЕТ ?', $this->data['attachments']);
         try {
             $token = $this->data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
@@ -50,7 +50,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
             if ($message) {
                 $planfixService->sendMessage($madelineProto, $chatId, $message);
             }
-            Log::channel('queue-messages')->info('МАССИВ ИЛИ НЕТ ?', $this->data['attachments']);
+
             if (!empty($this->data['attachments'])) {
                 $planfixService->sendAttachment($madelineProto, $chatId, $this->data['attachments'], $message);
             }
