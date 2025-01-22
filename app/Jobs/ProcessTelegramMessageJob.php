@@ -40,7 +40,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
 
         try {
-            Log::channel('queue-messages')->info("Получены данные 1");
+            Log::info("Получены данные 1");
             $token = $this->data['token'];
             $telegramAccount = $planfixService->getIntegrationAndAccount($token);
             $madelineProto = $planfixService->initializeModelineProto($telegramAccount->session_path);
