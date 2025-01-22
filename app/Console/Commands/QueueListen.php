@@ -44,11 +44,7 @@ class QueueListen extends Command
             }
 
             $message->setStatusInProgress();
-            $mes = $message->getModel()->toArray();
-            $atach = $mes['attachments'];
-            $decode = json_decode($atach, true);
-            $isArray = is_array($decode);
-            Log::channel('queue-messages')->info("МАСИВ ? : {$isArray}");
+
             ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
         }
     }
