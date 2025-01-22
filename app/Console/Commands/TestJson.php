@@ -26,11 +26,16 @@ class TestJson extends Command
      */
     public function handle()
     {
-        $message = Message::first()->toArray();
-        $encode = json_encode($message['attachments']);
-        $ress = json_decode($encode, true);
+        $message = Message::find(1)->toArray();
+
+        $atach = $message['attachments'];
+        $ress = json_decode($atach, true);
+
         $res = is_array($ress);
-        dd($res);
+        dd($ress);
+
+
+
                                         // Замените 1 на ID нужного сообщения
         if ($message) {
             $attachments = json_decode($message->attachments, true);
