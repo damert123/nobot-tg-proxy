@@ -55,6 +55,7 @@ class PlanfixToTelegramController extends Controller
 //                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
 //            }
 
+
             $chat = ChatEntity::setChat($chatId);
 
             $message = MessageEntity::setMessage([
