@@ -35,6 +35,26 @@ class PlanfixToTelegramController extends Controller
                 throw new \Exception('chatId is required');
             }
 
+//            response()->json(['status' => 'received'], 200)->send();
+//
+//            fastcgi_finish_request();
+//
+//            $token = $data['token'];
+//            $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
+//
+//            $madelineProto = $this->planfixService->initializeModelineProto($telegramAccount->session_path);
+//
+//            $chatId = $data['chatId'];
+//            $message = $data['message'] ?? null;
+//
+//            if ($message){
+//                $this->planfixService->sendMessage($madelineProto, $chatId, $message);
+//            }
+//
+//            if (!empty($data['attachments'])){
+//                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
+//            }
+
             $chat = ChatEntity::setChat($chatId);
 
             $message = MessageEntity::setMessage([
