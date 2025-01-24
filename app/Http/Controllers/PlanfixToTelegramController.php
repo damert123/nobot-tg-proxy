@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTelegramMessageJob;
+use App\Modules\QueueMessagesPlanfix\ChatEntity;
+use App\Modules\QueueMessagesPlanfix\MessageEntity;
 use App\Services\PlanfixService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -25,36 +28,52 @@ class PlanfixToTelegramController extends Controller
 
             $this->planfixService->validateWebhookData($data);
 
-            response()->json(['status' => 'received'], 200)->send();
+            $chatId = $data['chatId'] ?? null;
 
-            fastcgi_finish_request();
-
-            $token = $data['token'];
-            $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
-
-            $madelineProto = $this->planfixService->initializeModelineProto($telegramAccount->session_path);
-
-            $chatId = $data['chatId'];
-            $message = $data['message'] ?? null;
-
-            if ($message){
-                $this->planfixService->sendMessage($madelineProto, $chatId, $message);
+            // Убедитесь, что chatId существует
+            if (!$chatId) {
+                throw new \Exception('chatId is required');
             }
 
-            if (!empty($data['attachments'])){
-                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
-            }
+//            response()->json(['status' => 'received'], 200)->send();
+//
+//            fastcgi_finish_request();
+//
+//            $token = $data['token'];
+//            $telegramAccount = $this->planfixService->getIntegrationAndAccount($token);
+//
+//            $madelineProto = $this->planfixService->initializeModelineProto($telegramAccount->session_path);
+//
+//            $chatId = $data['chatId'];
+//            $message = $data['message'] ?? null;
+//
+//            if ($message){
+//                $this->planfixService->sendMessage($madelineProto, $chatId, $message);
+//            }
+//
+//            if (!empty($data['attachments'])){
+//                $this->planfixService->sendAttachment($madelineProto, $chatId, $data['attachments'], $message );
+//            }
+
+
+            $chat = ChatEntity::setChat($chatId);
+
+            $message = MessageEntity::setMessage([
+                'chat_id' => $chat->getId(),
+                ...$data
+            ]);
+
+            Log::channel('planfix-messages')->info('СООБЩЕНИЕ УСПЕШНО ПОЛУЧЕНО:', [
+                'chat' => $chat->getModel()->toArray(),
+                'message' => $message->getModel()->toArray(),
+            ]);
+
 
             return response()->json(['status' => 'received'], 200);
         }catch (\Exception $e){
             Log::channel('planfix-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
-
-
-
-
-
 
     }
 }
