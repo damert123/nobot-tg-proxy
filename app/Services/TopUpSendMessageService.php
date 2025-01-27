@@ -60,15 +60,15 @@ class TopUpSendMessageService
 
         $now = time();
 
-        Log::channel('planfix-messages')->info("СЕЙЧАС ВРЕМЯ {$now} ");
-        Log::channel('planfix-messages')->info("ПОСЛЕДНИЕ 10 СООБЩЕНИЙ:" .  json_encode($history, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        foreach ($history['messages'] as $msg) {
-            // Если сообщение отправлено или получено за последние 10 минут, прерываем отправку
-            if (isset($msg['date']) && ($now - $msg['date']) <= 600) {
-                echo "Сообщение не отправлено: уже было общение за последние 10 минут.\n";
-                return;
-            }
-        }
+//        Log::channel('planfix-messages')->info("СЕЙЧАС ВРЕМЯ {$now} ");
+//        Log::channel('planfix-messages')->info("ПОСЛЕДНИЕ 10 СООБЩЕНИЙ:" .  json_encode($history, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+//        foreach ($history['messages'] as $msg) {
+//            // Если сообщение отправлено или получено за последние 10 минут, прерываем отправку
+//            if (isset($msg['date']) && ($now - $msg['date']) <= 600) {
+//                echo "Сообщение не отправлено: уже было общение за последние 10 минут.\n";
+//                return;
+//            }
+//        }
 
 
         $madelineProto->messages->readHistory([
