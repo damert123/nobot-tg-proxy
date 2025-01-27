@@ -28,6 +28,7 @@ class TelegramController extends Controller
 
             $madelineProto = $this->topUpSendMessageService->initializeModelineProto($telegramSession->session_path);
 
+
             if (!empty($data->message)){
                 $this->topUpSendMessageService->sendMessageTopUp($madelineProto, $data->message, $data->toId);
             }

@@ -39,6 +39,7 @@ class PlanfixController extends Controller
             ->whereNull('planfix_integrations.telegram_account_id')
             ->select('telegram_accounts.id', 'telegram_accounts.phone', 'telegram_accounts.title')
             ->get();
+
         return view('planfix.add', compact('telegramAccounts'));
     }
 
