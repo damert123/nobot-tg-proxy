@@ -77,6 +77,10 @@ class TopUpSendMessageService
 
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
+        $peerInfo = $madelineProto->getInfo($to_id);
+        Log::channel('top-up-messages')->info("Информация о получателе: " . json_encode($peerInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
         $history = $madelineProto->messages->getHistory([
             'peer' => $to_id,
             'limit' => 1, // Сколько сообщений получить (ограничиваем последними 10 для экономии ресурсов)
@@ -94,7 +98,6 @@ class TopUpSendMessageService
             }
         }
 
-        $peerInfo = $madelineProto->getPwrChat($to_id);
 
         $madelineProto->messages->readHistory([
             'peer' => $to_id,
