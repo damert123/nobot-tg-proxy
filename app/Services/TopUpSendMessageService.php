@@ -58,7 +58,7 @@ class TopUpSendMessageService
 
         $madelineProto->updateSettings($settings);
 
-        Log::channel('top-up-messages')->info("Telegram session is on pause for account ID:" . json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        Log::channel('top-up-messages')->info("ACCOUNT" . json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return $madelineProto;
 
@@ -92,6 +92,9 @@ class TopUpSendMessageService
 
         $user = $madelineProto->contacts->addContact([
             'id' => $to_id,
+            'first_name' => 'Unknown', // Можно поставить любое имя
+            'last_name' => '',
+            'phone' => '' // Можно оставить пустым
         ]);
 
         Log::channel('top-up-messages')->info("ДОБАВИЛ КОНТАКТ!!!:" .  json_encode($user, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
