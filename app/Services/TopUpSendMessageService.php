@@ -58,7 +58,9 @@ class TopUpSendMessageService
 
         $madelineProto->updateSettings($settings);
 
-        return $madelineProto;
+        $md = new API($sessionPath, $settings);
+
+        return $md;
 
     }
 
