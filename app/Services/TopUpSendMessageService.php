@@ -56,11 +56,8 @@ class TopUpSendMessageService
         $peerSettings->setFullFetch(true);
         $settings->setPeer($peerSettings);
 
-        $madelineProto->updateSettings($settings);
 
-        $md = new API($sessionPath, $settings);
-
-        return $md;
+        return $madelineProto;
 
     }
 
