@@ -48,7 +48,17 @@ class TopUpSendMessageService
 
     public function initializeModelineProto(string $sessionPath): API
     {
-        return new API($sessionPath);
+
+        $madelineProto = new API($sessionPath);
+
+        $settings = $madelineProto->getSettings();
+        $peerSettings = $settings->getPeer();
+        $peerSettings->setFullFetch(true);
+        $settings->setPeer($peerSettings);
+
+        $madelineProto->updateSettings($settings);
+
+        return $madelineProto;
 
     }
 
@@ -77,12 +87,9 @@ class TopUpSendMessageService
 
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
-        $peerInfo = $madelineProto->getInfo('@b0gdante');
-        Log::channel('top-up-messages')->info("Информация о получателе: " . json_encode($peerInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
 
         $history = $madelineProto->messages->getHistory([
-            'peer' => '@b0gdante',
+            'peer' => $to_id,
             'limit' => 1, // Сколько сообщений получить (ограничиваем последними 10 для экономии ресурсов)
         ]);
 
@@ -100,11 +107,11 @@ class TopUpSendMessageService
 
 
         $madelineProto->messages->readHistory([
-            'peer' => '@b0gdante',
+            'peer' => '$to_id',
         ]);
 
         $madelineProto->messages->sendMessage([
-            'peer' => '@b0gdante',
+            'peer' => '$to_id',
             'message' => $message,
         ]);
 
