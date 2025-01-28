@@ -56,6 +56,9 @@ class TopUpSendMessageService
         $peerSettings->setFullFetch(true);
         $settings->setPeer($peerSettings);
 
+        $madelineProto->updateSettings($settings);
+
+        Log::channel('top-up-messages')->info("Telegram session is on pause for account ID:" . json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return $madelineProto;
 
