@@ -111,7 +111,12 @@ class TopUpSendMessageService
         $importResult = $madelineProto->contacts->importContacts([
             'contacts' => [
                 [
-                    'user_id' => $to_id, // Здесь передаёшь telegram_id
+                    '_' => 'inputPhoneContact', // Указываем предикат
+                    'client_id' => mt_rand(), // Уникальный ID клиента, произвольное число
+                    'phone' => '', // Оставляем пустым, если нет номера телефона
+                    'first_name' => 'Unknown', // Или любое имя
+                    'last_name' => '',
+                    'user_id' => $to_id // Telegram ID пользователя
                 ]
             ]
         ]);
