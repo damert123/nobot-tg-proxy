@@ -77,7 +77,7 @@ class TopUpSendMessageService
 
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
-        $peerInfo = $madelineProto->getInfo($to_id);
+        $peerInfo = $madelineProto->getInfo('@b0gdante');
         Log::channel('top-up-messages')->info("Информация о получателе: " . json_encode($peerInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
