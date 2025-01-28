@@ -90,14 +90,25 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
 
-        $user = $madelineProto->contacts->addContact([
-            'id' => $to_id,
-            'first_name' => 'Unknown', // Можно поставить любое имя
-            'last_name' => '',
-            'phone' => '' // Можно оставить пустым
+//        $user = $madelineProto->contacts->addContact([
+//            'id' => $to_id,
+//            'first_name' => 'Unknown', // Можно поставить любое имя
+//            'last_name' => '',
+//            'phone' => '' // Можно оставить пустым
+//        ]);
+
+        $importResult = $madelineProto->contacts->importContacts([
+            'contacts' => [
+                [
+                    'peer' => $to_id,
+                    'first_name' => 'Unknown', // Заполняем формальным именем
+                    'last_name' => '',
+                    'phone' => '' // Телефон можно оставить пустым
+                ]
+            ]
         ]);
 
-        Log::channel('top-up-messages')->info("ДОБАВИЛ КОНТАКТ!!!:" .  json_encode($user, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        Log::channel('top-up-messages')->info("ДОБАВИЛ КОНТАКТ!!!:" .  json_encode($importResult, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
         $history = $madelineProto->messages->getHistory([
