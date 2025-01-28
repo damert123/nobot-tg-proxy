@@ -90,38 +90,8 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
 
-//        $user = $madelineProto->contacts->addContact([
-//            'id' => $to_id,
-//            'first_name' => 'Unknown', // Можно поставить любое имя
-//            'last_name' => '',
-//            'phone' => '' // Можно оставить пустым
-//        ]);
-
-//        $importResult = $madelineProto->contacts->importContacts([
-//            'contacts' => [
-//                [
-//                    'peer' => $to_id,
-//                    'first_name' => 'Unknown', // Заполняем формальным именем
-//                    'last_name' => '',
-//                    'phone' => '' // Телефон можно оставить пустым
-//                ]
-//            ]
-//        ]);
-
-        $importResult = $madelineProto->contacts->importContacts([
-            'contacts' => [
-                [
-                    '_' => 'inputPhoneContact', // Указываем предикат
-                    'client_id' => mt_rand(), // Уникальный ID клиента, произвольное число
-                    'phone' => '', // Оставляем пустым, если нет номера телефона
-                    'first_name' => 'Unknown', // Или любое имя
-                    'last_name' => '',
-                    'user_id' => $to_id // Telegram ID пользователя
-                ]
-            ]
-        ]);
-
-        Log::channel('top-up-messages')->info("ДОБАВИЛ КОНТАКТ!!!:" .  json_encode($importResult, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $userInfo = $madelineProto->getPwrChat($to_id);
+        Log::channel('top-up-messages')->info("ПОЛУЧИТЬ ИНФУ О ЮЗЕРЕ" .  json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
         $history = $madelineProto->messages->getHistory([
