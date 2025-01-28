@@ -90,6 +90,13 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
 
+        $user = $madelineProto->contacts->addContact([
+            'id' => $to_id,
+        ]);
+
+        Log::channel('top-up-messages')->info("ДОБАВИЛ КОНТАКТ!!!:" .  json_encode($user, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
         $history = $madelineProto->messages->getHistory([
             'peer' => $to_id,
             'limit' => 1, // Сколько сообщений получить (ограничиваем последними 10 для экономии ресурсов)
