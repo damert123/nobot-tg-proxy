@@ -107,11 +107,11 @@ class TopUpSendMessageService
 
 
         $madelineProto->messages->readHistory([
-            'peer' => '$to_id',
+            'peer' => $to_id,
         ]);
 
         $madelineProto->messages->sendMessage([
-            'peer' => '$to_id',
+            'peer' => $to_id,
             'message' => $message,
         ]);
 
