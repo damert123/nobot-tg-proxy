@@ -51,12 +51,7 @@ class TopUpSendMessageService
 
         $madelineProto = new API($sessionPath);
 
-        $settings = $madelineProto->getSettings();
-        $peerSettings = $settings->getPeer();
-        $peerSettings->setFullFetch(true);
-        $settings->setPeer($peerSettings);
 
-        $madelineProto->updateSettings($settings);
 
         Log::channel('top-up-messages')->info("ACCOUNT" . json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
@@ -90,8 +85,16 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
 
-        $userInfo = $madelineProto->getPwrChat($to_id);
-        Log::channel('top-up-messages')->info("ПОЛУЧИТЬ ИНФУ О ЮЗЕРЕ" .  json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $settings = $madelineProto->getSettings();
+        $peerSettings = $settings->getPeer();
+        $peerSettings->setFullFetch(true);
+        $settings->setPeer($peerSettings);
+
+        $madelineProto->updateSettings($settings);
+
+//        $madelineProto->updateSettings(['updatePeers' => true, 'setFullFetch' => true]);
+
+        Log::channel('top-up-messages')->info("ПОЛУЧИТЬ ИНФУ О ЮЗЕРЕ" .  json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
         $history = $madelineProto->messages->getHistory([
