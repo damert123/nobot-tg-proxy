@@ -82,7 +82,7 @@ class TopUpSendMessageService
 
 
         $history = $madelineProto->messages->getHistory([
-            'peer' => $to_id,
+            'peer' => '@b0gdante',
             'limit' => 1, // Сколько сообщений получить (ограничиваем последними 10 для экономии ресурсов)
         ]);
 
@@ -100,11 +100,11 @@ class TopUpSendMessageService
 
 
         $madelineProto->messages->readHistory([
-            'peer' => $to_id,
+            'peer' => '@b0gdante',
         ]);
 
         $madelineProto->messages->sendMessage([
-            'peer' => $to_id,
+            'peer' => '@b0gdante',
             'message' => $message,
         ]);
 
