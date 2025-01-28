@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\EventHandler;
+use danog\MadelineProto\RPCErrorException;
 use danog\MadelineProto\Settings\AppInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -51,17 +52,40 @@ class TopUpSendMessageService
 
     }
 
-    public function sendMessageTopUp(API $madelineProto, string $message, int $to_id)
+
+
+    public function sendMessageTopUp(int $telegramId, string $message, int $to_id)
+    {
+        try {
+            $mainSession = $this->findSessionTelegram($telegramId);
+            $madelineProto = $this->initializeModelineProto($mainSession->session_path);
+
+            $this->attemptToSendMessage($madelineProto, $message, $to_id);
+            Log::channel('top-up-messages')->info("Сообщение успешно отправлено с основного аккаунта ID: {$mainSession->id}");
+        }catch (\Exception $e) {
+            Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
+
+            try {
+                $this->tryAlternativeAccounts($message, $to_id, $telegramId);
+            }catch (\Exception $e){
+                Log::channel('top-up-messages')->error("Ошибка при использовании альтернативных аккаунтов: {$e->getMessage()}");
+                throw $e;
+            }
+        }
+
+    }
+
+    private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
         $history = $madelineProto->messages->getHistory([
-            'peer' => 6673581915,
+            'peer' => $to_id,
             'limit' => 1, // Сколько сообщений получить (ограничиваем последними 10 для экономии ресурсов)
         ]);
 
         $now = time();
 
-        Log::channel('planfix-messages')->info("СЕЙЧАС ВРЕМЯ {$now} ");
-        Log::channel('planfix-messages')->info("ПОСЛЕДНИЕ 1 Сообщение:" .  json_encode($history, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        Log::channel('top-up-messages')->info("СЕЙЧАС ВРЕМЯ {$now} ");
+        Log::channel('top-up-messages')->info("ПОСЛЕДНИЕ 1 Сообщение:" .  json_encode($history, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         foreach ($history['messages'] as $msg) {
             // Если сообщение отправлено или получено за последние 10 минут, прерываем отправку
             if (isset($msg['date']) && ($now - $msg['date']) <= 300) {
@@ -70,15 +94,43 @@ class TopUpSendMessageService
             }
         }
 
+        $peerInfo = $madelineProto->getPwrChat($to_id);
 
         $madelineProto->messages->readHistory([
-            'peer' => 6673581915,
+            'peer' => $to_id,
         ]);
 
         $madelineProto->messages->sendMessage([
-            'peer' => 6673581915,
+            'peer' => $to_id,
             'message' => $message,
         ]);
+
+    }
+
+    private function tryAlternativeAccounts(string $message, int $to_id, int $excludedTelegramId)
+    {
+        $accounts = DB::table('telegram_accounts')
+            ->where('status', 'Активен')
+            ->whereNotNull('session_path')
+            ->where('telegram_id', '!=', $excludedTelegramId) // Исключаем основной аккаунт
+            ->inRandomOrder()
+            ->get();
+
+        foreach ($accounts as $account){
+            try {
+                $madelineProto = $this->initializeModelineProto($account);
+                $this->attemptToSendMessage($madelineProto, $message, $to_id);
+
+                Log::channel('planfix-messages')->info("Сообщение успешно отправлено с альтернативного аккаунта ID: {$account->id}");
+                return;
+            } catch (\Exception $e){
+                Log::channel('top-up-messages')->error("Ошибка на аккаунте ID: {$account->id} - {$e->getMessage()}");
+                continue;
+            }
+        }
+
+        throw new \Exception('Не удалось отправить сообщение ни с одного доступного аккаунта');
+
 
     }
 
