@@ -97,13 +97,21 @@ class TopUpSendMessageService
 //            'phone' => '' // Можно оставить пустым
 //        ]);
 
+//        $importResult = $madelineProto->contacts->importContacts([
+//            'contacts' => [
+//                [
+//                    'peer' => $to_id,
+//                    'first_name' => 'Unknown', // Заполняем формальным именем
+//                    'last_name' => '',
+//                    'phone' => '' // Телефон можно оставить пустым
+//                ]
+//            ]
+//        ]);
+
         $importResult = $madelineProto->contacts->importContacts([
             'contacts' => [
                 [
-                    'peer' => $to_id,
-                    'first_name' => 'Unknown', // Заполняем формальным именем
-                    'last_name' => '',
-                    'phone' => '' // Телефон можно оставить пустым
+                    'user_id' => $to_id, // Здесь передаёшь telegram_id
                 ]
             ]
         ]);
