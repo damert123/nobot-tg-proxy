@@ -24,13 +24,10 @@ class TelegramController extends Controller
 
             $data = TelegramMessageDTO::fromArray($request->all());
 
-            $telegramSession = $this->topUpSendMessageService->findSessionTelegram($data->fromId);
-
-            $madelineProto = $this->topUpSendMessageService->initializeModelineProto($telegramSession->session_path);
-
+            $telegramIdFrom = $data->fromId;
 
             if (!empty($data->message)){
-                $this->topUpSendMessageService->sendMessageTopUp($madelineProto, $data->message, $data->toId);
+                $this->topUpSendMessageService->sendMessageTopUp($telegramIdFrom, $data->message, $data->toId);
             }
 
             return response()->json(["message" => "УРАААА!!!"]);
