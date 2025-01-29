@@ -131,7 +131,6 @@ class TopUpSendMessageService
             $madelineProto = $this->initializeModelineProto($mainSession->session_path);
 
             $this->attemptToSendMessage($madelineProto, $message, $to_id);
-            Log::channel('top-up-messages')->info("Сообщение успешно отправлено с основного аккаунта ID: {$mainSession->id}");
         }catch (\Exception $e) {
             Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
 
@@ -175,6 +174,9 @@ class TopUpSendMessageService
             'peer' => $to_id,
             'message' => $message,
         ]);
+
+        Log::channel('top-up-messages')->info("Сообщение успешно отправлено с основного аккаунта");
+
 
     }
 
