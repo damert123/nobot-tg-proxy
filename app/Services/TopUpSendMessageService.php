@@ -6,7 +6,9 @@ use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\EventHandler;
 use danog\MadelineProto\RPCErrorException;
+use danog\MadelineProto\Settings;
 use danog\MadelineProto\Settings\AppInfo;
+use danog\MadelineProto\Settings\Peer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -19,9 +21,14 @@ class TopUpSendMessageService
 
     public function __construct()
     {
-        $this->settings = (new AppInfo)
+        $set = $this->settings = new Settings();
+
+        $set->setAppInfo((new AppInfo)
             ->setApiId(env('TELEGRAM_API_ID'))
-            ->setApiHash(env('TELEGRAM_API_HASH'));
+            ->setApiHash(env('TELEGRAM_API_HASH')));
+
+        $set->setPeer((new Peer())
+            ->setFullFetch(true));
     }
 
 
@@ -49,7 +56,7 @@ class TopUpSendMessageService
     public function initializeModelineProto(string $sessionPath): API
     {
 
-        $madelineProto = new API($sessionPath);
+        $madelineProto = new API($sessionPath, $this->settings);
 
 
 
@@ -85,28 +92,28 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
 
-        $settings = $madelineProto->getSettings();
-        $peerSettings = $settings->getPeer();
-        $peerSettings->setFullFetch(true);
-        $settings->setPeer($peerSettings);
-        $madelineProto->updateSettings($settings);
+//        $settings = $madelineProto->getSettings();
+//        $peerSettings = $settings->getPeer();
+//        $peerSettings->setFullFetch(true);
+//        $settings->setPeer($peerSettings);
+//        $madelineProto->updateSettings($settings);
+//
+//
+//
+//
+//        Log::channel('top-up-messages')->info("PEER SETTINGS " .  json_encode($peerSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
 
-
-        Log::channel('top-up-messages')->info("PEER SETTINGS " .  json_encode($peerSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-
-
-        $result = $madelineProto->contacts->addContact([
-            'id' => $to_id,
-            'first_name' => 'Имя', // Замените на реальное имя, если известно
-            'last_name' => 'Фамилия', // Замените на реальную фамилию, если известно
-            'phone' => '', // Оставьте пустым, если номер телефона неизвестен
-        ]);
-
-
-        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+//        $result = $madelineProto->contacts->addContact([
+//            'id' => $to_id,
+//            'first_name' => 'Имя', // Замените на реальное имя, если известно
+//            'last_name' => 'Фамилия', // Замените на реальную фамилию, если известно
+//            'phone' => '', // Оставьте пустым, если номер телефона неизвестен
+//        ]);
+//
+//
+//        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
 
