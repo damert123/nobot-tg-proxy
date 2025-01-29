@@ -95,15 +95,15 @@ class TopUpSendMessageService
 
 
 
-//        $result = $madelineProto->contacts->addContact([
-//            'id' => $to_id,
-//            'first_name' => 'Имя', // Замените на реальное имя, если известно
-//            'last_name' => 'Фамилия', // Замените на реальную фамилию, если известно
-//            'phone' => '', // Оставьте пустым, если номер телефона неизвестен
-//        ]);
-//
-//
-//        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $result = $madelineProto->contacts->addContact(
+            id: $to_id,
+            first_name: 'Имя',
+            last_name: 'Фамилия',
+            phone: ''
+        );
+
+
+        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
 
