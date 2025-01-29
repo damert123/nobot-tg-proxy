@@ -88,14 +88,26 @@ class TopUpSendMessageService
         $settings = $madelineProto->getSettings();
         $peerSettings = $settings->getPeer();
         $peerSettings->setFullFetch(true);
-        $peerSettings->applyChanges();
         $settings->setPeer($peerSettings);
-
         $madelineProto->updateSettings($settings);
 
-//        $madelineProto->updateSettings(['updatePeers' => true, 'setFullFetch' => true]);
 
-        Log::channel('top-up-messages')->info("ПОЛУЧИТЬ ИНФУ О ЮЗЕРЕ" .  json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
+        Log::channel('top-up-messages')->info("PEER SETTINGS " .  json_encode($peerSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
+
+        $result = $madelineProto->contacts->addContact([
+            'id' => $to_id,
+            'first_name' => 'Имя', // Замените на реальное имя, если известно
+            'last_name' => 'Фамилия', // Замените на реальную фамилию, если известно
+            'phone' => '', // Оставьте пустым, если номер телефона неизвестен
+        ]);
+
+
+        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
 
 
         $history = $madelineProto->messages->getHistory([
