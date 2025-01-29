@@ -95,8 +95,9 @@ class TopUpSendMessageService
         $crmService = new ApiNobotService();
 
         $taskId = 208868;
-
+        Log::channel('top-up-messages')->info("ДО ГЕТТАСК");
         $task = $crmService->getTask($taskId);
+        Log::channel('top-up-messages')->info("ПОСЛЕ ГЕТТАСК");
 
         if (!$task || !isset($task['task']['assigner']['id'])) {
             Log::channel('top-up-messages')->error("Не найден assigner для задачи ID: {$taskId}");
