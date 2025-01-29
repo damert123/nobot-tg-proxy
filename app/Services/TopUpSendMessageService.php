@@ -92,16 +92,6 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
 
-//        $settings = $madelineProto->getSettings();
-//        $peerSettings = $settings->getPeer();
-//        $peerSettings->setFullFetch(true);
-//        $settings->setPeer($peerSettings);
-//        $madelineProto->updateSettings($settings);
-//
-//
-//
-//
-//        Log::channel('top-up-messages')->info("PEER SETTINGS " .  json_encode($peerSettings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
 
@@ -116,6 +106,10 @@ class TopUpSendMessageService
 //        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 
+
+        $peerInfo = $madelineProto->getInfo($to_id);
+
+        Log::channel('top-up-messages')->info("PEER INFO: " . json_encode($peerInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         $history = $madelineProto->messages->getHistory([
             'peer' => $to_id,
