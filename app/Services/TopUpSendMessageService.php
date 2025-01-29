@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\TelegramAccount;
+use App\Modules\ApiNoBot\ApiNobotService;
 use danog\MadelineProto\API;
 use danog\MadelineProto\EventHandler;
 use danog\MadelineProto\RPCErrorException;
@@ -10,10 +11,13 @@ use danog\MadelineProto\Settings;
 use danog\MadelineProto\Settings\AppInfo;
 use danog\MadelineProto\Settings\Peer;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class TopUpSendMessageService
 {
+
+
 
 
     protected $settings;
@@ -29,6 +33,26 @@ class TopUpSendMessageService
 
         $set->setPeer((new Peer())
             ->setFullFetch(true));
+    }
+
+
+
+    private function getTelegramLinkFromCRM(int $crmTaskId): ?string
+    {
+        $crmUrl = env('CRM_API_URL') . "/tasks/{$crmTaskId}"; // Пример API-эндпоинта
+        $apiKey = env('CRM_API_KEY');
+
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer $apiKey",
+        ])->get($crmUrl);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['telegram_link'] ?? null;
+        }
+
+        Log::channel('top-up-messages')->error("Ошибка получения Telegram link из CRM: " . $response->body());
+        return null;
     }
 
 
@@ -58,18 +82,51 @@ class TopUpSendMessageService
 
         $madelineProto = new API($sessionPath, $this->settings);
 
-
-
-        Log::channel('top-up-messages')->info("ACCOUNT" . json_encode($madelineProto, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
         return $madelineProto;
 
     }
 
 
-
-    public function sendMessageTopUp(int $telegramId, string $message, int $to_id)
+    /**
+     * @throws \Exception
+     */
+    public function sendMessageTopUp(int $telegramId, string $message, int $taskId)
     {
+        $crmService = new ApiNobotService();
+
+        $taskId = 208868;
+
+        $task = $crmService->getTask($taskId);
+
+        if (!$task || !isset($task['task']['assigner']['id'])) {
+            Log::channel('top-up-messages')->error("Не найден assigner для задачи ID: {$taskId}");
+            throw new \Exception("Не найден assigner для задачи ID: {$taskId}");
+
+        }
+
+        $contactId = $task['task']['assigner']['id'];
+        $contact = $crmService->getContact($contactId);
+        $telegramLink = $contact['contact']['telegram'] ?? null;
+
+
+        if (!$telegramLink) {
+            Log::channel('top-up-messages')->warning("У контакта {$contactId} нет Telegram-ссылки, сообщение не отправлено.");
+            throw new \Exception("У контакта {$contactId} нет Telegram-ссылки, сообщение не отправлено.");
+
+        }
+
+        $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
+        if (!$parsedUsername) {
+            Log::channel('top-up-messages')->warning("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
+            throw new \Exception("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
+        }
+
+        $to_id = $parsedUsername;
+
+        Log::channel('top-up-messages')->info("ТЕСТОВЫЙ ЛИНК ТЕЛЕГРАМ:" . $to_id);
+
+        return;
+
         try {
             $mainSession = $this->findSessionTelegram($telegramId);
             $madelineProto = $this->initializeModelineProto($mainSession->session_path);
@@ -94,22 +151,6 @@ class TopUpSendMessageService
 
 
 
-
-        $result = $madelineProto->contacts->addContact(
-            id: $to_id,
-            first_name: 'Имя',
-            last_name: 'Фамилия',
-            phone: ''
-        );
-
-
-        Log::channel('top-up-messages')->info("RESULT AddContact " .  json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-
-
-        $peerInfo = $madelineProto->getInfo($to_id);
-
-        Log::channel('top-up-messages')->info("PEER INFO: " . json_encode($peerInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         $history = $madelineProto->messages->getHistory([
             'peer' => $to_id,

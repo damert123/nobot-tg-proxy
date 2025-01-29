@@ -27,10 +27,10 @@ class TelegramController extends Controller
             $telegramIdFrom = $data->fromId;
 
             if (!empty($data->message)){
-                $this->topUpSendMessageService->sendMessageTopUp($telegramIdFrom, $data->message, $data->toId);
+                $this->topUpSendMessageService->sendMessageTopUp($telegramIdFrom, $data->message, $data->task);
             }
 
-            return response()->json(["message" => "УРАААА!!!"]);
+            return response()->json(["message" => "Send Message complete"]);
 
         }catch (\Exception $e){
             Log::channel('top-up-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");

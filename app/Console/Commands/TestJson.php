@@ -26,26 +26,11 @@ class TestJson extends Command
      */
     public function handle()
     {
-        $message = Message::find(1)->toArray();
+        $link = 'decolame888';
 
-        $atach = $message['attachments'];
+        $res = preg_replace('/^(https?:\/\/)?(t\.me\/|@)/', '', $link);
 
-        $ress = json_decode($atach, true);
+        dd($res ? '@' . $res : null);
 
-        dd($ress['url']);
-
-        $res = is_array($ress);
-        dd($ress);
-
-
-
-                                        // Замените 1 на ID нужного сообщения
-        if ($message) {
-            $attachments = json_decode($message->attachments, true);
-            $this->info('Decoded JSON:');
-            print_r($attachments);
-        } else {
-            $this->error('Message not found.');
-        }
     }
 }
