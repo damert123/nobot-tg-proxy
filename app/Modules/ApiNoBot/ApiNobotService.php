@@ -19,6 +19,11 @@ class ApiNobotService
             'Accept' => 'application/json',
         ])->$method($url, $query);
 
+        Log::channel('top-up-messages')->info("Сделали запрос в crm :" .  json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
+
+
         if ($response->failed()){
             Log::channel('top-up-messages')->error("CRM API ERROR: " . $response->body());
             return null;
