@@ -160,6 +160,7 @@ class TopUpSendMessageService
         foreach ($history['messages'] as $msg) {
             // Если сообщение отправлено или получено за последние 10 минут, прерываем отправку
             if (isset($msg['date']) && ($now - $msg['date']) <= 300) {
+                Log::channel('top-up-messages')->info("Сообщение не отправлено: уже было общение за последние 5 минут.");
                 echo "Сообщение не отправлено: уже было общение за последние 5 минут.\n";
                 return;
             }
