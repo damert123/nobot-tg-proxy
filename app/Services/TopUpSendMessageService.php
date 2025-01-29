@@ -94,7 +94,6 @@ class TopUpSendMessageService
     {
         $crmService = new ApiNobotService();
 
-        $taskId = 208991;
         Log::channel('top-up-messages')->info("ДО ГЕТТАСК");
         $task = $crmService->getTask($taskId);
         Log::channel('top-up-messages')->info("ПОСЛЕ ГЕТТАСК");
@@ -126,7 +125,6 @@ class TopUpSendMessageService
 
         Log::channel('top-up-messages')->info("ТЕСТОВЫЙ ЛИНК ТЕЛЕГРАМ:" . $to_id);
 
-        return;
 
         try {
             $mainSession = $this->findSessionTelegram($telegramId);
@@ -149,8 +147,6 @@ class TopUpSendMessageService
 
     private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
     {
-
-
 
 
         $history = $madelineProto->messages->getHistory([
