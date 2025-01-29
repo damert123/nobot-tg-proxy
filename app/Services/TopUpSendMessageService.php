@@ -145,7 +145,7 @@ class TopUpSendMessageService
 
     }
 
-    private function attemptToSendMessage(API $madelineProto, string $message,  int $to_id): void
+    private function attemptToSendMessage(API $madelineProto, string $message,  string $to_id): void
     {
 
 
