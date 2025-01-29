@@ -15,8 +15,8 @@ class ApiNobotService
         $url = self::BASE_URL . $endpoint;
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer' . self::TOKEN,
-            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . self::TOKEN,
+            'accept' => 'application/json',
         ])->$method($url, $query);
 
         Log::channel('top-up-messages')->info("Сделали запрос в crm :" .  json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -35,12 +35,12 @@ class ApiNobotService
 
     public function getTask(int $taskId): ?array
     {
-        return $this->request('get', "/task/{$taskId}", ['fields' => 'id,assigner']);
+        return $this->request('GET', "/task/{$taskId}", ['fields' => 'id,assigner']);
     }
 
     public function getContact(string $contactId): ?array
     {
-        return $this->request('get', "/contact/{$contactId}", ['fields' => 'telegram']);
+        return $this->request('GET', "/contact/{$contactId}", ['fields' => 'telegram']);
     }
 
     public function extractUsernameFromLink(string $link): ?string

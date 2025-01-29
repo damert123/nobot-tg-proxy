@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Message;
+use App\Modules\ApiNoBot\ApiNobotService;
 use Illuminate\Console\Command;
 
 class TestJson extends Command
@@ -26,11 +27,24 @@ class TestJson extends Command
      */
     public function handle()
     {
-        $link = 'decolame888';
 
-        $res = preg_replace('/^(https?:\/\/)?(t\.me\/|@)/', '', $link);
+        $crmService = new ApiNobotService();
 
-        dd($res ? '@' . $res : null);
+        $taskId = 208868;
+
+        $task = $crmService->getTask($taskId);
+
+
+
+        $contactId = $task['task']['assigner']['id'];
+        $contact = $crmService->getContact($contactId);
+        $telegramLink = $contact['contact']['telegram'] ?? null;
+
+
+        $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
+
+        dd($parsedUsername);
+
 
     }
 }
