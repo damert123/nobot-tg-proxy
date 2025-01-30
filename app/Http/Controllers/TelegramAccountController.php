@@ -263,7 +263,7 @@ class TelegramAccountController extends Controller
 
         // Запуск сессии с использованием MadelineProto
 
-        Artisan::call('telegram:restart');
+        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была успешно запущена.');
     }
@@ -282,12 +282,7 @@ class TelegramAccountController extends Controller
         $account->status = 'Пауза';
         $account->save();
 
-        // Запуск сессии с использованием MadelineProto
-        $sessionPath = $account->session_path;
-        if (file_exists($sessionPath)) {
-            $MadelineProto = new API($sessionPath);
-            $MadelineProto->stop(); // Запуск сессии
-        }
+        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была поставлена на паузу.');
     }
