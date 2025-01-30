@@ -253,7 +253,7 @@ class TelegramAccountController extends Controller
         $account = TelegramAccount::findOrFail($accountId);
 
         // Проверяем, что сессия не активна
-        if ($account->status === 'Пауза') {
+        if ($account->status === 'Активен') {
             return redirect()->route('telegram.index')->with('error', 'Сессия уже активна.');
         }
 
@@ -279,7 +279,7 @@ class TelegramAccountController extends Controller
         }
 
         // Статус сессии меняем на "Активен"
-        $account->status = 'Активен';
+        $account->status = 'Пауза';
         $account->save();
 
         // Запуск сессии с использованием MadelineProto
