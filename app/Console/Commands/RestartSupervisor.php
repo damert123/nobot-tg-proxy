@@ -31,7 +31,7 @@ class RestartSupervisor extends Command
         $this->info('Перезапуск Supervisor...');
 
         // Выполняем команду рестарта Supervisor
-        $output = shell_exec('supervisorctl restart telegram_listener 2>&1');
+        $output = shell_exec('sudo supervisorctl restart telegram_listener 2>&1');
 
         // Логируем результат
         Log::info('Результат рестарта Supervisor:', ['output' => $output]);
