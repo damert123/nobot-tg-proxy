@@ -36,27 +36,6 @@ class TopUpSendMessageService
     }
 
 
-
-    private function getTelegramLinkFromCRM(int $crmTaskId): ?string
-    {
-        $crmUrl = env('CRM_API_URL') . "/tasks/{$crmTaskId}"; // Пример API-эндпоинта
-        $apiKey = env('CRM_API_KEY');
-
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer $apiKey",
-        ])->get($crmUrl);
-
-        if ($response->successful()) {
-            $data = $response->json();
-            return $data['telegram_link'] ?? null;
-        }
-
-        Log::channel('top-up-messages')->error("Ошибка получения Telegram link из CRM: " . $response->body());
-        return null;
-    }
-
-
-
     public function findSessionTelegram(int $telegramId): object
     {
         $sessionTelegram = DB::table('telegram_accounts')
@@ -86,17 +65,56 @@ class TopUpSendMessageService
 
     }
 
+    /**
+     * @throws \Exception
+     */
+
+    public function sendMessageTopUpDirectly(int $telegramId, string $message, string $telegramLink): void
+    {
+        try {
+            Log::channel('top-up-messages')->error("НАЧИНАЕТСЯ ОТПРАВКА ЧРЕЗ telegram_link: {$telegramLink}");
+
+            $crmService = new ApiNobotService();
+
+            $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
+
+            if (!$parsedUsername){
+                Log::channel('top-up-messages')->error("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
+                throw new \Exception("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
+            }
+
+            $mainSession = $this->findSessionTelegram($telegramId);
+            $madelineProto = $this->initializeModelineProto($mainSession->session_path);
+
+            $this->attemptToSendMessage($madelineProto, $message, $parsedUsername);
+
+        }catch (\Exception $e) {
+            Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
+
+            try {
+                $crmService = new ApiNobotService();
+                $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
+
+                $this->tryAlternativeAccounts($message, $parsedUsername, $telegramId);
+            }catch (\Exception $e){
+                Log::channel('top-up-messages')->error("Ошибка при использовании альтернативных аккаунтов: {$e->getMessage()}");
+                throw $e;
+            }
+        }
+    }
+
 
     /**
      * @throws \Exception
      */
-    public function sendMessageTopUp(int $telegramId, string $message, int $taskId)
+    public function sendMessageTopUpTask(int $telegramId, string $message, int $taskId): void
     {
+        Log::channel('top-up-messages')->error("НАЧИНАЕТСЯ ОТПРАВКА ЧРЕЗ task: {$taskId}");
+
         $crmService = new ApiNobotService();
 
-        Log::channel('top-up-messages')->info("ДО ГЕТТАСК");
         $task = $crmService->getTask($taskId);
-        Log::channel('top-up-messages')->info("ПОСЛЕ ГЕТТАСК");
+
 
         if (!$task || !isset($task['task']['assigner']['id'])) {
             Log::channel('top-up-messages')->error("Не найден assigner для задачи ID: {$taskId}");
@@ -181,7 +199,7 @@ class TopUpSendMessageService
 
     }
 
-    private function tryAlternativeAccounts(string $message, int $to_id, int $excludedTelegramId)
+    private function tryAlternativeAccounts(string $message, string $to_id, int $excludedTelegramId): void
     {
         $accounts = DB::table('telegram_accounts')
             ->where('status', 'Активен')

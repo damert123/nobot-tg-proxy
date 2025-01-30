@@ -26,8 +26,17 @@ class TelegramController extends Controller
 
             $telegramIdFrom = $data->fromId;
 
-            if (!empty($data->message)){
-                $this->topUpSendMessageService->sendMessageTopUp($telegramIdFrom, $data->message, $data->task);
+            if (!empty($data->message)) {
+                // Если есть telegram_link (to_id), отправляем сразу
+                if (!empty($data->toId)) {
+                    $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
+                }
+                // Если нет telegram_link, но есть task, тогда идем в CRM
+                elseif (!empty($data->task)) {
+                    $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
+                } else {
+                    Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
+                }
             }
 
             return response()->json(["message" => "Send Message complete"]);
