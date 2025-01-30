@@ -135,7 +135,7 @@ class TelegramAccountController extends Controller
                 ['phone' => $validated['phone']], // Обновляем, если номер телефона уже существует
                 [
                     'telegram_id' => $self['id'],
-                    'status' => 'Активен',
+                    'status' => 'Пауза',
                 ]
             );
 
@@ -253,7 +253,7 @@ class TelegramAccountController extends Controller
         $account = TelegramAccount::findOrFail($accountId);
 
         // Проверяем, что сессия не активна
-        if ($account->status === 'Активен') {
+        if ($account->status === 'Пауза') {
             return redirect()->route('telegram.index')->with('error', 'Сессия уже активна.');
         }
 
@@ -279,7 +279,7 @@ class TelegramAccountController extends Controller
         }
 
         // Статус сессии меняем на "Активен"
-        $account->status = 'Пауза';
+        $account->status = 'Активен';
         $account->save();
 
         // Запуск сессии с использованием MadelineProto
