@@ -210,6 +210,8 @@ class TelegramAccountController extends Controller
 
             $account->delete();
 
+            Artisan::call('telegram:restart-supervisor');
+
             return redirect()->route('telegram.index')->with('success', 'Аккаунт успешно удален!');
 
         }catch (\Exception $e){
