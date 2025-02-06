@@ -27,6 +27,14 @@ class BasicEventHandler extends SimpleEventHandler
             $peerId = $message['peer_id'] ?? null;
             $fromId = $message['from_id'] ?? null;
 
+            if ($fromId < 0 || $peerId < 0) {
+                Log::channel('tg-messages')->info("Сообщение от/в отрицательный ID. Игнорируем.", [
+                    'from_id' => $fromId,
+                    'peer_id' => $peerId,
+                ]);
+                return;
+            }
+
             // Получаем данные текущего пользователя (менеджера)
             $self = $this->getSelf();
             $managerId = $self['id'];
