@@ -265,7 +265,7 @@ class TelegramAccountController extends Controller
 
         // Запуск сессии с использованием MadelineProto
 
-        Artisan::call('telegram:restart-supervisor');
+//        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была успешно запущена.');
     }
@@ -284,7 +284,7 @@ class TelegramAccountController extends Controller
         $account->status = 'Пауза';
         $account->save();
 
-        Artisan::call('telegram:restart-supervisor');
+//        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была поставлена на паузу.');
     }
