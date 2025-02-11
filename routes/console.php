@@ -11,5 +11,5 @@ Artisan::command('inspire', function () {
 \Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\QueueListen::class)
     ->everySecond()->withoutOverlapping();
 
-\Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\TelegramListen::class)
-    ->withoutOverlapping();
+//\Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\TelegramListen::class)->everyFiveSeconds()
+//    ->withoutOverlapping();
