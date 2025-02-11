@@ -12,4 +12,4 @@ Artisan::command('inspire', function () {
     ->everySecond()->withoutOverlapping();
 
 \Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\TelegramListen::class)
-    ->everySecond()->withoutOverlapping();
+    ->withoutOverlapping();
