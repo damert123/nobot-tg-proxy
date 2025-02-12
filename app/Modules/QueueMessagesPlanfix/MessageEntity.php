@@ -55,6 +55,11 @@ class MessageEntity
             ->exists();
     }
 
+    public static function getCompleteMessagesAll()
+    {
+        return Message::where('status', self::COMPLETED)->get();
+    }
+
 
     public function updateStatus(string $status): bool
     {
@@ -106,6 +111,11 @@ class MessageEntity
         $this->message->status = self::ERROR;
 
         $this->message->saveOrFail();
+    }
+
+    public function delete(): void
+    {
+        $this->message->delete();
     }
 
 }
