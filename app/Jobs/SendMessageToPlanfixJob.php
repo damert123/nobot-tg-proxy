@@ -30,20 +30,20 @@ class SendMessageToPlanfixJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $messageRecord = $this->tgMessagesEntity->create($this->data);
+        $messageRecord = TgMessagesEntity::create($this->data);
 
         try {
             $response = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $this->data);
 
             if ($response->successful()) {
-                $this->tgMessagesEntity->setStatusComplete();
+                $messageRecord->setStatusComplete();
             } else {
                 $responseBody = $response->body();
                 $responseStatus = $response->status();
-                $this->tgMessagesEntity->setStatusError(" code: $responseStatus body:  $responseBody");
+                $messageRecord->setStatusError(" code: $responseStatus body:  $responseBody");
             }
         } catch (\Exception $e) {
-            $this->tgMessagesEntity->setStatusError($e->getMessage());
+            $messageRecord->setStatusError($e->getMessage());
         }
     }
 }

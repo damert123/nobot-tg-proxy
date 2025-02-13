@@ -20,9 +20,9 @@ class TgMessagesEntity
         $this->tgMessages = $tgMessages;
     }
 
-    public function create(array $data): TgMessages
+    public static function create(array $data): TgMessagesEntity
     {
-        return $this->tgMessages->create([
+        $message = TgMessages::create([
             'provider_id' => $data['provider_id'],
             'chat_id' => $data['chat_id'],
             'planfix_token' => $data['planfix_token'],
@@ -37,6 +37,8 @@ class TgMessagesEntity
             'attachments_url' => $data['attachments_url'] ?? null,
             'status' => $data['status'] ?? 'pending',
         ]);
+
+        return new self($message);
     }
 
     public function setStatusComplete(): void
