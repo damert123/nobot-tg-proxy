@@ -14,15 +14,13 @@ class SendMessageToPlanfixJob implements ShouldQueue
 
 
     protected $data;
-    private TgMessagesEntity $tgMessagesEntity;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(array $data, TgMessagesEntity $tgMessagesEntity)
+    public function __construct(array $data)
     {
         $this->data = $data;
-        $this->tgMessagesEntity = $tgMessagesEntity;
     }
 
     /**
