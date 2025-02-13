@@ -375,7 +375,7 @@ class BasicEventHandler extends SimpleEventHandler
 
 //                $response = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $data);
 
-                SendMessageToPlanfixJob::dispatch($data)->onQueue('planfix');
+                SendMessageToPlanfixJob::dispatch($data);
 
 //                if ($response->successful()){
 //                    Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
