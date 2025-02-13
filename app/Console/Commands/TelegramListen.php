@@ -38,5 +38,7 @@ class TelegramListen extends Command
     {
         $this->info('Запуск обработчика сообщений Telegram...');
         $this->telegramService->listenForMessage();
+
+        return 0;
     }
 }
