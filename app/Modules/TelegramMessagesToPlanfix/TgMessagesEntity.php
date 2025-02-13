@@ -23,18 +23,18 @@ class TgMessagesEntity
     public static function create(array $data): TgMessagesEntity
     {
         $message = TgMessages::create([
-            'provider_id' => $data['provider_id'],
-            'chat_id' => $data['chat_id'],
+            'provider_id' => $data['providerId'],
+            'chat_id' => $data['chatId'],
             'planfix_token' => $data['planfix_token'],
             'message' => $data['message'] ?? 'Файл',
             'title' => $data['title'],
-            'contact_id' => $data['contact_id'],
-            'contact_name' => $data['contact_name'] ?? null,
-            'contact_last_name' => $data['contact_last_name'] ?? null,
-            'telegram_username' => $data['telegram_username'] ?? null,
-            'contact_data' => $data['contact_data'] ?? null,
-            'attachments_name' => $data['attachments_name'] ?? null,
-            'attachments_url' => $data['attachments_url'] ?? null,
+            'contact_id' => $data['contactId'],
+            'contact_name' => $data['contactName'] ?? null,
+            'contact_last_name' => $data['contactLastName'] ?? null,
+            'telegram_username' => $data['telegramUserName'] ?? null,
+            'contact_data' => $data['contactData'] ?? null,
+            'attachments_name' => $data['attachments[name]'] ?? null,
+            'attachments_url' => $data['attachments[url]'] ?? null,
             'status' => $data['status'] ?? 'pending',
         ]);
 
