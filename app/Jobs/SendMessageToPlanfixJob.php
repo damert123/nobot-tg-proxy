@@ -13,6 +13,7 @@ class SendMessageToPlanfixJob implements ShouldQueue
     use Queueable;
 
 
+    public $queue = 'planfix';
 
     protected $data;
 
