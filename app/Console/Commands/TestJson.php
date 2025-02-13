@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Message;
 use App\Modules\ApiNoBot\ApiNobotService;
+use App\Modules\TelegramMessagesToPlanfix\TgMessagesEntity;
 use Illuminate\Console\Command;
 
 class TestJson extends Command
@@ -28,23 +29,26 @@ class TestJson extends Command
     public function handle()
     {
 
-        $crmService = new ApiNobotService();
 
-        $taskId = 208991;
+        $data = [
+            'provider_id' => '123456',
+            'chat_id' => 987654321,
+            'planfix_token' => 'test_token_123',
+            'message' => 'Тестовое сообщение',
+            'title' => 'Тестовый заголовок',
+            'contact_id' => 111222333,
+            'contact_name' => 'Иван',
+            'contact_last_name' => 'Иванов',
+            'telegram_username' => 'ivan_test',
+            'contact_data' => 'Телефон: +79991234567',
+            'attachments_name' => 'test_file.jpg',
+            'attachments_url' => 'https://example.com/test_file.jpg',
+            'status' => 'pending',
+        ];
 
-        $task = $crmService->getTask($taskId);
+        $resp = TgMessagesEntity::create($data);
 
-
-
-        $contactId = $task['task']['assigner']['id'];
-        $contact = $crmService->getContact($contactId);
-        $telegramLink = $contact['contact']['telegram'] ?? null;
-
-
-        $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
-
-        dd($parsedUsername);
-
+        dd($resp);
 
     }
 }

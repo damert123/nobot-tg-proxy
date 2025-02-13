@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 
+use App\Jobs\SendMessageToPlanfixJob;
 use Carbon\Carbon;
 use danog\MadelineProto\API;
 use danog\MadelineProto\SimpleEventHandler;
@@ -353,7 +354,7 @@ class BasicEventHandler extends SimpleEventHandler
                     }
                 }
 
-                if ($message['id'] != null){
+                if ($message['id'] != null) {
                     $idTextMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])->exists();
 
                     if ($idTextMessageIgnore) {
@@ -372,12 +373,14 @@ class BasicEventHandler extends SimpleEventHandler
                 }
 
 
-                $response = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $data);
+//                $response = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $data);
 
-                if ($response->successful()){
-                    Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
-                        'response' => $response->json(),
-                    ]);
+                SendMessageToPlanfixJob::dispatch($data)->onQueue('planfix');
+
+//                if ($response->successful()){
+//                    Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
+//                        'response' => $response->json(),
+//                    ]);
 
 //                    if (!empty($filePath)) {
 //                        if (Storage::disk('public')->exists($filePath)) {
@@ -387,16 +390,16 @@ class BasicEventHandler extends SimpleEventHandler
 //                            Log::channel('planfix-messages')->warning("Файл для удаления не найден: $filePath");
 //                        }
 //                    }
+//
+//                }
 
-                }
-
-                else {
-                    Log::channel('planfix-messages')->warning('Ошибка при отправке сообщения в Planfix', [
-                        'status' => $response->status(),
-                        'response' => $response->body(),
-                    ]);
-
-                }
+//                else {
+//                    Log::channel('planfix-messages')->warning('Ошибка при отправке сообщения в Planfix', [
+//                        'status' => $response->status(),
+//                        'response' => $response->body(),
+//                    ]);
+//
+//                }
             }catch (\Throwable $e){
                 Log::channel('planfix-messages')->error('Не удалось отправить сообщение в Planfix', [
                     'error' => $e->getMessage(),
@@ -415,8 +418,6 @@ class BasicEventHandler extends SimpleEventHandler
             Log::channel('tg-messages')->warning('Обновление без сообщения');
         }
     }
-
-
 
 
 }

@@ -25,7 +25,7 @@ class ChatEntity
 
     public function getChatId(): int
     {
-        return $this->chat->chat_id; // Возвращаем ID чата из модели
+        return $this->chat->chat_id;
     }
 
     public function getId(): int
