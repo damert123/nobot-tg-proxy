@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
 class TgMessages extends Model
 {
 
-
+    protected $table = 'tg_to_crm_messages';
     protected $fillable = [
         'provider_id',
         'chat_id',
