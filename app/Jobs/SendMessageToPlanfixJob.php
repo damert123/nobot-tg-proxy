@@ -6,6 +6,7 @@ use App\Modules\TelegramMessagesToPlanfix\TgMessagesEntity;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SendMessageToPlanfixJob implements ShouldQueue
 {
@@ -28,6 +29,7 @@ class SendMessageToPlanfixJob implements ShouldQueue
      */
     public function handle(): void
     {
+        Log::channel('planfix-messages')->info('DATA: ' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
         $messageRecord = TgMessagesEntity::create($this->data);
 
         try {
