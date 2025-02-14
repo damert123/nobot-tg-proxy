@@ -150,7 +150,6 @@ class BasicEventHandler extends SimpleEventHandler
                     'chatId' => $clientId,
                     'planfix_token' => $planfixIntegration->planfix_token,
                     'message' => $text ?: 'Файл',
-                    'title' => $clientFirstName . ' ' . $clientLastName,
                     'contactId' => $fromId,
                     'contactName' => $senderFirstName,
                     'contactLastName' => $senderLastName,
