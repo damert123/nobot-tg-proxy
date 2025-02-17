@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('chat_id');
             $table->string('planfix_token');
             $table->text('message');
-            $table->string('title')->nullable();
+            $table->string('title');
             $table->unsignedBigInteger('contact_id');
             $table->string('contact_name')->nullable();
             $table->string('contact_last_name')->nullable();
