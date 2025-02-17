@@ -27,7 +27,7 @@ class TgMessagesEntity
             'chat_id' => $data['chatId'],
             'planfix_token' => $data['planfix_token'],
             'message' => $data['message'] ?? 'Файл',
-            'title' => $data['title'],
+            'title' => $data['title'] ?? null,
             'contact_id' => $data['contactId'],
             'contact_name' => $data['contactName'] ?? null,
             'contact_last_name' => $data['contactLastName'] ?? null,
