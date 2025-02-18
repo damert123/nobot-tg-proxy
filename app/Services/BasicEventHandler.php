@@ -318,7 +318,7 @@ class BasicEventHandler extends SimpleEventHandler
 
                                 $publicUrl = url(Storage::url($filePath));
 
-                                $data['attachments[name]'] = 'sticker.png';
+                                $data['attachments[name]'] = 'sticker.webm';
                                 $data['attachments[url]'] = $publicUrl;
 
                                 Log::channel('tg-messages')->info('СТИКЕР успешно сохранен и ссылка сгенерирована', ['url' => $publicUrl]);
