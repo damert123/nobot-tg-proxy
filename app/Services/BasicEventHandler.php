@@ -405,40 +405,14 @@ class BasicEventHandler extends SimpleEventHandler
                 }
 
 
-//                $response = Http::asForm()->post('https://agencylemon.planfix.ru/webchat/api', $data);
-
                 SendMessageToPlanfixJob::dispatch($data)->onQueue('planfix');
 
-//                if ($response->successful()){
-//                    Log::channel('planfix-messages')->info('Сообщение успешно отправлено в PlanFix', [
-//                        'response' => $response->json(),
-//                    ]);
-
-//                    if (!empty($filePath)) {
-//                        if (Storage::disk('public')->exists($filePath)) {
-//                            Storage::disk('public')->delete($filePath);
-//                            Log::channel('planfix-messages')->info("Файл успешно удален: $filePath");
-//                        } else {
-//                            Log::channel('planfix-messages')->warning("Файл для удаления не найден: $filePath");
-//                        }
-//                    }
-//
-//                }
-
-//                else {
-//                    Log::channel('planfix-messages')->warning('Ошибка при отправке сообщения в Planfix', [
-//                        'status' => $response->status(),
-//                        'response' => $response->body(),
-//                    ]);
-//
-//                }
             }catch (\Throwable $e){
                 Log::channel('planfix-messages')->error('Не удалось отправить сообщение в Planfix', [
                     'error' => $e->getMessage(),
                 ]);
             }
 
-//            Log::channel('tg-messages')->info("Информация о пользователе:" . json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             Log::channel('tg-messages')->info("Обработка сообщения завершена", [
                 'client_id' => $clientId,
                 'from_id' => $fromId,
