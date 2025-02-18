@@ -318,7 +318,17 @@ class BasicEventHandler extends SimpleEventHandler
 
                                 $publicUrl = url(Storage::url($filePath));
 
-                                $data['attachments[name]'] = 'sticker.webm';
+
+                                $isAnimated = false;
+
+                                foreach ($media['document']['attributes'] as $attr){
+                                    if ($attr['_'] === 'documentAttributeVideo'){
+                                        $isAnimated = true;
+                                        break;
+                                    }
+                                }
+
+                                $data['attachments[name]'] = $isAnimated ? 'sticker.webm' : 'sticker.png';
                                 $data['attachments[url]'] = $publicUrl;
 
                                 Log::channel('tg-messages')->info('СТИКЕР успешно сохранен и ссылка сгенерирована', ['url' => $publicUrl]);
