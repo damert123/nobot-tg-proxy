@@ -301,6 +301,29 @@ class BasicEventHandler extends SimpleEventHandler
 
 
 
+                    }elseif (isset($media['document']['attributes'])) {
+                        foreach ($media['document']['attributes'] as $attribute) {
+                            if ($attribute['_'] === 'documentAttributeSticker') {
+                                // Это стикер
+                                Log::info('Получен стикер');
+
+                                $stickerId = $media['document']['id'];
+                                $filePath = "telegram/media/sticker/{$stickerId}.webp";
+
+                                if (!Storage::disk('public')->exists('telegram/media/sticker')) {
+                                    Storage::disk('public')->makeDirectory('telegram/media/sticker');
+                                }
+
+                                $this->downloadToFile($media, Storage::disk('public')->path($filePath));
+
+                                $publicUrl = url(Storage::url($filePath));
+
+                                $data['attachments[name]'] = 'sticker.png';
+                                $data['attachments[url]'] = $publicUrl;
+
+                                Log::channel('tg-messages')->info('СТИКЕР успешно сохранен и ссылка сгенерирована', ['url' => $publicUrl]);
+                            }
+                        }
                     } elseif (isset($media['document'])) {
                         $document = $media['document'];
 
