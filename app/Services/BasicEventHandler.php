@@ -391,6 +391,7 @@ class BasicEventHandler extends SimpleEventHandler
 
                     if ($idTextMessageIgnore) {
                         DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])->delete();
+                        Log::channel('tg-messages')->info('Такое сообщение есть в таблице id_message_to_tg_telegram');
                         return;
                     }
                 }
