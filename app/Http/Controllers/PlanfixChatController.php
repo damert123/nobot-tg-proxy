@@ -91,8 +91,8 @@ class PlanfixChatController extends Controller
 
                     $idMessageMedia = $resultPNG['updates'][1]['message']['media']['photo']['id'];
 
-                    Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
-                    Log::channel('planfix-messages')->info("ПРИВЕТ");
+                    Log::info("ID MANAGER " . $telegramAccount->telegram_id);
+                    Log::info("ПРИВЕТ");
 
 
                     /** @var TelegramAccount $telegramAccount */
@@ -138,8 +138,8 @@ class PlanfixChatController extends Controller
 
                     $idMessageMedia = $resultMP4['updates'][1]['message']['media']['document']['id'];
 
-                    Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
-                    Log::channel('planfix-messages')->info("ПРИВЕТ");
+                    Log::info("ID MANAGER " . $telegramAccount->telegram_id);
+                    Log::info("ПРИВЕТ");
 
                     /** @var TelegramAccount $telegramAccount */
                     DB::table('id_message_to_tg_telegram')->insert([
@@ -220,8 +220,8 @@ class PlanfixChatController extends Controller
 
                     $idMessageMedia = $resultOgg['updates'][1]['message']['media']['document']['id'];
 
-                    Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
-                    Log::channel('planfix-messages')->info("ПРИВЕТ");
+                    Log::info("ID MANAGER " . $telegramAccount->telegram_id);
+                    Log::info("ПРИВЕТ");
 
                     /** @var TelegramAccount $telegramAccount */
                     DB::table('id_message_to_tg_telegram')->insert([
@@ -291,8 +291,8 @@ class PlanfixChatController extends Controller
 
                 $idMessageMedia = $resultMessage['id'];
                 /** @var TelegramAccount $telegramAccount */
-                Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
-                Log::channel('planfix-messages')->info("ПРИВЕТ");
+                Log::info("ID MANAGER " . $telegramAccount->telegram_id);
+                Log::info("ПРИВЕТ");
 
 
                 DB::table('id_message_to_tg_telegram')->insert([
