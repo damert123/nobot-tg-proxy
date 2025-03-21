@@ -281,7 +281,8 @@ class PlanfixChatController extends Controller
                 Log::channel('planfix-messages')->info("ТЕКСТ ИЗ PLANFIX to Telegram chat", [$resultMessage['id']]);
 
                 $idMessageMedia = $resultMessage['id'];
-                Log::channel('planfix-messages')->info("ID MANAGER", [$telegramAccount->telegram_id]);
+                Log::channel('planfix-messages')->info("ID MANAGER", ['telegram_id' => $telegramAccount->telegram_id]);
+
                 /** @var TelegramAccount $telegramAccount */
                 DB::table('id_message_to_tg_telegram')->insert([
                     'message_id' => $idMessageMedia,
