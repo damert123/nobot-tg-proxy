@@ -53,13 +53,13 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
 
             if ($message) {
-                $planfixService->sendMessage($madelineProto, $chatId, $message);
+                $planfixService->sendMessage($madelineProto, $chatId, $message, $telegramAccount);
             }
 
             if (!empty($this->data['attachments'])) {
                 $attachments = $this->data['attachments'];
                 $attachments = json_decode($attachments, true);
-                $planfixService->sendAttachment($madelineProto, $chatId, $attachments, $message);
+                $planfixService->sendAttachment($madelineProto, $chatId, $attachments, $message, $telegramAccount);
             }
 
             $this->messageEntity->setStatusCompleted();

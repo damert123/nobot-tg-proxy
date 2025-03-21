@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\Exception;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,7 @@ class PlanfixService
 
     }
 
-    public function sendMessage(API $madelineProto, string $chatId, string $message): void
+    public function sendMessage(API $madelineProto, string $chatId, string $message, object $telegramAccount): void
     {
         try {
             $madelineProto->messages->readHistory([
@@ -80,8 +81,11 @@ class PlanfixService
 
             $idMessageMedia = $resultMessage['id'];
 
+            /** @var TelegramAccount $telegramAccount */
             DB::table('id_message_to_tg_telegram')->insert([
-                'message_id' => $idMessageMedia
+                'message_id' => $idMessageMedia,
+                'manager_id' => $telegramAccount->telegram_id
+
             ]);
 
             Log::channel('planfix-messages')->info("СООБЩЕНИЕ из CRM отправлено в чат {$chatId}: {$message}");
@@ -92,7 +96,7 @@ class PlanfixService
 
     }
 
-    public function sendAttachment(API $madelineProto, string $chatId, array $attachment, ?string $message): void
+    public function sendAttachment(API $madelineProto, string $chatId, array $attachment, ?string $message, object $telegramAccount): void
     {
         $madelineProto->messages->readHistory([
             'peer' => $chatId,
@@ -131,8 +135,11 @@ class PlanfixService
                 ?? null;
 
             if ($mediaId) {
+                /** @var TelegramAccount $telegramAccount */
                 DB::table('id_message_to_tg_telegram')->insert([
-                    'message_id' => $mediaId
+                    'message_id' => $mediaId,
+                    'manager_id' => $telegramAccount->telegram_id
+
                 ]);
             }
 
