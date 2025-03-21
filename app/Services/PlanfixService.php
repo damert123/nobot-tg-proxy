@@ -139,7 +139,6 @@ class PlanfixService
                 DB::table('id_message_to_tg_telegram')->insert([
                     'message_id' => $mediaId,
                     'manager_id' => $telegramAccount->telegram_id
-
                 ]);
             }
 
