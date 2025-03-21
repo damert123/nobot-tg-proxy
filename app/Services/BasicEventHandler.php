@@ -200,10 +200,12 @@ class BasicEventHandler extends SimpleEventHandler
 
                     // Если ID найден, проверяем его в БД
                     if ($mediaId !== null) {
-                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)->exists();
+                        $idMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)
+                            ->where('manager_id', $managerId)->exists();
 
                         if ($idMessageIgnore) {
-                            DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)->delete();
+                            DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)
+                                ->where('manager_id', $managerId)->delete();
                             return; // Пропускаем обработку, если ID уже есть в БД
                         }
                     }
@@ -387,11 +389,13 @@ class BasicEventHandler extends SimpleEventHandler
                 }
 
                 if ($message['id'] != null) {
-                    $idTextMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])->exists();
+                    $idTextMessageIgnore = DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])
+                        ->where('manager_id', $managerId)->exists();
 
                     if ($idTextMessageIgnore) {
-                        DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])->delete();
-                        Log::channel('tg-messages')->info('Такое сообщение есть в таблице id_message_to_tg_telegram');
+                        DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])
+                            ->where('manager_id', $managerId)->delete();
+                        Log::channel('tg-messages')->info('Такое сообщение есть в таблице id_message_to_tg_telegram' . $message['id']);
                         return;
                     }
                 }

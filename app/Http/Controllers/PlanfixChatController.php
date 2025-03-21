@@ -82,7 +82,8 @@ class PlanfixChatController extends Controller
                     $idMessageMedia = $resultPNG['updates'][1]['message']['media']['photo']['id'];
 
                     DB::table('id_message_to_tg_telegram')->insert([
-                        'message_id' => $idMessageMedia
+                        'message_id' => $idMessageMedia,
+                        'manager_id' => $telegramAccount->telegram_id
                     ]);
 
                     $madelineProto->messages->readHistory([
@@ -121,15 +122,14 @@ class PlanfixChatController extends Controller
                     $idMessageMedia = $resultMP4['updates'][1]['message']['media']['document']['id'];
 
                     DB::table('id_message_to_tg_telegram')->insert([
-                        'message_id' => $idMessageMedia
+                        'message_id' => $idMessageMedia,
+                        'manager_id' => $telegramAccount->telegram_id
                     ]);
 
 
                     $madelineProto->messages->readHistory([
                         'peer' => $chatId
                     ]);
-
-
 
                     Log::channel('planfix-messages')->info("Attachment sent to Telegram chat {$chatId}: {$fileName}");
                 }
@@ -200,7 +200,8 @@ class PlanfixChatController extends Controller
                     $idMessageMedia = $resultOgg['updates'][1]['message']['media']['document']['id'];
 
                     DB::table('id_message_to_tg_telegram')->insert([
-                        'message_id' => $idMessageMedia
+                        'message_id' => $idMessageMedia,
+                        'manager_id' => $telegramAccount->telegram_id
                     ]);
 
 
@@ -266,7 +267,8 @@ class PlanfixChatController extends Controller
                 $idMessageMedia = $resultMessage['id'];
 
                 DB::table('id_message_to_tg_telegram')->insert([
-                    'message_id' => $idMessageMedia
+                    'message_id' => $idMessageMedia,
+                    'manager_id' => $telegramAccount->telegram_id
                 ]);
 
 
