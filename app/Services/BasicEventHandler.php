@@ -204,7 +204,8 @@ class BasicEventHandler extends SimpleEventHandler
                             ->where('manager_id', $managerId)->exists();
 
                         if ($idMessageIgnore) {
-                            DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId);
+                            DB::table('id_message_to_tg_telegram')->where('message_id', $mediaId)
+                                ->where('manager_id', $managerId)->delete();
                             return; // Пропускаем обработку, если ID уже есть в БД
                         }
                     }
@@ -392,7 +393,8 @@ class BasicEventHandler extends SimpleEventHandler
                         ->where('manager_id', $managerId)->exists();
 
                     if ($idTextMessageIgnore) {
-                        DB::table('id_message_to_tg_telegram')->where('message_id', $message['id']);
+                        DB::table('id_message_to_tg_telegram')->where('message_id', $message['id'])
+                            ->where('manager_id', $managerId)->delete();
                         Log::channel('tg-messages')->info('Такое сообщение есть в таблице id_message_to_tg_telegram' . $message['id']);
                         return;
                     }
