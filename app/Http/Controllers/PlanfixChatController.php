@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TelegramAccount;
+use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
 use danog\MadelineProto\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,18 +29,26 @@ class PlanfixChatController extends Controller
         $token = $data['token'];
 
         try {
-            $planfixIntegration = DB::table('planfix_integrations')
-                ->where('token', $token)
-                ->first();
+//            $planfixIntegration = DB::table('planfix_integrations')
+//                ->where('token', $token)
+//                ->first();
+
+            $planfixIntegration = PlanfixIntegrationEntity::getToken($token);
+
+
+
 
             if (!$planfixIntegration) {
                 Log::channel('planfix-messages')->error("No Telegram account found for token: {$token}");
                 return response()->json(['success' => false, 'error' => 'Invalid token.'], 400);
             }
+//
+//            $telegramAccount = DB::table('telegram_accounts')
+//                ->where('id', $planfixIntegration->telegram_account_id)
+//                ->first();
 
-            $telegramAccount = DB::table('telegram_accounts')
-                ->where('id', $planfixIntegration->telegram_account_id)
-                ->first();
+            $telegramAccount = PlanfixIntegrationEntity::getTelegramFromId($planfixIntegration->id);
+
 
             if (!$telegramAccount) {
                 Log::channel('planfix-messages')->error("No Telegram account found for ID: {$planfixIntegration->telegram_account_id}");
@@ -81,10 +91,14 @@ class PlanfixChatController extends Controller
 
                     $idMessageMedia = $resultPNG['updates'][1]['message']['media']['photo']['id'];
 
+
+                    /** @var TelegramAccount $telegramAccount */
                     DB::table('id_message_to_tg_telegram')->insert([
                         'message_id' => $idMessageMedia,
                         'manager_id' => $telegramAccount->telegram_id
                     ]);
+
+
 
                     $madelineProto->messages->readHistory([
                         'peer' => $chatId
@@ -121,6 +135,7 @@ class PlanfixChatController extends Controller
 
                     $idMessageMedia = $resultMP4['updates'][1]['message']['media']['document']['id'];
 
+                    /** @var TelegramAccount $telegramAccount */
                     DB::table('id_message_to_tg_telegram')->insert([
                         'message_id' => $idMessageMedia,
                         'manager_id' => $telegramAccount->telegram_id
@@ -199,6 +214,7 @@ class PlanfixChatController extends Controller
 
                     $idMessageMedia = $resultOgg['updates'][1]['message']['media']['document']['id'];
 
+                    /** @var TelegramAccount $telegramAccount */
                     DB::table('id_message_to_tg_telegram')->insert([
                         'message_id' => $idMessageMedia,
                         'manager_id' => $telegramAccount->telegram_id
@@ -266,6 +282,7 @@ class PlanfixChatController extends Controller
 
                 $idMessageMedia = $resultMessage['id'];
 
+                /** @var TelegramAccount $telegramAccount */
                 DB::table('id_message_to_tg_telegram')->insert([
                     'message_id' => $idMessageMedia,
                     'manager_id' => $telegramAccount->telegram_id
