@@ -271,6 +271,9 @@ class PlanfixChatController extends Controller
                     'manager_id' => $telegramAccount->telegram_id
                 ]);
 
+                Log::channel('planfix-messages')->info("ID MANAGER", [$telegramAccount->telegram_id]);
+
+
 
                 Log::channel('planfix-messages')->info("Text message sent to Telegram chat {$chatId}: {$message}");
             }
