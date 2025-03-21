@@ -80,7 +80,8 @@ class PlanfixService
             ]);
 
             $idMessageMedia = $resultMessage['id'];
-
+            Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
+            Log::channel('planfix-messages')->info("ПРИВЕТ");
             /** @var TelegramAccount $telegramAccount */
             DB::table('id_message_to_tg_telegram')->insert([
                 'message_id' => $idMessageMedia,
@@ -135,6 +136,8 @@ class PlanfixService
                 ?? null;
 
             if ($mediaId) {
+                Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
+                Log::channel('planfix-messages')->info("ПРИВЕТ");
                 /** @var TelegramAccount $telegramAccount */
                 DB::table('id_message_to_tg_telegram')->insert([
                     'message_id' => $mediaId,
