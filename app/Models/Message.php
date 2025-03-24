@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string message
  * @property Json attachments
  * @property string status
+ * @property string error_message
  */
 
 class Message extends Model
@@ -21,7 +22,8 @@ class Message extends Model
         'token',
         'message',
         'attachments',
-        'status'
+        'status',
+        'error_message'
     ];
 
 }

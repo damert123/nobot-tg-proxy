@@ -92,7 +92,7 @@ class PlanfixService
             Log::channel('planfix-messages')->info("СООБЩЕНИЕ из CRM отправлено в чат {$chatId}: {$message}");
         } catch (\Exception $e) {
             Log::channel('planfix-messages')->error("Ошибка отправки сообщения в чат {$chatId}: {$e->getMessage()}");
-            throw new \Exception("Ошибка отправки сообщения: {$e->getMessage()}");
+            throw $e;
         }
 
     }

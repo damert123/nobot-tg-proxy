@@ -65,8 +65,15 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $this->messageEntity->setStatusCompleted();
 
         } catch (\Throwable $e) {
-            $this->messageEntity->setStatusError();
+            $this->messageEntity->setStatusError($e->getMessage());
             Log::channel('queue-messages')->error("Ошибка в джобе: {$e->getMessage()}");
+
+
+            if (str_contains($e->getMessage(), 'PEER_FLOOD') && $this->attempts() < 2) {
+                $this->release(60);
+                return;
+            }
+
         }
     }
 

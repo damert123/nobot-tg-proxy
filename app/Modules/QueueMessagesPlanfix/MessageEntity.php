@@ -106,9 +106,10 @@ class MessageEntity
     }
 
 
-    public function setStatusError():void
+    public function setStatusError(string $errorMessage = null):void
     {
         $this->message->status = self::ERROR;
+        $this->message->error_message = $errorMessage;
 
         $this->message->saveOrFail();
     }
