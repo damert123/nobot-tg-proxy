@@ -66,13 +66,16 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
         } catch (\Throwable $e) {
             $this->messageEntity->setStatusError($e->getMessage());
-            Log::channel('queue-messages')->error("Ошибка в джобе: {$e->getMessage()}");
+            Log::channel('queue-messages')->error("Ошибка в джобе (попытка {$this->attempts()}): {$e->getMessage()}");
 
 
-            if (str_contains($e->getMessage(), 'PEER_FLOOD') && $this->attempts() < 2) {
-                $this->release(60);
+            if (str_contains($e->getMessage(), 'PEER_FLOOD') && $this->attempts() < 5) {
+                $delay = 60 * $this->attempts();
+                $this->release($delay);
                 return;
             }
+
+            throw $e;
 
         }
     }
