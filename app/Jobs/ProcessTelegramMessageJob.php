@@ -12,10 +12,16 @@ class ProcessTelegramMessageJob implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public int $tries = 5;
+
     protected $data;
     protected $chatId;
 
-    public $tries = 5;
     public $timeout = 300;
 
     private MessageEntity $messageEntity;
@@ -80,6 +86,12 @@ class ProcessTelegramMessageJob implements ShouldQueue
             throw $e;
 
         }
+    }
+
+
+    public function tries()
+    {
+
     }
 
 }
