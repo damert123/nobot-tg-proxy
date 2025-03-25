@@ -17,7 +17,6 @@ class ProcessTelegramMessageJob implements ShouldQueue
      *
      * @var int
      */
-    public int $tries = 5;
 
     protected $data;
     protected $chatId;
@@ -76,22 +75,8 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $this->messageEntity->setStatusError($e->getMessage());
             Log::channel('queue-messages')->error("Ошибка в джобе (попытка {$this->attempts()}): {$e->getMessage()}");
 
-
-            if ($this->attempts() < 5) {
-                $delay = 60 * $this->attempts();
-                $this->release($delay);
-                return;
-            }
-
-            throw $e;
-
         }
     }
 
-
-    public function tries()
-    {
-
-    }
 
 }
