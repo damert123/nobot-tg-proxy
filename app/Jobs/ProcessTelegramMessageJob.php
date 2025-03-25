@@ -15,7 +15,9 @@ class ProcessTelegramMessageJob implements ShouldQueue
     protected $data;
     protected $chatId;
 
+    public $tries = 5;
     public $timeout = 300;
+
     private MessageEntity $messageEntity;
 
     public $queue; // Устанавливаем очередь
