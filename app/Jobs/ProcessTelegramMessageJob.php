@@ -59,22 +59,24 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $id = $this->data['id'];
 
 
-            if ($message) {
-                $planfixService->sendMessage($madelineProto, $chatId, $message, $telegramAccount);
-            }
-
             if (!empty($this->data['attachments'])) {
                 $attachments = $this->data['attachments'];
                 $attachments = json_decode($attachments, true);
                 $planfixService->sendAttachment($madelineProto, $chatId, $attachments, $message, $telegramAccount);
             }
 
+
+            if ($message) {
+                $planfixService->sendMessage($madelineProto, $chatId, $message, $telegramAccount);
+            }
+
+
+
             $this->messageEntity->setStatusCompleted();
 
         } catch (\Throwable $e) {
             $this->messageEntity->setStatusError($e->getMessage());
             Log::channel('queue-messages')->error("Ошибка в джобе (попытка {$this->attempts()}): {$e->getMessage()}");
-
         }
     }
 
