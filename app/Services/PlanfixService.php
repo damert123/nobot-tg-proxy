@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\PeerFloodException;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\Exception;
@@ -66,7 +67,7 @@ class PlanfixService
 
             $this->simulateTyping($madelineProto, $chatId, $typingDuration, 'sendMessageTypingAction');
 
-            $resultMessage = $madelineProto->messages->sendMessage([
+             $resultMessage = $madelineProto->messages->sendMessage([
                 'peer' => $chatId,
                 'message' => $message,
                 'entities' => [
@@ -92,6 +93,11 @@ class PlanfixService
             Log::channel('planfix-messages')->info("СООБЩЕНИЕ из CRM отправлено в чат {$chatId}: {$message}");
         } catch (\Exception $e) {
             Log::channel('planfix-messages')->error("Ошибка отправки сообщения в чат {$chatId}: {$e->getMessage()}");
+
+            if (str_contains($e->getMessage(), 'PEER_FLOOD')) {
+                // Бросаем наше доменное исключение
+                throw new PeerFloodException('Клиент долго не отвечает (PEER_FLOOD)', 0, $e);
+            }
             throw $e;
         }
 
@@ -151,6 +157,11 @@ class PlanfixService
 
         } catch (\Throwable $e) {
             Log::channel('planfix-messages')->error("Ошибка при отправке вложения в Telegram: {$e->getMessage()}");
+
+            if (str_contains($e->getMessage(), 'PEER_FLOOD')) {
+                // Бросаем наше доменное исключение
+                throw new PeerFloodException('Клиент долго не отвечает (PEER_FLOOD)', 0, $e);
+            }
             throw $e;
         }
 
