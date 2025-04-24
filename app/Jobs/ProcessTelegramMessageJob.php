@@ -98,11 +98,13 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     private function handlePeerFlood(PeerFloodException $e)
     {
+
+        $providerId = $this->messageEntity->findProviderId();
         $this->messageEntity->setStatusError($e->getMessage());
         SendPeerFloodNotificationToPlanfixJob::dispatch(
-            $this->data['planfix_token'],
-            $this->data['chatId'],
-            $this->data['providerId'],
+            $this->data['token'],
+            $this->data['chat_id'],
+            $providerId,
         )->onQueue('planfix');
 
         Log::channel('queue-messages')->warning(
@@ -110,6 +112,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
             ['chatId' => $this->chatId, 'error' => $e->getMessage()]
         );
     }
+
 
 
 }

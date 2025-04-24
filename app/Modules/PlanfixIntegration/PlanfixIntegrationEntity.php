@@ -24,4 +24,5 @@ class PlanfixIntegrationEntity
     {
         return TelegramAccount::where('id', $id)->first();
     }
+
 }

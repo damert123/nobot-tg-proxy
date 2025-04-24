@@ -3,6 +3,7 @@
 namespace App\Modules\QueueMessagesPlanfix;
 
 use App\Models\Message;
+use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
 
 class MessageEntity
 {
@@ -48,6 +49,13 @@ class MessageEntity
         return $message ? new self($message) : null;
     }
 
+    public function findProviderId(): string
+    {
+        $token = $this->getToken();
+        $providerId = PlanfixIntegrationEntity::getToken($token);
+        return $providerId;
+    }
+
     public static function existsInProgressMessages(ChatEntity $chatEntity):bool
     {
         return Message::where('chat_id',$chatEntity->getId())
@@ -89,6 +97,11 @@ class MessageEntity
     public function getModel(): Message
     {
         return $this->message;
+    }
+
+    public function getToken(): string
+    {
+        return  $this->message->token;
     }
 
     public function setStatusInProgress():void
