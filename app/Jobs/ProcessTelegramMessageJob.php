@@ -105,7 +105,10 @@ class ProcessTelegramMessageJob implements ShouldQueue
         $chat = $this->messageEntity->findChatNumberByChatId();
         $this->messageEntity->setStatusError($e->getMessage());
 
-
+        Log::channel('queue-messages')->warning(
+            "CHECK BODY",
+            ['chat' => $chat, 'provider' => $providerId, 'token' => $token]
+        );
         SendPeerFloodNotificationToPlanfixJob::dispatch(
             $token,
             $chat,

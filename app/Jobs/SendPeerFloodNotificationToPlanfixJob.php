@@ -64,7 +64,6 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
                     'chatId' => $this->chatId,
                     'providerId' => $this->providerId,
                     'planfixToken' => $this->planfixToken,
-
                 ]);
             }
 
