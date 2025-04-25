@@ -47,11 +47,11 @@ class PlanfixChatController extends Controller
 //                ->where('id', $planfixIntegration->telegram_account_id)
 //                ->first();
 
-            $telegramAccount = PlanfixIntegrationEntity::getTelegramFromId($planfixIntegration->id);
+            $telegramAccount = PlanfixIntegrationEntity::getTelegramFromId($planfixIntegration->getId());
 
 
             if (!$telegramAccount) {
-                Log::channel('planfix-messages')->error("No Telegram account found for ID: {$planfixIntegration->telegram_account_id}");
+                Log::channel('planfix-messages')->error("No Telegram account found for ID: {$planfixIntegration->getTelegramAccountId()}");
                 return response()->json(['success' => false, 'error' => 'Telegram account not found.'], 400);
             }
 
