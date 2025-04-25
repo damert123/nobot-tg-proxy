@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Exceptions\PeerFloodException;
+use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
 use App\Modules\QueueMessagesPlanfix\MessageEntity;
 use App\Services\PlanfixService;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -98,11 +99,11 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     private function handlePeerFlood(PeerFloodException $e)
     {
-
+        $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
         $providerId = $this->messageEntity->findProviderId();
         $this->messageEntity->setStatusError($e->getMessage());
         SendPeerFloodNotificationToPlanfixJob::dispatch(
-            $this->data['token'],
+            $planfixIntegration->getPlanfixToken(),
             $this->data['chat_id'],
             $providerId,
         )->onQueue('planfix');

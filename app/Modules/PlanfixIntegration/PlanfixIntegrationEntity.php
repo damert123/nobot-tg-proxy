@@ -40,6 +40,11 @@ class PlanfixIntegrationEntity
         return $this->planfixIntegration->id;
     }
 
+    public function getPlanfixToken(): string
+    {
+        return $this->planfixIntegration->planfix_token;
+    }
+
 
 
 }
