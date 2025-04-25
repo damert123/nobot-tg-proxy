@@ -100,17 +100,17 @@ class ProcessTelegramMessageJob implements ShouldQueue
     private function handlePeerFlood(PeerFloodException $e)
     {
 
-        $token = $this->messageEntity->getToken();
+        $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
         $providerId = $this->messageEntity->findProviderId();
         $chat = $this->messageEntity->findChatNumberByChatId();
         $this->messageEntity->setStatusError($e->getMessage());
 
         Log::channel('queue-messages')->warning(
             "CHECK BODY",
-            ['chat' => $chat, 'provider' => $providerId, 'token' => $token]
+            ['chat' => $chat, 'provider' => $providerId, 'token' => $planfixIntegration->getPlanfixToken()]
         );
         SendPeerFloodNotificationToPlanfixJob::dispatch(
-            $token,
+            $planfixIntegration->getPlanfixToken(),
             $chat,
             $providerId,
         )->onQueue('planfix');
