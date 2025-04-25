@@ -52,8 +52,8 @@ class MessageEntity
     public function findProviderId(): string
     {
         $token = $this->getToken();
-        $providerId = PlanfixIntegrationEntity::getToken($token);
-        return $providerId;
+        $planfixIntegration = PlanfixIntegrationEntity::findByToken($token);
+        return $planfixIntegration->getProviderId();
     }
 
     public static function existsInProgressMessages(ChatEntity $chatEntity):bool

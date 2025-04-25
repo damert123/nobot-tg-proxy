@@ -15,7 +15,7 @@ class PlanfixIntegrationEntity
     }
 
 
-    public static function getToken(string $token)
+    public static function findByToken(string $token): ?self
     {
         return PlanfixIntegration::where('token', $token)->first();
     }
@@ -23,6 +23,11 @@ class PlanfixIntegrationEntity
     public static function getTelegramFromId(int $id)
     {
         return TelegramAccount::where('id', $id)->first();
+    }
+
+    public function getProviderId(): string
+    {
+        return $this->planfixIntegration->provider_id;
     }
 
 }

@@ -33,7 +33,7 @@ class PlanfixChatController extends Controller
 //                ->where('token', $token)
 //                ->first();
 
-            $planfixIntegration = PlanfixIntegrationEntity::getToken($token);
+            $planfixIntegration = PlanfixIntegrationEntity::findByToken($token);
 
 
 
