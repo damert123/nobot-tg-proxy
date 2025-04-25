@@ -100,7 +100,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
     private function handlePeerFlood(PeerFloodException $e)
     {
 
-        $token = $this->data['token'];
+        $token = $this->messageEntity->getToken();
         $providerId = $this->messageEntity->findProviderId();
         $chat = $this->messageEntity->findChatNumberByChatId();
         $this->messageEntity->setStatusError($e->getMessage());
