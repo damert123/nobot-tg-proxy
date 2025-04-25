@@ -41,6 +41,9 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
         );
 
 
+        Log::channel('queue-messages')->info('ARRAY: ' . json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+
 
         try {
             $response = Http::asForm()
