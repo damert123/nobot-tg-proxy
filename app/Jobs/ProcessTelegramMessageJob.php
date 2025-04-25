@@ -101,10 +101,11 @@ class ProcessTelegramMessageJob implements ShouldQueue
     {
         $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
         $providerId = $this->messageEntity->findProviderId();
+        $chat = $this->messageEntity->findChatNumberByChatId();
         $this->messageEntity->setStatusError($e->getMessage());
         SendPeerFloodNotificationToPlanfixJob::dispatch(
             $planfixIntegration->getPlanfixToken(),
-            $this->data['chat_id'],
+            $chat,
             $providerId,
         )->onQueue('planfix');
 

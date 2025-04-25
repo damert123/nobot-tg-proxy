@@ -56,6 +56,13 @@ class MessageEntity
         return $planfixIntegration->getProviderId();
     }
 
+    public function findChatNumberByChatId(): int
+    {
+        $chat = ChatEntity::getById($this->message->chat_id);
+
+        return $chat->getChatId();
+    }
+
     public static function existsInProgressMessages(ChatEntity $chatEntity):bool
     {
         return Message::where('chat_id',$chatEntity->getId())

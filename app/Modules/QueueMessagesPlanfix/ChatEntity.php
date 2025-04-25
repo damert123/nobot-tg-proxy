@@ -84,4 +84,5 @@ class ChatEntity
     {
         return MessageEntity::findFirstPendingByChatId($this->getId());
     }
+
 }
