@@ -40,6 +40,8 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
             $this->providerId
         );
 
+
+
         try {
             $response = Http::asForm()
                 ->post('https://agencylemon.planfix.ru/webchat/api', $payload);
@@ -58,6 +60,12 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
                     NotificationEntity::TYPE_PEER_FLOOD,
                     NotificationEntity::STATUS_FAIL . $response->status()
                 );
+                Log::channel('queue-messages')->error('Ошибка при отправке уведомления в Planfix', [
+                    'chatId' => $this->chatId,
+                    'providerId' => $this->providerId,
+                    'planfixToken' => $this->planfixToken,
+
+                ]);
             }
 
         } catch (\Throwable $e) {
