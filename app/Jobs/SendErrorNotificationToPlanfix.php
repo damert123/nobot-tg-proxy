@@ -3,13 +3,12 @@
 namespace App\Jobs;
 
 use App\Modules\PlanfixNotification\NotificationEntity;
-use App\Modules\TelegramMessagesToPlanfix\TgMessagesEntity;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
+class SendErrorNotificationToPlanfix implements ShouldQueue
 {
     use Queueable;
 
@@ -17,15 +16,19 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
     protected $planfixToken;
     protected $chatId;
     protected $providerId;
+    protected $errorMessage;
+
 
     /**
      * Create a new job instance.
      */
-    public function __construct(string $planfixToken, int $chatId, string $providerId)
+    public function __construct(string $planfixToken, int $chatId, string $providerId, string $errorMessage)
     {
         $this->planfixToken = $planfixToken;
         $this->chatId = $chatId;
         $this->providerId = $providerId;
+        $this->errorMessage = $errorMessage;
+
     }
 
     /**
@@ -33,17 +36,15 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
      */
     public function handle(): void
     {
-
-        $payload = NotificationEntity::buildPayloadForError(  // Делаю тело запроса для отправки уведомеления
+        $payload = NotificationEntity::buildPayloadForError(
             $this->planfixToken,
             $this->chatId,
             $this->providerId,
-            NotificationEntity::PEER_FLOOD_MESSAGE
+            NotificationEntity::ERROR_MESSAGE_DEFAULT
         );
 
 
         Log::channel('queue-messages')->info('ARRAY: ' . json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
 
 
         try {
@@ -54,14 +55,14 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
                 NotificationEntity::create(
                     $this->chatId,
                     $this->providerId,
-                    NotificationEntity::TYPE_PEER_FLOOD,
+                    NotificationEntity::TYPE_ERROR . $this->errorMessage,
                     NotificationEntity::STATUS_SUCCESS
                 );
             } else {
                 NotificationEntity::create(
                     $this->chatId,
                     $this->providerId,
-                    NotificationEntity::TYPE_PEER_FLOOD,
+                    NotificationEntity::TYPE_ERROR . $this->errorMessage,
                     NotificationEntity::STATUS_FAIL . $response->status()
                 );
                 Log::channel('queue-messages')->error('Ошибка при отправке уведомления в Planfix', [
@@ -75,7 +76,7 @@ class SendPeerFloodNotificationToPlanfixJob implements ShouldQueue
             NotificationEntity::create(
                 $this->chatId,
                 $this->providerId,
-                NotificationEntity::TYPE_PEER_FLOOD,
+                NotificationEntity::TYPE_ERROR . $this->errorMessage,
                 NotificationEntity::STATUS_ERROR . ' ' . $e->getMessage()
             );
 

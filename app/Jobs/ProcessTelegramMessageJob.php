@@ -63,6 +63,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
         catch (\Throwable $e) {
             $this->messageEntity->setStatusError($e->getMessage());
+            $this->handleError($e);
             Log::channel('queue-messages')->error("Ошибка в джобе (попытка {$this->attempts()}): {$e->getMessage()}");
         }
     }
@@ -105,10 +106,6 @@ class ProcessTelegramMessageJob implements ShouldQueue
         $chat = $this->messageEntity->findChatNumberByChatId();
         $this->messageEntity->setStatusError($e->getMessage());
 
-        Log::channel('queue-messages')->warning(
-            "CHECK BODY",
-            ['chat' => $chat, 'provider' => $providerId, 'token' => $planfixIntegration->getPlanfixToken()]
-        );
         SendPeerFloodNotificationToPlanfixJob::dispatch(
             $planfixIntegration->getPlanfixToken(),
             $chat,
@@ -121,6 +118,24 @@ class ProcessTelegramMessageJob implements ShouldQueue
         );
     }
 
+    private function handleError(\Throwable|\Exception $e)
+    {
+        $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
+        $providerId = $this->messageEntity->findProviderId();
+        $chat = $this->messageEntity->findChatNumberByChatId();
+
+        SendErrorNotificationToPlanfix::dispatch(
+            $planfixIntegration->getPlanfixToken(),
+            $chat,
+            $providerId,
+            $e->getMessage()
+        )->onQueue('planfix');
+
+        Log::channel('queue-messages')->warning(
+            "Error detected, dispatched SendErrorNotificationToPlanfix",
+            ['chatId' => $this->chatId, 'error' => $e->getMessage()]
+        );
+    }
 
 
 }

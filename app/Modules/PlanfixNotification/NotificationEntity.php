@@ -10,6 +10,8 @@ class NotificationEntity
 
 
     public const TYPE_PEER_FLOOD = 'PEER_FLOOD (клиент перестал отвечать на соообщения)';
+    public const TYPE_ERROR = 'Ошибка: ';
+    public const ERROR_MESSAGE_DEFAULT = 'Ошибка при отправке сообщения ';
     public const PEER_FLOOD_MESSAGE =
         "[⚠️ Уведомление] Доставка сообщения не удалась: клиент долго не отвечает на сообщения \n\n"
         . "📩 Пожалуйста, отправьте сообщение вручную через Telegram.";
@@ -29,11 +31,11 @@ class NotificationEntity
         $this->notificationPlanfix = $notificationPlanfix;
     }
 
-    public static function buildPayloadForPeerFlood(
+    public static function buildPayloadForError(
         string $planfixToken,
         int $chatId,
         string $providerId,
-        string $typeNotification = self::PEER_FLOOD_MESSAGE
+        string $typeNotification
     ): array
     {
         return  [
