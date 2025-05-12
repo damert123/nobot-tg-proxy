@@ -431,4 +431,18 @@ class BasicEventHandler extends SimpleEventHandler
     }
 
 
+
+    public function onUpdateEditMessage(array $update): void
+    {
+//        $this->setReportPeers(406210384);
+
+        $message = $update['message'] ?? null;
+
+        if ($message) {
+            Log::channel('tg-messages')->info("РЕДАКТИРОВАНИЕ СООБЩЕНИЯ: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        }
+    }
+
+
 }
