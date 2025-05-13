@@ -37,9 +37,7 @@ class BasicEventHandler extends SimpleEventHandler
                 return;
             }
 
-            if (!empty($update['message']['reactions']['results'] ?? [])) {
-                return;
-            }
+
 
             // Получаем данные текущего пользователя (менеджера)
             $self = $this->getSelf();
@@ -456,6 +454,10 @@ class BasicEventHandler extends SimpleEventHandler
                     'from_id' => $fromId,
                     'peer_id' => $peerId,
                 ]);
+                return;
+            }
+
+            if (!empty($update['message']['reactions']['results'] ?? [])) {
                 return;
             }
 
