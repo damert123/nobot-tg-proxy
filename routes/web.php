@@ -21,7 +21,7 @@ Route::middleware(AdminMiddleware::class)->group(function (){
     Route::post('/telegram/add', [TelegramAccountController::class, 'store'])->name('telegram.store');
     Route::get('/telegram/code', [TelegramAccountController::class, 'showCodeForm'])->name('telegram.code');
     Route::post('/telegram/code', [TelegramAccountController::class, 'verifyCode'])->name('telegram.verify');
-    Route::post('/telegram/recode', [TelegramAccountController::class, 'resendCode'])->name('telegram.recode');
+    Route::post('/telegram/recode/{phone}', [TelegramAccountController::class, 'resendCode'])->name('telegram.recode');
     Route::get('/telegram/verify-two-factor', [TelegramAccountController::class, 'showTwoFactorCode'])->name('telegram.twofactor');
     Route::post('/telegram/verify-two-factor', [TelegramAccountController::class, 'verifyTwoFactorCode'])->name('telegram.verify.twofactor');
     Route::get('/telegram/accounts', [TelegramAccountController::class, 'index'])->name('telegram.index');

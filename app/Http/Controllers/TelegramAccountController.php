@@ -155,7 +155,7 @@ class TelegramAccountController extends Controller
     public function resendCode(Request $request, string $phone)
     {
 //        $phone = $request->input('phone');
-        $phoneCodeHash = '40dcf1ed51d4b29095';
+
 
         if (!$phone){
             return redirect()->route('telegram.index')->withErrors('Номер телефона отсутствует!');
@@ -170,7 +170,7 @@ class TelegramAccountController extends Controller
 
             $madelineProto = new API($sessionFile, $settings);
 
-            $madelineProto->auth->resendCode(['phone_number' => $phone, 'phone_code_hash' => $phoneCodeHash]);
+            $madelineProto->auth->resendCode(['phone_number' => $phone]);
 
             return redirect()->route('telegram.code', ['phone' => $phone])
                 ->with('success', 'Код был повторно отправлен, Пожалуйста, введтие его!');
