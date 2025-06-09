@@ -18,7 +18,7 @@ class TelegramAccountEntity
 
     public static function findTestSession(): ?self
     {
-        $testAccount = TelegramAccount::where('telegram_id', 6673581915)->first();
+        $testAccount = TelegramAccount::where('telegram_id', 5240653024)->first();
 
         return $testAccount ? new self($testAccount) : null;
 

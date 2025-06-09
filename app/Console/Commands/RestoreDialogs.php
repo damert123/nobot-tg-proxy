@@ -73,6 +73,8 @@ class RestoreDialogs extends Command
         }
 
         $this->info("Команда выполнена успешно.");
+
+        Log::channel('planfix-messages')->info("УРААА ВСЕ ПИРЫ СХАВАЛИСЬ");
         return 0;
     }
 }
