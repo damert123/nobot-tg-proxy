@@ -152,9 +152,9 @@ class TelegramAccountController extends Controller
 
     }
 
-    public function resendCode(Request $request)
+    public function resendCode(Request $request, string $phone)
     {
-        $phone = $request->input('phone');
+//        $phone = $request->input('phone');
         $phoneCodeHash = '40dcf1ed51d4b29095';
 
         if (!$phone){
