@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use danog\MadelineProto\API;
+use danog\MadelineProto\Settings;
 use Illuminate\Console\Command;
 
 class checkPeer extends Command
@@ -25,8 +27,30 @@ class checkPeer extends Command
      */
     public function handle()
     {
-        $data = unserialize(file_get_contents('storage/telegram_sessions/79172670513.madeline/safe.php'));
+        $sessionPath = storage_path('telegram_sessions/79172670513.madeline');
 
-        dd(array_keys($data));
+        $settings = (new Settings())->setAppInfo(
+            (new Settings\AppInfo())
+                ->setApiId(env('TELEGRAM_API_ID'))
+                ->setApiHash(env('TELEGRAM_API_HASH'))
+        );
+
+        $Madeline = new API($sessionPath, $settings);
+
+        $Madeline->start(); // подключаемся к сессии
+
+        $dialogs = $Madeline->messages->getDialogs(['limit' => 100]);
+
+        $peers = [];
+
+        foreach ($dialogs['users'] ?? [] as $user) {
+            $peers[] = [
+                'id' => $user['id'],
+                'username' => $user['username'] ?? null,
+                'first_name' => $user['first_name'] ?? null,
+                'access_hash' => $user['access_hash'] ?? null,
+            ];
+        }
+        dd($peers);
     }
 }
