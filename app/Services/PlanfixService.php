@@ -66,7 +66,7 @@ class PlanfixService
             $typingDuration = $this->calculateTypingDuration($messageLength);
 
             $this->simulateTyping($madelineProto, $chatId, $typingDuration, 'sendMessageTypingAction');
-
+            Log::channel('planfix-messages')->info("Перед отправкой sendMessage");
              $resultMessage = $madelineProto->messages->sendMessage([
                 'peer' => $chatId,
                 'message' => $message,
@@ -79,6 +79,7 @@ class PlanfixService
                     ]
                 ],
             ]);
+            Log::channel('planfix-messages')->info("После отправки sendMessage", [$resultMessage]);
 
             $idMessageMedia = $resultMessage['id'];
             Log::channel('planfix-messages')->info("ID MANAGER " . $telegramAccount->telegram_id);
@@ -91,7 +92,7 @@ class PlanfixService
             ]);
 
             Log::channel('planfix-messages')->info("СООБЩЕНИЕ из CRM отправлено в чат {$chatId}: {$message}");
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::channel('planfix-messages')->error("Ошибка отправки сообщения в чат {$chatId}: {$e->getMessage()}");
 
             if (str_contains($e->getMessage(), 'PEER_FLOOD')) {

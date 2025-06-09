@@ -86,7 +86,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
         $message = $this->data['message'] ?? null;
         $id = $this->data['id'];
 
-
+        Log::channel('queue-messages')->info("doSend: вызов sendMessage");
         if (!empty($this->data['attachments'])) {
             $attachments = $this->data['attachments'];
             $attachments = json_decode($attachments, true);
