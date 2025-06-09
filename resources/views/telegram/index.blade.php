@@ -52,13 +52,6 @@
                                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                                         Ввести код
                                     </a>
-
-                                    <form action="{{route('telegram.recode', $account->phone)}}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-yellow-600">
-                                            Повторный код
-                                        </button>
-                                    </form>
                                 @endif
                                 <form action="{{ route('telegram.destroy', $account->id) }}" method="POST" class="inline-block">
                                     @csrf
