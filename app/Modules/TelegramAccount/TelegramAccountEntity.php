@@ -8,6 +8,9 @@ use App\Models\TelegramAccount;
 
 class TelegramAccountEntity
 {
+
+    public const PAUSE = 'Пауза';
+    public const ACCOUNT_NOT_AUTH = 'Разлогинен';
     private TelegramAccount $telegramAccount;
 
     public function __construct(TelegramAccount $telegramAccount)
@@ -22,6 +25,20 @@ class TelegramAccountEntity
 
         return $testAccount ? new self($testAccount) : null;
 
+    }
+
+    public static function getBySessionPath(string $sessionPath): ?self
+    {
+        $account = TelegramAccount::where('session_path', $sessionPath)->first();
+
+        return $account ? new self($account) : null;
+    }
+
+    public function changeStatus(string $status): void
+    {
+        $this->telegramAccount->status = $status;
+
+        $this->telegramAccount->saveOrFail();
     }
 
     public function getTelegramId(): int

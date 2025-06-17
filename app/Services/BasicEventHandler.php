@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Jobs\SendMessageToPlanfixJob;
+use App\Modules\TelegramAccount\TelegramAccountEntity;
 use Carbon\Carbon;
 use danog\Loop\PeriodicLoop;
 use danog\MadelineProto\API;
@@ -30,7 +31,10 @@ class BasicEventHandler extends SimpleEventHandler
                 throw new \Exception("Auth state wrong: $auth");
             }
         } catch (\Throwable $e) {
-            $this->logger("Авторизация пропала: ".$e->getMessage(), Logger::FATAL_ERROR);
+            $sessionPath = $this->getSessionName();
+            Log::error("Авторизация пропала: ".$e->getMessage());
+            TelegramAccountEntity::getBySessionPath($sessionPath)
+                ->changeStatus(TelegramAccountEntity::ACCOUNT_NOT_AUTH);
             $this->restart();
         }
     }
