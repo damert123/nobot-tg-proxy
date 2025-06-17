@@ -48,7 +48,12 @@ class TelegramService
             $MadelineProtos[] = $api;
         }
 
-        API::startAndLoopMulti($MadelineProtos, BasicEventHandler::class);
+        try {
+            API::startAndLoopMulti($MadelineProtos, BasicEventHandler::class);
+        } catch (\Throwable $e) {
+            Log::error("Мульти-цикл упал: ".$e->getMessage());
+
+        }
 
     }
 
