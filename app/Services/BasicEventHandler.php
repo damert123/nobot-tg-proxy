@@ -5,7 +5,9 @@ namespace App\Services;
 
 use App\Jobs\SendMessageToPlanfixJob;
 use Carbon\Carbon;
+use danog\Loop\PeriodicLoop;
 use danog\MadelineProto\API;
+use danog\MadelineProto\Logger;
 use danog\MadelineProto\SimpleEventHandler;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -15,6 +17,31 @@ use Illuminate\Support\Facades\Storage;
 class BasicEventHandler extends SimpleEventHandler
 {
     public const EDIT_PREFIX = '📝Измененное сообщение: ';
+
+
+    public function onStart()
+    {
+
+        $loop = new PeriodicLoop(
+            function(): bool {
+                try {
+                    $auth = $this->getAuthorization();
+                    if ($auth !== API::LOGGED_IN) {
+                        throw new \Exception("Unauthorized state: $auth");
+                    }
+                } catch (\Throwable $e) {
+                    $this->logger("Auth check failed: ".$e->getMessage(), Logger::FATAL_ERROR);
+                    $this->restart();
+                    return true; // останавливает цикл проверки
+                }
+                return false;
+            },
+            "AuthCheck",
+            60.0 // каждые 60 секунд
+        );
+        $loop->start();
+
+    }
     public function onUpdateNewMessage(array $update): void
     {
 //        $this->setReportPeers(406210384);
