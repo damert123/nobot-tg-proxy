@@ -7,7 +7,9 @@ use App\Models\PlanfixIntegration;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
 use danog\MadelineProto\RPCError\SessionPasswordNeededError;
+use danog\MadelineProto\Settings;
 use danog\MadelineProto\Settings\AppInfo;
+use danog\MadelineProto\Settings\Peer;
 use danog\MadelineProto\Tools;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -102,9 +104,19 @@ class TelegramAccountController extends Controller
         ]);
 
         try {
-            $settings = (new \danog\MadelineProto\Settings\AppInfo)
+
+
+            $peerSetings = (new Peer())
+                ->setCacheAllPeersOnStartup(true);
+
+
+            $appInfo  = (new AppInfo)
                 ->setApiId(env('TELEGRAM_API_ID'))
                 ->setApiHash(env('TELEGRAM_API_HASH'));
+
+            $settings = (new Settings())
+                ->setPeer($peerSetings)
+                ->setAppInfo($appInfo);
 
             $sessionFile = storage_path("telegram_sessions/{$validated['phone']}.madeline");
 
