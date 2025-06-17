@@ -21,7 +21,7 @@ class BasicEventHandler extends SimpleEventHandler
 
     public function onStart()
     {
-
+        Log::info('Проверка на авторизацию сесии ');
         $loop = new PeriodicLoop(
             function(): bool {
                 try {
