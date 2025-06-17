@@ -53,6 +53,7 @@
                                         Ввести код
                                     </a>
                                 @endif
+
                                 <form action="{{ route('telegram.destroy', $account->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
@@ -60,6 +61,13 @@
                                         Удалить
                                     </button>
                                 </form>
+
+                               @if ($account->status === 'Разлогинен')
+                                        <a href="{{ route('telegram.code', ['phone' => $account->phone]) }}"
+                                           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                            Войти
+                                        </a>
+                                @endif
                                 @if ($account->status === 'Пауза')
                                         <form action="{{route('telegram.start', $account->id)}}" method="POST">
                                             @csrf
@@ -75,6 +83,7 @@
                                          </button>
                                         </form>
                                 @endif
+
 
 
                             </td>
