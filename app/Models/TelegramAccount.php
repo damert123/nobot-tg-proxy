@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property string $status
  *
+ *
  */
 class TelegramAccount extends Model
 {

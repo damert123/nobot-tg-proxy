@@ -4,8 +4,12 @@ namespace App\Services;
 
 
 use App\Jobs\SendMessageToPlanfixJob;
+use App\Modules\TelegramAccount\TelegramAccountEntity;
 use Carbon\Carbon;
+use danog\Loop\PeriodicLoop;
 use danog\MadelineProto\API;
+use danog\MadelineProto\EventHandler\Attributes\Cron;
+use danog\MadelineProto\Logger;
 use danog\MadelineProto\SimpleEventHandler;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -15,6 +19,26 @@ use Illuminate\Support\Facades\Storage;
 class BasicEventHandler extends SimpleEventHandler
 {
     public const EDIT_PREFIX = '📝Измененное сообщение: ';
+
+
+    #[Cron(period: 60.0)]
+    public function authCheck(): void
+    {
+        Log::info('Проверка на авторизацию сесии ');
+        try {
+            $auth = $this->getAuthorization();
+            if ($auth !== API::LOGGED_IN) {
+                throw new \Exception("Auth state wrong: $auth");
+            }
+        } catch (\Throwable $e) {
+            $sessionPath = $this->getSessionName();
+            Log::error("Авторизация пропала: ".$e->getMessage());
+            TelegramAccountEntity::getBySessionPath($sessionPath)
+                ->changeStatus(TelegramAccountEntity::ACCOUNT_NOT_AUTH);
+            $this->restart();
+        }
+    }
+
     public function onUpdateNewMessage(array $update): void
     {
 //        $this->setReportPeers(406210384);
