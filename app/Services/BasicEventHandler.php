@@ -4,6 +4,8 @@ namespace App\Services;
 
 
 use App\Jobs\SendMessageToPlanfixJob;
+use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
+use App\Modules\QueueMessagesPlanfix\MessageEntity;
 use App\Modules\TelegramAccount\TelegramAccountEntity;
 use Carbon\Carbon;
 use danog\Loop\PeriodicLoop;
@@ -24,19 +26,51 @@ class BasicEventHandler extends SimpleEventHandler
     #[Cron(period: 60.0)]
     public function authCheck(): void
     {
-        Log::info('Проверка на авторизацию сесии ');
+        Log::info('Проверка авторизации сессии');
         try {
             $auth = $this->getAuthorization();
+
             if ($auth !== API::LOGGED_IN) {
                 throw new \Exception("Auth state wrong: $auth");
             }
+
+
+        } catch (\danog\MadelineProto\RPCErrorException $e) {
+            if ($e->rpc === 'USER_DEACTIVATED_BAN'
+                || stripos($e->getMessage(), 'USER_DEACTIVATED_BAN') !== false
+            ) {
+                Log::error('Аккаунт заблокирован: USER_DEACTIVATED_BAN');
+                $sessionPath = $this->getSessionName();
+                $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
+
+                $token = PlanfixIntegrationEntity::findByTelegramAccountId($telegramAccount->getId())->getToken();
+
+                MessageEntity::changeStatusInProgressForToken($token, TelegramAccountEntity::ACCOUNT_BANNED);
+
+                $telegramAccount->changeStatus(TelegramAccountEntity::ACCOUNT_BANNED);
+                $this->restart();
+                return;
+            }
+
+
+            $this->handleGeneralAuthFail($e);
         } catch (\Throwable $e) {
-            $sessionPath = $this->getSessionName();
-            Log::error("Авторизация пропала: ".$e->getMessage());
-            TelegramAccountEntity::getBySessionPath($sessionPath)
-                ->changeStatus(TelegramAccountEntity::ACCOUNT_NOT_AUTH);
-            $this->restart();
+            $this->handleGeneralAuthFail($e);
         }
+    }
+
+    private function handleGeneralAuthFail(\Throwable $e): void
+    {
+        Log::error("Авторизация пропала: " . $e->getMessage());
+
+        $sessionPath = $this->getSessionName();
+        $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
+        $token = PlanfixIntegrationEntity::findByTelegramAccountId($telegramAccount->getId())->getToken();
+
+        MessageEntity::changeStatusInProgressForToken($token, TelegramAccountEntity::ACCOUNT_NOT_AUTH);
+
+        $telegramAccount->changeStatus(TelegramAccountEntity::ACCOUNT_NOT_AUTH);
+        $this->restart();
     }
 
     public function onUpdateNewMessage(array $update): void

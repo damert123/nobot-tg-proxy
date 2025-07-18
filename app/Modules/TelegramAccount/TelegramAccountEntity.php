@@ -11,6 +11,7 @@ class TelegramAccountEntity
 
     public const PAUSE = 'Пауза';
     public const ACCOUNT_NOT_AUTH = 'Разлогинен';
+    public const ACCOUNT_BANNED = 'Забанен';
     private TelegramAccount $telegramAccount;
 
     public function __construct(TelegramAccount $telegramAccount)
@@ -54,6 +55,11 @@ class TelegramAccountEntity
     public function getModel(): TelegramAccount
     {
         return $this->telegramAccount;
+    }
+
+    public function getId(): int
+    {
+        return $this->telegramAccount->id;
     }
 
 

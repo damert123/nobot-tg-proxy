@@ -4,6 +4,7 @@ namespace App\Modules\QueueMessagesPlanfix;
 
 use App\Models\Message;
 use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
+use App\Modules\TelegramAccount\TelegramAccountEntity;
 
 class MessageEntity
 {
@@ -68,6 +69,12 @@ class MessageEntity
         return Message::where('chat_id',$chatEntity->getId())
             ->where('status',self::IN_PROGRESS)
             ->exists();
+    }
+
+    public static function changeStatusInProgressForToken(string $token, string $status): void
+    {
+       Message::where('token', $token)->where('status', self::IN_PROGRESS)
+       ->update(['status' => $status]);
     }
 
     public static function getCompleteMessagesAll()

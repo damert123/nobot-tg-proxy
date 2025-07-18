@@ -25,6 +25,13 @@ class PlanfixIntegrationEntity
         return TelegramAccount::where('id', $id)->first();
     }
 
+    public static function findByTelegramAccountId(int $id): self
+    {
+        $planfix =  PlanfixIntegration::where('telegram_account_id', $id)->first();
+
+        return new self($planfix);
+    }
+
     public function getTelegramAccountId(): int
     {
         return $this->planfixIntegration->telegram_account_id;
@@ -45,6 +52,10 @@ class PlanfixIntegrationEntity
         return $this->planfixIntegration->planfix_token;
     }
 
+    public function getToken(): string
+    {
+        return $this->planfixIntegration->token;
+    }
 
 
 }
