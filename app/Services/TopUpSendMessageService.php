@@ -69,7 +69,7 @@ class TopUpSendMessageService
      * @throws \Exception
      */
 
-    public function sendMessageTopUpDirectly(int $telegramId, string $message, string $telegramLink): void
+    public function sendMessageTopUpDirectly(int $telegramId, string $message, string $telegramLink): string
     {
         try {
             Log::channel('top-up-messages')->error("НАЧИНАЕТСЯ ОТПРАВКА ЧРЕЗ telegram_link: {$telegramLink}");
@@ -107,7 +107,7 @@ class TopUpSendMessageService
     /**
      * @throws \Exception
      */
-    public function sendMessageTopUpTask(int $telegramId, string $message, int $taskId): void
+    public function sendMessageTopUpTask(int $telegramId, string $message, int $taskId): ?string
     {
         Log::channel('top-up-messages')->error("НАЧИНАЕТСЯ ОТПРАВКА ЧРЕЗ task: {$taskId}");
 
