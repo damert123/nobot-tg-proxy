@@ -86,7 +86,9 @@ class TopUpSendMessageService
             $mainSession = $this->findSessionTelegram($telegramId);
             $madelineProto = $this->initializeModelineProto($mainSession->session_path);
 
-            $this->attemptToSendMessage($madelineProto, $message, $parsedUsername);
+            $status = $this->attemptToSendMessage($madelineProto, $message, $parsedUsername);
+
+            return $status;
 
         }catch (\Exception $e) {
             Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
@@ -95,12 +97,16 @@ class TopUpSendMessageService
                 $crmService = new ApiNobotService();
                 $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
 
-                $this->tryAlternativeAccounts($message, $parsedUsername, $telegramId);
+                return $this->tryAlternativeAccounts($message, $parsedUsername, $telegramId);
+
             }catch (\Exception $e){
                 Log::channel('top-up-messages')->error("Ошибка при использовании альтернативных аккаунтов: {$e->getMessage()}");
-                throw $e;
+                return 'error';
+
             }
         }
+
+
     }
 
 
@@ -148,12 +154,12 @@ class TopUpSendMessageService
             $mainSession = $this->findSessionTelegram($telegramId);
             $madelineProto = $this->initializeModelineProto($mainSession->session_path);
 
-            $this->attemptToSendMessage($madelineProto, $message, $to_id);
+            return $this->attemptToSendMessage($madelineProto, $message, $to_id);
         }catch (\Exception $e) {
             Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
 
             try {
-                $this->tryAlternativeAccounts($message, $to_id, $telegramId);
+                return $this->tryAlternativeAccounts($message, $to_id, $telegramId);
             }catch (\Exception $e){
                 Log::channel('top-up-messages')->error("Ошибка при использовании альтернативных аккаунтов: {$e->getMessage()}");
                 throw $e;
@@ -198,22 +204,22 @@ class TopUpSendMessageService
         return 'sent';
     }
 
-    private function tryAlternativeAccounts(string $message, string $to_id, int $excludedTelegramId): void
+    private function tryAlternativeAccounts(string $message, string $to_id, int $excludedTelegramId): ?string
     {
         $accounts = DB::table('telegram_accounts')
             ->where('status', 'Активен')
             ->whereNotNull('session_path')
-            ->where('telegram_id', '!=', $excludedTelegramId) // Исключаем основной аккаунт
+            ->where('telegram_id', '!=', $excludedTelegramId)
             ->inRandomOrder()
             ->get();
 
         foreach ($accounts as $account){
             try {
                 $madelineProto = $this->initializeModelineProto($account);
-                $this->attemptToSendMessage($madelineProto, $message, $to_id);
+
 
                 Log::channel('planfix-messages')->info("Сообщение успешно отправлено с альтернативного аккаунта ID: {$account->id}");
-                return;
+                return $this->attemptToSendMessage($madelineProto, $message, $to_id);
             } catch (\Exception $e){
                 Log::channel('top-up-messages')->error("Ошибка на аккаунте ID: {$account->id} - {$e->getMessage()}");
                 continue;
