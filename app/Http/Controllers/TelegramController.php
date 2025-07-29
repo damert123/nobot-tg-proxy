@@ -25,6 +25,7 @@ class TelegramController extends Controller
             $data = TelegramMessageDTO::fromArray($request->all());
 
             $telegramIdFrom = $data->fromId;
+            $status = 'skipped';
 
             if (!empty($data->message)) {
                 // Если есть telegram_link (to_id), отправляем сразу
@@ -36,10 +37,13 @@ class TelegramController extends Controller
                     $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
                 } else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
+                    $status = 'invalid';
                 }
             }
 
-            return response()->json(["message" => "Send Message complete"]);
+            return response()->json([
+                'status' => $status,
+            ]);
 
         }catch (\Exception $e){
             Log::channel('top-up-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");

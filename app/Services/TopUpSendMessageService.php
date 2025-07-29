@@ -162,7 +162,7 @@ class TopUpSendMessageService
 
     }
 
-    private function attemptToSendMessage(API $madelineProto, string $message,  string $to_id): void
+    private function attemptToSendMessage(API $madelineProto, string $message,  string $to_id): ?string
     {
 
 
@@ -179,8 +179,7 @@ class TopUpSendMessageService
             // Если сообщение отправлено или получено за последние 10 минут, прерываем отправку
             if (isset($msg['date']) && ($now - $msg['date']) <= 300) {
                 Log::channel('top-up-messages')->info("Сообщение не отправлено: уже было общение за последние 5 минут.");
-                echo "Сообщение не отправлено: уже было общение за последние 5 минут.\n";
-                return;
+                return 'recent';
             }
         }
 
@@ -196,7 +195,7 @@ class TopUpSendMessageService
 
         Log::channel('top-up-messages')->info("Сообщение успешно отправлено с основного аккаунта");
 
-
+        return 'sent';
     }
 
     private function tryAlternativeAccounts(string $message, string $to_id, int $excludedTelegramId): void
