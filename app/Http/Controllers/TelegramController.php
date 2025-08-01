@@ -62,16 +62,16 @@ class TelegramController extends Controller
             $data = TelegramMessageDTO::fromArray($request->all());
 
             $telegramIdFrom = $data->fromId;
-
+            $status = 'skipped';
 
             if (!empty($data->message)) {
                 // Если есть telegram_link (to_id), отправляем сразу
                 if (!empty($data->toId)) {
-                    $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
+                    $status = $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
                 }
                 // Если нет telegram_link, но есть task, тогда идем в CRM
                 elseif (!empty($data->task)) {
-                    $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
+                    $status = $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
                 } else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
                     $status = 'invalid';
