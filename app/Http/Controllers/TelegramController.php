@@ -51,4 +51,40 @@ class TelegramController extends Controller
         }
 
     }
+
+
+    public function sendMessageWithoutRecent(Request $request)
+    {
+
+        try {
+            Log::channel('top-up-messages')->info('Barzha webhook received:', $request->all());
+
+            $data = TelegramMessageDTO::fromArray($request->all());
+
+            $telegramIdFrom = $data->fromId;
+            $status = 'skipped';
+
+            if (!empty($data->message)) {
+                // Если есть telegram_link (to_id), отправляем сразу
+                if (!empty($data->toId)) {
+                    $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
+                }
+                // Если нет telegram_link, но есть task, тогда идем в CRM
+                elseif (!empty($data->task)) {
+                    $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
+                } else {
+                    Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
+                    $status = 'invalid';
+                }
+            }
+
+            return response()->json([
+                'status' => $status,
+            ]);
+
+        }catch (\Exception $e){
+            Log::channel('top-up-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
 }

@@ -174,19 +174,17 @@ class TopUpSendMessageService
 
         $history = $madelineProto->messages->getHistory([
             'peer' => $to_id,
-            'limit' => 1, // Сколько сообщений получить (ограничиваем последними 10 для экономии ресурсов)
+            'limit' => 1,
         ]);
 
         $now = time();
 
         Log::channel('top-up-messages')->info("СЕЙЧАС ВРЕМЯ {$now} ");
         Log::channel('top-up-messages')->info("ПОСЛЕДНИЕ 1 Сообщение:" .  json_encode($history, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        foreach ($history['messages'] as $msg) {
-            // Если сообщение отправлено или получено за последние 10 минут, прерываем отправку
-            if (isset($msg['date']) && ($now - $msg['date']) <= 300) {
-                Log::channel('top-up-messages')->info("Сообщение не отправлено: уже было общение за последние 5 минут.");
-                return 'recent';
-            }
+
+        if (!empty($history['messages'])) {
+            Log::channel('top-up-messages')->info("Сообщение не отправлено: уже есть история сообщений.");
+            return 'recent';
         }
 
 

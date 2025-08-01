@@ -8,3 +8,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/webhooks/planfix/chat', [PlanfixToTelegramController::class, 'handle']);
 Route::post('/webhooks/telegram/message/topup', [TelegramController::class, 'handle']);
+Route::post('/webhooks/telegram/message/send', [TelegramController::class, 'sendMessageWithoutRecent']);
