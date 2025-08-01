@@ -30,11 +30,11 @@ class TelegramController extends Controller
             if (!empty($data->message)) {
                 // Если есть telegram_link (to_id), отправляем сразу
                 if (!empty($data->toId)) {
-                    $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
+                    $status = $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
                 }
                 // Если нет telegram_link, но есть task, тогда идем в CRM
                 elseif (!empty($data->task)) {
-                    $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
+                    $status = $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
                 } else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
                     $status = 'invalid';
@@ -67,12 +67,9 @@ class TelegramController extends Controller
             if (!empty($data->message)) {
                 // Если есть telegram_link (to_id), отправляем сразу
                 if (!empty($data->toId)) {
-                    $status = $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
+                    $status = $this->topUpSendMessageService->sendMessageDirectly($telegramIdFrom, $data->message, $data->toId);
                 }
-                // Если нет telegram_link, но есть task, тогда идем в CRM
-                elseif (!empty($data->task)) {
-                    $status = $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
-                } else {
+                else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
                     $status = 'invalid';
                 }

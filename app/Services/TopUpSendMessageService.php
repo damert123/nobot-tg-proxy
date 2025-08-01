@@ -110,6 +110,38 @@ class TopUpSendMessageService
     }
 
 
+    public function sendMessageDirectly(int $telegramId, string $message, string $telegramLink): string
+    {
+        try {
+            Log::channel('top-up-messages')->error("НАЧИНАЕТСЯ ОТПРАВКА ЧРЕЗ telegram_link: {$telegramLink}");
+
+            $crmService = new ApiNobotService();
+
+            $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
+
+            if (!$parsedUsername){
+                Log::channel('top-up-messages')->error("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
+                throw new \Exception("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
+            }
+
+            $mainSession = $this->findSessionTelegram($telegramId);
+            $madelineProto = $this->initializeModelineProto($mainSession->session_path);
+
+            $status = $this->attemptToSendMessage($madelineProto, $message, $parsedUsername);
+
+            return $status;
+
+        }catch (\Exception $e) {
+            Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
+
+            return 'error';
+
+        }
+
+
+    }
+
+
     /**
      * @throws \Exception
      */
