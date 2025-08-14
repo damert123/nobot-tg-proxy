@@ -29,26 +29,32 @@ class QueueListen extends Command
      */
     public function handle()
     {
+        try {
+            $chats = ChatEntity::getAll();
 
-        $chats = ChatEntity::getAll();
+            foreach ($chats as $chat){
+                if($chat->hasInProgressMessages()){
+                    continue;
+                }
 
-        foreach ($chats as $chat){
-            if($chat->hasInProgressMessages()){
-                continue;
+                $message = $chat->getFirstMessageInPending();
+
+                if($message === null){
+                    continue;
+                }
+
+                $message->setStatusInProgress();
+
+                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
+
             }
 
-            $message = $chat->getFirstMessageInPending();
-
-            if($message === null){
-                continue;
-            }
-
-            $message->setStatusInProgress();
-
-            ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
-
+            return 0;
+        }
+        catch (\Throwable $e){
+            Log::channel('planfix-messages')->error("Scheduled command failed: {$e->getMessage()}");
+            return 1;
         }
 
-        return 0;
     }
 }

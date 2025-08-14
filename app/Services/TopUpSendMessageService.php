@@ -203,7 +203,6 @@ class TopUpSendMessageService
     private function attemptToSendMessage(API $madelineProto, string $message,  string $to_id): ?string
     {
 
-
         $history = $madelineProto->messages->getHistory([
             'peer' => $to_id,
             'limit' => 1,
