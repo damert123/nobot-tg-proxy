@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\TelegramMessageDTO;
+use App\Jobs\SendTelegramMessageJob;
 use App\Services\TopUpSendMessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,9 +66,10 @@ class TelegramController extends Controller
             $status = 'skipped';
 
             if (!empty($data->message)) {
-                // Если есть telegram_link (to_id), отправляем сразу
+
                 if (!empty($data->toId)) {
-                    $status = $this->topUpSendMessageService->sendMessageDirectly($telegramIdFrom, $data->message, $data->toId);
+                    SendTelegramMessageJob::dispatch($telegramIdFrom, $data->message, $data->toId)->onQueue('tg-service-messages');;
+//                    $status = $this->topUpSendMessageService->sendMessageDirectly($telegramIdFrom, $data->message, $data->toId);
                 }
                 else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
