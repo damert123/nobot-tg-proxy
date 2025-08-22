@@ -63,7 +63,7 @@ class TelegramController extends Controller
             $data = TelegramMessageDTO::fromArray($request->all());
 
             $telegramIdFrom = $data->fromId;
-            $status = 'skipped';
+            $status = 'sent';
 
             if (!empty($data->message)) {
 
