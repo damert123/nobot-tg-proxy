@@ -124,6 +124,7 @@ class TopUpSendMessageService
                 throw new \Exception("Некорректная Telegram-ссылка '{$telegramLink}', сообщение не отправлено.");
             }
 
+
             $mainSession = $this->findSessionTelegram($telegramId);
             $madelineProto = $this->initializeModelineProto($mainSession->session_path);
 

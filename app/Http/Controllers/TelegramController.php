@@ -60,7 +60,15 @@ class TelegramController extends Controller
         try {
             Log::channel('top-up-messages')->info('Barzha webhook received:', $request->all());
 
-            $data = TelegramMessageDTO::fromArray($request->all());
+
+            $validated = $request->validate([
+                'from_id' => ['required', 'integer'],
+                'to_id'   => ['nullable', 'integer'],
+                'task'    => ['nullable', 'string'],
+                'message' => ['required', 'string'],
+            ]);
+
+            $data = TelegramMessageDTO::fromArray($validated);
 
             $telegramIdFrom = $data->fromId;
             $status = 'skipped';
