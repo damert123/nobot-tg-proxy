@@ -63,7 +63,7 @@ class TelegramController extends Controller
 
             $validated = $request->validate([
                 'from_id' => ['required', 'integer'],
-                'to_id'   => ['nullable', 'integer'],
+                'to_id'   => ['nullable', 'string'],
                 'task'    => ['nullable', 'string'],
                 'message' => ['required', 'string'],
             ]);
