@@ -134,9 +134,11 @@ class TelegramAccountController extends Controller
                $madelineProto->complete2faLogin($validated['password']);
            }
 
-
+            $start = microtime(true);
             $madelineProto->start();
+            $elapsed = microtime(true) - $start;
 
+            Log::channel('planfix-messages')->info("Peers caching took {$elapsed} seconds");
             $self = $madelineProto->getSelf();
 
             if (!isset($self['id'])) {
