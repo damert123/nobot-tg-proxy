@@ -186,9 +186,9 @@ class PlanfixService
 
         $fileSizeKB = $fileSize / 1024;
 
-        if ($fileSizeKB > 480) {
-            return 120;
-        }
+            if ($fileSizeKB > 480) {
+                return 120;
+            }
 
         $durationInSeconds = intval(($fileSizeKB / 40) * 10);
 

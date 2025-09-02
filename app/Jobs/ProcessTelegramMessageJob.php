@@ -27,7 +27,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     private MessageEntity $messageEntity;
 
-    public $queue; // Устанавливаем очередь
+    public $queue;
 
     /**
      * Create a new job instance.
@@ -62,7 +62,9 @@ class ProcessTelegramMessageJob implements ShouldQueue
         }
 
         catch (\Throwable $e) {
-            $this->messageEntity->setStatusError($e->getMessage());
+            $fullMsg = (string)$e;
+            $shortMsg = mb_substr($fullMsg, 0, 1000);
+            $this->messageEntity->setStatusError($shortMsg);
             $this->handleError($e);
             Log::channel('queue-messages')->error("Ошибка в джобе (попытка {$this->attempts()}): {$e->getMessage()}");
         }
