@@ -65,7 +65,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $fullMsg = (string)$e;
             $shortMsg = mb_substr($fullMsg, 0, 1000);
             $this->messageEntity->setStatusError($shortMsg);
-            $this->handleError($e);
+            $this->handleError($shortMsg);
             Log::channel('queue-messages')->error("Ошибка в джобе (попытка {$this->attempts()}): {$e->getMessage()}");
         }
     }
@@ -102,7 +102,6 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     private function handlePeerFlood(PeerFloodException $e)
     {
-
         $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
         $providerId = $this->messageEntity->findProviderId();
         $chat = $this->messageEntity->findChatNumberByChatId();
@@ -120,7 +119,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
         );
     }
 
-    private function handleError(\Throwable|\Exception $e)
+    private function handleError(string $shortMsg)
     {
         $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
         $providerId = $this->messageEntity->findProviderId();
@@ -130,12 +129,12 @@ class ProcessTelegramMessageJob implements ShouldQueue
             $planfixIntegration->getPlanfixToken(),
             $chat,
             $providerId,
-            $e->getMessage()
+            $shortMsg
         )->onQueue('planfix');
 
         Log::channel('queue-messages')->warning(
             "Error detected, dispatched SendErrorNotificationToPlanfix",
-            ['chatId' => $this->chatId, 'error' => $e->getMessage()]
+            ['chatId' => $this->chatId, 'error' => $shortMsg]
         );
     }
 
