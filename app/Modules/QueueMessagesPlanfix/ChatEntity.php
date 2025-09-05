@@ -3,6 +3,7 @@
 namespace App\Modules\QueueMessagesPlanfix;
 
 use App\Models\Chat;
+use App\Models\Message;
 use phpseclib3\File\ASN1\Maps\Attribute;
 
 class ChatEntity
@@ -64,6 +65,11 @@ class ChatEntity
         return MessageEntity::existsInProgressMessages($this);
     }
 
+    public function hasWaitingRetryMessages(): bool
+    {
+        return MessageEntity::existsWaitingRetryMessages($this);
+    }
+
     /**
      * @return self[]
      */
@@ -78,6 +84,13 @@ class ChatEntity
         }
 
         return $entities;
+    }
+
+
+    public function getFirstReadyRetryMessage(): ?MessageEntity
+    {
+        return MessageEntity::findFirstWaitingRetryByChatId($this->getId());
+
     }
 
     public function getFirstMessageInPending(): ?MessageEntity

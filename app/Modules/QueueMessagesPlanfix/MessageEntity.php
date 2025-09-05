@@ -5,13 +5,14 @@ namespace App\Modules\QueueMessagesPlanfix;
 use App\Models\Message;
 use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
 use App\Modules\TelegramAccount\TelegramAccountEntity;
+use Carbon\Carbon;
 
 class MessageEntity
 {
     private const IN_PROGRESS = 'in_progress';
     const PENDING = 'pending';
     const COMPLETED = 'completed';
-
+    const WAITING_RETRY = 'waiting_retry';
     const ERROR = 'error';
     private Message $message;
     public function __construct(Message $message)
@@ -48,6 +49,26 @@ class MessageEntity
             ->first();
 
         return $message ? new self($message) : null;
+    }
+
+    public static function findFirstWaitingRetryByChatId(int $chatId): ?self
+    {
+        $message = Message::query()
+            ->where('chat_id', $chatId)
+            ->where('status', self::WAITING_RETRY)
+            ->where('next_retry_at', '<=', now())
+            ->orderBy('next_retry_at')
+            ->first();
+
+        return $message ? new self($message) : null;
+
+    }
+
+    public static function existsWaitingRetryMessages(ChatEntity $chatEntity):bool
+    {
+        return Message::where('chat_id', $chatEntity->getId())
+            ->where('status', self::WAITING_RETRY)
+            ->exists();
     }
 
     public function findProviderId(): string
@@ -141,9 +162,23 @@ class MessageEntity
         $this->message->saveOrFail();
     }
 
+    public function setStatusWaitingRetry(int $retryCount, Carbon $nextRetryAt):void
+    {
+        $this->message->status = self::WAITING_RETRY;
+        $this->message->retry_count = $retryCount;
+        $this->message->next_retry_at = $nextRetryAt;
+
+        $this->message->saveOrFail();
+    }
+
     public function delete(): void
     {
         $this->message->delete();
+    }
+
+    public function getRetryCount(): int
+    {
+        return $this->message->retry_count;
     }
 
 }

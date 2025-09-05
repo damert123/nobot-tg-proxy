@@ -50,13 +50,13 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
         $this->messageEntity->setStatusInProgress();
 
-
         try {
             $this->doSend($planfixService);
             $this->messageEntity->setStatusCompleted();
             Log::channel('queue-messages')->info("ProcessTelegramMessageJob: completed", ['chatId' => $this->chatId]);
 
         }
+
         catch (PeerFloodException $e){
             $this->handlePeerFlood($e);
         }
@@ -102,16 +102,31 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     private function handlePeerFlood(PeerFloodException $e)
     {
+        $maxRetries = 4;
+        $retryDelays = [30, 60, 300, 1800, 3600];
+
         $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
         $providerId = $this->messageEntity->findProviderId();
         $chat = $this->messageEntity->findChatNumberByChatId();
         $this->messageEntity->setStatusError($e->getMessage());
+
+
+        if ($this->messageEntity->getRetryCount() >= $maxRetries){
+            $this->messageEntity->setStatusError('Max retries exceeded');
+            return;
+        }
 
         SendPeerFloodNotificationToPlanfixJob::dispatch(
             $planfixIntegration->getPlanfixToken(),
             $chat,
             $providerId,
         )->onQueue('planfix');
+
+        $retryCount = $this->messageEntity->getRetryCount() + 1;
+        $delay = $retryDelays[$retryCount - 1] ?? end($retryDelays);
+
+        $this->messageEntity->setStatusWaitingRetry($retryCount, now()->addSeconds($delay));
+
 
         Log::channel('queue-messages')->warning(
             "PeerFlood detected, dispatched SendPeerFloodNotificationJob",

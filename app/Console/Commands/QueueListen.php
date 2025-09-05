@@ -37,7 +37,15 @@ class QueueListen extends Command
                     continue;
                 }
 
-                $message = $chat->getFirstMessageInPending();
+                $message = $chat->getFirstReadyRetryMessage();
+
+                if (!$message && $chat->hasWaitingRetryMessages()){
+                    continue;
+                }
+
+                if (!$message){
+                    $message = $chat->getFirstMessageInPending();
+                }
 
                 if($message === null){
                     continue;
