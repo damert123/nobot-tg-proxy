@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Json attachments
  * @property string status
  * @property string error_message
+ * @property integer retry_count
+ * @property string next_retry_at
  */
 
 class Message extends Model
@@ -23,7 +25,9 @@ class Message extends Model
         'message',
         'attachments',
         'status',
-        'error_message'
+        'error_message',
+        'retry_count',
+        'next_retry_at'
     ];
 
 }
