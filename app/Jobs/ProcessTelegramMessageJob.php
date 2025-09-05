@@ -115,11 +115,13 @@ class ProcessTelegramMessageJob implements ShouldQueue
             return;
         }
 
-        SendPeerFloodNotificationToPlanfixJob::dispatch(
-            $planfixIntegration->getPlanfixToken(),
-            $chat,
-            $providerId,
-        )->onQueue('planfix');
+        if ($this->messageEntity->getRetryCount() === 0) {
+            SendPeerFloodNotificationToPlanfixJob::dispatch(
+                $planfixIntegration->getPlanfixToken(),
+                $chat,
+                $providerId,
+            )->onQueue('planfix');
+        }
 
         $retryCount = $this->messageEntity->getRetryCount() + 1;
         $delay = $retryDelays[$retryCount - 1] ?? end($retryDelays);
