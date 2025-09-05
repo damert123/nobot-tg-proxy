@@ -102,7 +102,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     private function handlePeerFlood(PeerFloodException $e)
     {
-        $maxRetries = 4;
+        $maxRetries = 5;
         $retryDelays = [30, 60, 300, 1800, 3600];
 
         $planfixIntegration = PlanfixIntegrationEntity::findByToken($this->data['token']);
