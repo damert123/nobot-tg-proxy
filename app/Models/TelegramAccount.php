@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $session_path
  * @property int $user_id
  * @property string $status
+ * @property int $message_rate
  *
  *
  */

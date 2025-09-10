@@ -35,6 +35,25 @@ class TelegramAccountEntity
         return $account ? new self($account) : null;
     }
 
+    public static function getAllActiveAccountTgToCrm()
+    {
+        return TelegramAccount::query()
+            ->join('planfix_integrations', 'telegram_accounts.id', '=', 'planfix_integrations.telegram_account_id')
+            ->whereNotNull('telegram_accounts.session_path')
+            ->whereNot('telegram_accounts.status',self::PAUSE)
+            ->whereNot('telegram_accounts.status',self::ACCOUNT_NOT_AUTH)
+            ->get()
+            ->map(fn($account) => new self($account));
+    }
+
+    public  function updateMessageRate(int $count)
+    {
+        $this->telegramAccount->message_rate = $count;
+
+        $this->telegramAccount->save();
+
+    }
+
     public function changeStatus(string $status): void
     {
         $this->telegramAccount->status = $status;

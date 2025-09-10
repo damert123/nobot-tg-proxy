@@ -71,6 +71,13 @@ class MessageEntity
             ->exists();
     }
 
+    public static function countSentMessagesForAccount(TelegramAccountEntity $accountEntity): int
+    {
+        return Message::where('token', PlanfixIntegrationEntity::findByTelegramAccountId($accountEntity->getTelegramId()))
+            ->where('created_at', '>=', Carbon::now()->subMinute())
+            ->count();
+    }
+
     public function findProviderId(): string
     {
         $token = $this->getToken();
