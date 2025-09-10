@@ -78,6 +78,55 @@ class MessageEntity
             ->count();
     }
 
+    public static function countDuplicateMessagesLastMinute(TelegramAccountEntity $account): int
+    {
+        $token = PlanfixIntegrationEntity::findByTelegramAccountId($account->getId())->getToken();
+
+
+        $rows = Message::query()
+            ->select('chat_id', 'message')
+            ->where('token', $token)
+            ->where('created_at', '>=', now()->subMinute())
+            ->get();
+
+        $map = []; // normalized_message => ['count' => int, 'chats' => array of chat_id => true]
+
+        foreach ($rows as $r) {
+            $norm = self::normalizeMessage($r->message);
+            if (!isset($map[$norm])) {
+                $map[$norm] = ['count' => 0, 'chats' => []];
+            }
+            $map[$norm]['count'] += 1;
+            $map[$norm]['chats'][$r->chat_id] = true;
+        }
+
+        $duplicates = 0;
+        foreach ($map as $norm => $info) {
+            $chatCount = count($info['chats']);
+            if ($info['count'] >= 2 && $chatCount >= 2) {
+                $duplicates += 1;
+            }
+        }
+
+        return $duplicates;
+    }
+
+    private static function normalizeMessage(?string $message): string
+    {
+        if ($message === null) return '';
+
+        // простая нормализация: lowercase, strip_tags, убираем пунктуацию, лишние пробелы
+        $s = mb_strtolower(strip_tags($message));
+        // удалить все знаки пунктуации и специальные символы
+        $s = preg_replace('/[^\p{L}\p{N}\s]+/u', '', $s);
+        // сжать пробелы
+        $s = preg_replace('/\s+/u', ' ', $s);
+        $s = trim($s);
+
+        return $s;
+    }
+
+
     public function findProviderId(): string
     {
         $token = $this->getToken();

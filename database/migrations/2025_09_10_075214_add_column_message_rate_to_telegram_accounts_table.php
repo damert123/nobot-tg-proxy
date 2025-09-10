@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('telegram_accounts', function (Blueprint $table) {
             $table->unsignedInteger('message_rate')->default(0)->after('token');
+            $table->timestamp('status_change_at')->after('status')->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('telegram_accounts', function (Blueprint $table) {
             $table->dropColumn('message_rate');
+            $table->dropColumn('status_change_at');
         });
     }
 };

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property string $status
  * @property int $message_rate
+ * @property string $status_change_at
  *
  *
  */

@@ -149,6 +149,12 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/queue-messages.log'),
             'replace_placeholders' => true,
+        ],
+
+        'status-account' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/status-account.log'),
+            'replace_placeholders' => true,
         ]
 
 

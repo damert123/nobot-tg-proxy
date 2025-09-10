@@ -4,14 +4,18 @@ namespace App\Modules\TelegramAccount;
 
 
 use App\Models\TelegramAccount;
+use Illuminate\Support\Carbon;
 
 
 class TelegramAccountEntity
 {
 
     public const PAUSE = 'Пауза';
+    public const STATUS_ACTIVE = 'Активен';
     public const ACCOUNT_NOT_AUTH = 'Разлогинен';
     public const ACCOUNT_BANNED = 'Забанен';
+    public const STATUS_THROTTLED = 'THROTTLED';
+    public const STATUS_BROADCAST = 'BROADCAST';
     private TelegramAccount $telegramAccount;
 
     public function __construct(TelegramAccount $telegramAccount)
@@ -54,6 +58,14 @@ class TelegramAccountEntity
 
     }
 
+    public function updateStatus(string $status, Carbon $status_change_at)
+    {
+        $this->telegramAccount->status = $status;
+        $this->telegramAccount->status_change_at = $status_change_at;
+
+        $this->telegramAccount->saveOrFail();
+    }
+
     public function changeStatus(string $status): void
     {
         $this->telegramAccount->status = $status;
@@ -79,6 +91,16 @@ class TelegramAccountEntity
     public function getId(): int
     {
         return $this->telegramAccount->id;
+    }
+
+    public function getStatus(): string
+    {
+        return  $this->telegramAccount->status;
+    }
+
+    public function getStatusChangeAt(): string
+    {
+        return  $this->telegramAccount->status_change_at;
     }
 
 
