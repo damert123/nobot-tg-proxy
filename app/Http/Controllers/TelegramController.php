@@ -71,13 +71,13 @@ class TelegramController extends Controller
             $data = TelegramMessageDTO::fromArray($validated);
 
             $telegramIdFrom = $data->fromId;
-            $status = 'skipped';
+            $status = 'sent';
 
             if (!empty($data->message)) {
 
                 if (!empty($data->toId)) {
-//                    SendTelegramMessageJob::dispatch($telegramIdFrom, $data->message, $data->toId)->onQueue('tg-service-messages');;
-                    $status = $this->topUpSendMessageService->sendMessageDirectly($telegramIdFrom, $data->message, $data->toId);
+                    SendTelegramMessageJob::dispatch($telegramIdFrom, $data->message, $data->toId)->onQueue('tg-service-messages');;
+//                    $status = $this->topUpSendMessageService->sendMessageDirectly($telegramIdFrom, $data->message, $data->toId);
                 }
                 else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
