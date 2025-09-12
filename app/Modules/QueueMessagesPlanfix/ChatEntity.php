@@ -48,9 +48,9 @@ class ChatEntity
 
     public static function getById(int $id): ?self
     {
-        $chat = Chat::query()->find($id); // Используем find для поиска по первичному ключу
+        $chat = Chat::query()->find($id);
 
-        return $chat ? new self($chat) : null; // Возвращаем экземпляр ChatEntity или null
+        return $chat ? new self($chat) : null;
     }
 
 

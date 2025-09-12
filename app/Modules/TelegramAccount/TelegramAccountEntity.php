@@ -4,6 +4,7 @@ namespace App\Modules\TelegramAccount;
 
 
 use App\Models\TelegramAccount;
+use App\Modules\PlanfixIntegration\PlanfixIntegrationEntity;
 use Illuminate\Support\Carbon;
 
 
@@ -49,6 +50,15 @@ class TelegramAccountEntity
             ->get()
             ->map(fn($account) => new self($account));
     }
+
+    public static function getTelegramAccount(string $token): self
+    {
+        $tgId = PlanfixIntegrationEntity::findByToken($token)->getTelegramAccountId();
+
+        return self::getById($tgId);
+
+    }
+
 
     public  function updateMessageRate(int $count)
     {
@@ -101,6 +111,13 @@ class TelegramAccountEntity
     public function getStatusChangeAt(): string
     {
         return  $this->telegramAccount->status_change_at;
+    }
+
+    public static function getById(int $id): ?self
+    {
+        $account = TelegramAccount::where('id', $id)->find();
+
+        return $account ? new self($account) : null;
     }
 
 

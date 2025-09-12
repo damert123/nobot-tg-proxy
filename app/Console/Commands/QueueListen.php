@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\ProcessTelegramMessageJob;
 use App\Modules\QueueMessagesPlanfix\ChatEntity;
 use App\Modules\QueueMessagesPlanfix\MessageEntity;
+use App\Modules\TelegramAccount\TelegramAccountEntity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -33,6 +34,7 @@ class QueueListen extends Command
             $chats = ChatEntity::getAll();
 
             foreach ($chats as $chat){
+
                 if($chat->hasInProgressMessages()){
                     continue;
                 }
@@ -53,7 +55,13 @@ class QueueListen extends Command
 
                 $message->setStatusInProgress();
 
-                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
+                $account = TelegramAccountEntity::getTelegramAccount($message->getToken());
+
+                $delay = $this->calculateMessageDelay($message, $account);
+
+//                $message = $message->setCalculatedDelay($baseDelay);
+
+                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message)->delay(now()->addSeconds($delay));
 
             }
 
@@ -63,6 +71,27 @@ class QueueListen extends Command
             Log::channel('planfix-messages')->error("Scheduled command failed: {$e->getMessage()}");
             return 1;
         }
+
+    }
+
+    private function calculateMessageDelay(MessageEntity $message, TelegramAccountEntity $account)
+    {
+        $baseDelay = $message->typing_delay ?? 0;
+
+        $prev = $message->findPreviousAccountMessageInOtherChat();
+
+        if (!$prev){
+            return $baseDelay;
+        }
+
+        $jitter = match ($account->getStatus()){
+            TelegramAccountEntity::STATUS_ACTIVE => rand(1, 2),
+            TelegramAccountEntity::STATUS_BROADCAST => rand(2, 4),
+            TelegramAccountEntity::STATUS_THROTTLED => rand(4, 6),
+            default => rand(1, 3)
+        };
+
+        return $baseDelay + $jitter;
 
     }
 }

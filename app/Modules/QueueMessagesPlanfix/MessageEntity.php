@@ -126,6 +126,16 @@ class MessageEntity
         return $s;
     }
 
+    public function findPreviousAccountMessageInOtherChat(): ?self
+    {
+        return Message::query()
+            ->where('token', $this->getToken())
+            ->where('chat_id', '!=', $this->getChatId())
+            ->where('status', self::IN_PROGRESS)
+            ->latest('id')
+            ->first();
+    }
+
 
     public function findProviderId(): string
     {
@@ -236,5 +246,18 @@ class MessageEntity
     {
         return $this->message->retry_count;
     }
+
+    public function getChatId(): int
+    {
+        return  $this->message->chat_id;
+    }
+
+    public function setCalculatedDelay(int $baseDelay)
+    {
+        $this->message->base_delay = $baseDelay;
+
+        $this->message->saveOrFail();
+    }
+
 
 }
