@@ -28,11 +28,11 @@ class UpdateMessageRate extends Command
      * Execute the console command.
      */
 
-    const THROTTLE_ENTER_RATE = 6;
+    const THROTTLE_ENTER_RATE = 5;
     const THROTTLE_EXIT_RATE =  3;
     const THROTTLE_MIN_DURATION = 300; //5 мин
 
-    const BROADCAST_DUPLICATES = 2;
+    const BROADCAST_DUPLICATES = 3;
     const BROADCAST_MIN_DURATION = 180;
 
 

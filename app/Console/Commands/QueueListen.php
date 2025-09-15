@@ -76,22 +76,20 @@ class QueueListen extends Command
 
     private function calculateMessageDelay(MessageEntity $message, TelegramAccountEntity $account)
     {
-        $baseDelay = $message->typing_delay ?? 0;
+//        $baseDelay = $message->typing_delay ?? 0;
 
         $prev = $message->findPreviousAccountMessageInOtherChat();
 
         if (!$prev){
-            return $baseDelay;
+            return 0;
         }
 
-        $jitter = match ($account->getStatus()){
-            TelegramAccountEntity::STATUS_ACTIVE => rand(1, 2),
-            TelegramAccountEntity::STATUS_BROADCAST => rand(2, 4),
-            TelegramAccountEntity::STATUS_THROTTLED => rand(4, 6),
-            default => rand(1, 3)
+        return match ($account->getStatus()){
+            TelegramAccountEntity::STATUS_ACTIVE => rand(1, 3),
+            TelegramAccountEntity::STATUS_BROADCAST => rand(5, 15),
+            TelegramAccountEntity::STATUS_THROTTLED => rand(20, 40),
+            default => rand(2, 6)
         };
-
-        return $baseDelay + $jitter;
 
     }
 }
