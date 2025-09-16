@@ -62,8 +62,8 @@ class QueueListen extends Command
 
 
 //                $message = $message->setCalculatedDelay($baseDelay);
-//                ->delay(now()->addSeconds($delay))
-                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
+
+                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message)->delay(now()->addSeconds($delay));
 
 
 
