@@ -18,7 +18,7 @@ class PlanfixIntegrationEntity
 
     public static function findByToken(string $token): ?self
     {
-        dd(new self (PlanfixIntegration::where('token', $token)->first()));
+
         return new self (PlanfixIntegration::where('token', $token)->first());
     }
 
