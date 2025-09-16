@@ -57,8 +57,8 @@ class TelegramAccountEntity
     {
         $tgId = PlanfixIntegrationEntity::findByToken($token)->getTelegramAccountId();
 
-        return self::getById($tgId);
 
+        return self::getById($tgId);
     }
 
 
