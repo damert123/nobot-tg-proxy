@@ -275,5 +275,10 @@ class MessageEntity
         return $this->message->id;
     }
 
+    public function getMessage(): string
+    {
+        return $this->message->message;
+    }
+
 
 }
