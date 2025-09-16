@@ -93,13 +93,13 @@ class UpdateMessageRate extends Command
             if ($newStatus !== $currentStatus){
                 $account->updateStatus($newStatus, $now);
 
-                Log::channel('status-account')->info("Account status changed", [
-                    'token' => PlanfixIntegrationEntity::findByTelegramAccountId($account->getId())->getToken(),
-                    'from' => $currentStatus,
-                    'to' => $newStatus,
-                    'message_rate' => $count,
-                    'duplicates' => $duplicatesCount,
-                ]);
+//                Log::channel('status-account')->info("Account status changed", [
+//                    'token' => PlanfixIntegrationEntity::findByTelegramAccountId($account->getId())->getToken(),
+//                    'from' => $currentStatus,
+//                    'to' => $newStatus,
+//                    'message_rate' => $count,
+//                    'duplicates' => $duplicatesCount,
+//                ]);
             }else{
                 $account->updateMessageRate($count);
             }
