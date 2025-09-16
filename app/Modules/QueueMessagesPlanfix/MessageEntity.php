@@ -126,6 +126,17 @@ class MessageEntity
         return $s;
     }
 
+    public static function findById(int $messageId): MessageEntity
+    {
+        $message = Message::find($messageId);
+
+        if (!$message) {
+            throw new \Exception("Message with ID {$messageId} not found");
+        }
+
+        return new self($message);
+    }
+
     public function findPreviousAccountMessageInOtherChat(): ?self
     {
         return Message::query()
@@ -257,6 +268,11 @@ class MessageEntity
         $this->message->base_delay = $baseDelay;
 
         $this->message->saveOrFail();
+    }
+
+    public function getId()
+    {
+        return $this->message->id;
     }
 
 

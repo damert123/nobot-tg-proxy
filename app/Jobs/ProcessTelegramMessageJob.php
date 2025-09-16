@@ -25,7 +25,8 @@ class ProcessTelegramMessageJob implements ShouldQueue
 
     public $timeout = 300;
 
-    private MessageEntity $messageEntity;
+    protected int $messageId;
+    private ?MessageEntity $messageEntity = null;
 
     public $queue;
 
@@ -34,11 +35,11 @@ class ProcessTelegramMessageJob implements ShouldQueue
      *
      * @param array $data
      */
-    public function __construct(array $data, int $chatId, MessageEntity $messageEntity)
+    public function __construct(array $data, int $chatId, int $messageId)
     {
         $this->data = $data;
         $this->chatId = $chatId;
-        $this->messageEntity = $messageEntity;
+        $this->messageId = $messageId;
     }
 
     /**
@@ -47,6 +48,7 @@ class ProcessTelegramMessageJob implements ShouldQueue
     public function handle(PlanfixService $planfixService): void
     {
         Log::channel('queue-messages')->info("ProcessTelegramMessageJob: start", ['chatId' => $this->chatId]);
+        $this->messageEntity = MessageEntity::findById($this->messageId);
 
         $this->messageEntity->setStatusInProgress();
 
