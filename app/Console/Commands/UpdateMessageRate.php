@@ -54,6 +54,8 @@ class UpdateMessageRate extends Command
 
             $sinceChange = $account->getStatusChangeAt() ? $now->diffInSeconds($account->getStatusChangeAt()) : 0;
 
+            Log::info('Статус длиться уже ' . $sinceChange);
+
             if ($currentStatus === TelegramAccountEntity::STATUS_THROTTLED){
                 if ($count <= self::THROTTLE_EXIT_RATE && $sinceChange >= self::THROTTLE_MIN_DURATION){
                     $newStatus = TelegramAccountEntity::STATUS_ACTIVE;
