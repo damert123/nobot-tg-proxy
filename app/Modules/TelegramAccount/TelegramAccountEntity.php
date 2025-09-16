@@ -110,7 +110,7 @@ class TelegramAccountEntity
         return  $this->telegramAccount->status;
     }
 
-    public function getStatusChangeAt(): string
+    public function getStatusChangeAt(): ?string
     {
         return  $this->telegramAccount->status_change_at;
     }
