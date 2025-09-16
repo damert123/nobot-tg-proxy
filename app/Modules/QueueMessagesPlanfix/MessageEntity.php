@@ -139,12 +139,13 @@ class MessageEntity
 
     public function findPreviousAccountMessageInOtherChat(): ?self
     {
-        return Message::query()
+        $message = Message::query()
             ->where('token', $this->getToken())
             ->where('chat_id', '!=', $this->getChatId())
             ->where('status', self::IN_PROGRESS)
             ->latest('id')
             ->first();
+        return $message ? new self($message) : null;
     }
 
 
