@@ -52,7 +52,7 @@ class UpdateMessageRate extends Command
             $now = now();
             $currentStatus = $account->getStatus();
 
-            $sinceChange = $account->getStatusChangeAt() ? $now->diffInSeconds($account->getStatusChangeAt()) : 0;
+            $sinceChange = $account->getStatusChangeAt() ? $now->diffInSeconds($account->getStatusChangeAt(), true) : 0;
 
             Log::info('Статус длиться уже ' . $sinceChange);
 
