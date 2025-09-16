@@ -57,6 +57,7 @@ class QueueListen extends Command
 
                 $message->setStatusInProgress();
                 $account = TelegramAccountEntity::getTelegramAccount($message->getToken());
+                Log::info('АККАУНТ ID ' . $account->getId());
                 $delay = $this->calculateMessageDelay($message, $account);
 
 
