@@ -65,7 +65,8 @@ class QueueListen extends Command
 
 //                $message = $message->setCalculatedDelay($baseDelay);
                 Log::info('ВЫЗЫВАЕМ ДЖОБУ');
-                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message)->delay(now()->addSeconds($delay));
+//                ->delay(now()->addSeconds($delay));
+                ProcessTelegramMessageJob::dispatch($message->getModel()->toArray(), $chat->getChatId(), $message);
 
 
 
@@ -80,7 +81,7 @@ class QueueListen extends Command
 
     }
 
-    private function calculateMessageDelay(MessageEntity $message, TelegramAccountEntity $account)
+    private function calculateMessageDelay(MessageEntity $message, TelegramAccountEntity $account): int
     {
 //        $baseDelay = $message->typing_delay ?? 0;
 
