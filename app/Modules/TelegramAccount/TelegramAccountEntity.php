@@ -42,16 +42,15 @@ class TelegramAccountEntity
 
     public static function getAllActiveAccountTgToCrm()
     {
+      $planfixIds = PlanfixIntegrationEntity::getAllTelegramAccountId();
+
         return TelegramAccount::query()
+            ->whereIn('id', $planfixIds)
             ->whereNotNull('session_path')
             ->whereNotIn('status', [TelegramAccountEntity::PAUSE, TelegramAccountEntity::ACCOUNT_NOT_AUTH])
-            ->whereExists(function ($query) {
-                $query->selectRaw('1')
-                    ->from('planfix_integrations')
-                    ->whereColumn('planfix_integrations.telegram_account_id', 'telegram_accounts.id');
-            })
             ->get()
-            ->map(fn($account) => new \App\Modules\TelegramAccount\TelegramAccountEntity($account));
+            ->map(fn($account) => new self($account));
+
     }
 
     public static function getTelegramAccount(string $token): self

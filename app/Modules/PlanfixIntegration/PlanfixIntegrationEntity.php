@@ -4,6 +4,7 @@ namespace App\Modules\PlanfixIntegration;
 
 use App\Models\PlanfixIntegration;
 use App\Models\TelegramAccount;
+use Illuminate\Support\Collection;
 
 class PlanfixIntegrationEntity
 {
@@ -30,6 +31,11 @@ class PlanfixIntegrationEntity
         $planfix =  PlanfixIntegration::where('telegram_account_id', $id)->first();
 
         return new self($planfix);
+    }
+
+    public static function getAllTelegramAccountId(): Collection
+    {
+        return PlanfixIntegration::query()->pluck('telegram_account_id');
     }
 
     public function getTelegramAccountId(): int
