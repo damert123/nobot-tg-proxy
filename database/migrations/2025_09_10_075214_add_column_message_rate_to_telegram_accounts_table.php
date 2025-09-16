@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('telegram_accounts', function (Blueprint $table) {
-            $table->unsignedInteger('message_rate')->default(0)->after('token');
-            $table->timestamp('status_change_at')->after('status')->nullable();
+            $table->unsignedInteger('message_rate')->default(0)->after('status');
+            $table->timestamp('status_change_at')->after('message_rate')->nullable();
         });
     }
 
