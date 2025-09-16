@@ -43,6 +43,8 @@ class UpdateMessageRate extends Command
         /** @var \Illuminate\Support\Collection<int, TelegramAccountEntity> $accounts */
 
         foreach ($accounts as $account){
+
+
             $count = MessageEntity::countSentMessagesForAccount($account);
 
             $duplicatesCount = MessageEntity::countDuplicateMessagesLastMinute($account);
