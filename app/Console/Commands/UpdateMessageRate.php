@@ -108,5 +108,7 @@ class UpdateMessageRate extends Command
 
         $this->info("Message rate + status обновлены для {$accounts->count()} аккаунтов");
 
+        return self::SUCCESS;
+
     }
 }
