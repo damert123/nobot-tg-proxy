@@ -47,10 +47,10 @@ class TopUpSendMessageService
             throw new \Exception("Invalid TelegramID: {$telegramId}", 400);
         }
 
-        if ($sessionTelegram->status === 'Пауза') {
-            Log::channel('top-up-messages')->info("Telegram session is on pause for account ID: {$sessionTelegram->id}");
-            throw new \Exception('Телеграм сессия на паузе');
-        }
+//        if ($sessionTelegram->status === 'Пауза') {
+//            Log::channel('top-up-messages')->info("Telegram session is on pause for account ID: {$sessionTelegram->id}");
+//            throw new \Exception('Телеграм сессия на паузе');
+//        }
 
         return $sessionTelegram;
 
