@@ -11,5 +11,10 @@ Artisan::command('inspire', function () {
 \Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\QueueListen::class)
     ->everySecond()->withoutOverlapping(5);
 
+\Illuminate\Support\Facades\Schedule::command(\App\Modules\QueueServiceMessagesToTelegram\ProcessMessageQueueCommand::class)
+    ->everyMinute()->withoutOverlapping(5);
+
 \Illuminate\Support\Facades\Schedule::command(\App\Console\Commands\DeleteMessagesCommand::class)
     ->weeklyOn(1, '03:00')->withoutOverlapping();
+
+

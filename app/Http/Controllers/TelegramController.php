@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\TelegramMessageDTO;
 use App\Jobs\SendTelegramMessageJob;
+use App\Modules\QueueServiceMessagesToTelegram\QueueServiceMessagesEntity;
 use App\Services\TopUpSendMessageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,14 +30,12 @@ class TelegramController extends Controller
             $status = 'skipped';
 
             if (!empty($data->message)) {
-                // Если есть telegram_link (to_id), отправляем сразу
+
                 if (!empty($data->toId)) {
-                    $status = $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
+                    $this->queueMessage($telegramIdFrom, $data->message, $data->toId);
+//                    $status = $this->topUpSendMessageService->sendMessageTopUpDirectly($telegramIdFrom, $data->message, $data->toId);
                 }
-                // Если нет telegram_link, но есть task, тогда идем в CRM
-                elseif (!empty($data->task)) {
-                    $status = $this->topUpSendMessageService->sendMessageTopUpTask($telegramIdFrom, $data->message, $data->task);
-                } else {
+                else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
                     $status = 'invalid';
                 }
@@ -93,5 +92,23 @@ class TelegramController extends Controller
             Log::channel('top-up-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
+    }
+
+    private function queueMessage(int $telegramId, string $message, string $telegramLink): void
+    {
+        $lastScheduled = QueueServiceMessagesEntity::getLastScheduledAt();
+
+        $scheduledAt = now();
+
+        if ($lastScheduled && $lastScheduled->getScheduledAt()->gt(now())){
+            $scheduledAt = $lastScheduled->getNextAvailableTime();
+        }
+
+        QueueServiceMessagesEntity::create($telegramId, $message, $telegramLink, $scheduledAt, QueueServiceMessagesEntity::STATUS_PENDING);
+
+        Log::channel('top-up-messages')->info("Сообщение добавлено в очередь", [
+            'telegram_id' => $telegramId,
+            'scheduled_at' => $scheduledAt
+        ]);
     }
 }

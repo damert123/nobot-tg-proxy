@@ -92,18 +92,7 @@ class TopUpSendMessageService
 
         }catch (\Exception $e) {
             Log::channel('top-up-messages')->error("Ошибка на основном аккаунте ID: {$telegramId} - {$e->getMessage()}");
-
-            try {
-                $crmService = new ApiNobotService();
-                $parsedUsername = $crmService->extractUsernameFromLink($telegramLink);
-
-                return $this->tryAlternativeAccounts($message, $parsedUsername, $telegramId);
-
-            }catch (\Exception $e){
-                Log::channel('top-up-messages')->error("Ошибка при использовании альтернативных аккаунтов: {$e->getMessage()}");
-                return 'error';
-
-            }
+            return 'error';
         }
 
 
