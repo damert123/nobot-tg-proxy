@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withCommands([
+        __DIR__.'/../app/Console/Commands',
+        __DIR__.'/../app/Modules/QueueServiceMessagesToTelegram',
+        \App\Modules\QueueServiceMessagesToTelegram\ProcessMessageQueueCommand::class
+    ])
     ->withMiddleware(function (Middleware $middleware) {
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -17,6 +17,8 @@ use Illuminate\Support\Carbon;
 
 class QueueServiceMessages extends Model
 {
+
+    protected $table = 'queued_service_messages';
     protected $fillable = [
         'telegram_id',
         'message',
