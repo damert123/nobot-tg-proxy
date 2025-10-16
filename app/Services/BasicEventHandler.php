@@ -502,6 +502,10 @@ class BasicEventHandler extends SimpleEventHandler
         if ($message) {
             Log::channel('tg-messages')->info("РЕДАКТИРОВАНИЕ СООБЩЕНИЯ: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
+            if ($this->hasOnlyReactionChanges($update)) {
+                Log::channel('tg-messages')->info("Игнорируем edit - изменились только реакции");
+                return;
+            }
 
             $text = $message['message'] ?? 'Без текста';
             $peerId = $message['peer_id'] ?? null;
@@ -911,6 +915,18 @@ class BasicEventHandler extends SimpleEventHandler
         } else {
             Log::channel('tg-messages')->warning('Обновление без сообщения');
         }
+    }
+
+
+    private function hasOnlyReactionChanges(array $update): bool
+    {
+        $message = $update['message'];
+
+        if (isset($message['reactions']) && ($message['edit_hide'] ?? false)) {
+            return true;
+        }
+
+        return false;
     }
 
 

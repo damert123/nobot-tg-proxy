@@ -58,7 +58,6 @@ class ProcessMessageQueueCommand extends Command
 
         } catch (\Exception $e) {
             $message->updateStatus(QueueServiceMessagesEntity::STATUS_FAILED);
-
             $this->error("Failed to send message {$message->getId()}: {$e->getMessage()}");
             Log::channel('top-up-messages')->error("Failed to process message {$message->getId()}: {$e->getMessage()}");
         }
