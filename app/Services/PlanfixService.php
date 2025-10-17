@@ -51,6 +51,12 @@ class PlanfixService
 
         }
 
+        if ($telegramAccount->status === 'Разлогинен') {
+            Log::channel('planfix-messages')->info("Telegram session is on pause for account ID: {$telegramAccount->id}");
+            throw new \Exception('Телеграм аккаунт неавторизован');
+
+        }
+
         return $telegramAccount;
 
     }

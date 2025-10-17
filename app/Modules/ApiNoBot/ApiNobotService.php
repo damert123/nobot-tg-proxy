@@ -45,7 +45,7 @@ class ApiNobotService
 
     public function extractUsernameFromLink(string $link): ?string
     {
-        // Убираем https://, http://, t.me/ и @
+
         $link = preg_replace('/^(https?:\/\/)?(t\.me\/|@)/', '', $link);
 
         return $link ? '@' . $link : null;
