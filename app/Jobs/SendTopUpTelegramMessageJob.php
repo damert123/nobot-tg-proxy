@@ -2,13 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Services\SendMessageService;
 use App\Services\TopUpSendMessageService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 
-class SendTelegramMessageJob implements ShouldQueue
+class SendTopUpTelegramMessageJob implements ShouldQueue
 {
     use Queueable;
 
@@ -32,7 +31,7 @@ class SendTelegramMessageJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(SendMessageService $topUpService): void
+    public function handle(TopUpSendMessageService $topUpService): void
     {
         Log::channel('top-up-messages')->info("SendTelegramMessageJob запущен", [
             'telegramId' => $this->telegramId,

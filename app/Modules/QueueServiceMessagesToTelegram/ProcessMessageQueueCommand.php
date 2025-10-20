@@ -2,7 +2,7 @@
 
 namespace App\Modules\QueueServiceMessagesToTelegram;
 
-use App\Jobs\SendTelegramMessageJob;
+use App\Jobs\SendTopUpTelegramMessageJob;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -44,7 +44,7 @@ class ProcessMessageQueueCommand extends Command
 
             $message->updateStatus(QueueServiceMessagesEntity::STATUS_PROCESSING);
 
-            SendTelegramMessageJob::dispatch(
+            SendTopUpTelegramMessageJob::dispatch(
                 $message->getTelegramId(),
                 $message->getMessage(),
                 $message->getTelegramLink()
