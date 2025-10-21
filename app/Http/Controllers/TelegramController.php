@@ -62,20 +62,9 @@ class TelegramController extends Controller
             $requestData = $request->all();
 
 
-            $jsonString = array_keys($requestData)[0] ?? null;
+            $messageData = $this->extractMessageData($requestData);
 
-            if (!$jsonString) {
-                throw new \Exception('No data found in request');
-            }
-
-
-            $validated = json_decode($jsonString, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON format: ' . json_last_error_msg());
-            }
-
-            $validated = validator($validated, [
+            $validated = validator($messageData, [
                 'from_id' => ['required', 'integer'],
                 'to_id'   => ['nullable', 'string'],
                 'task'    => ['nullable', 'string'],
@@ -125,5 +114,24 @@ class TelegramController extends Controller
             'telegram_id' => $telegramId,
             'scheduled_at' => $scheduledAt
         ]);
+    }
+
+    private function extractMessageData(array $requestData): array
+    {
+        if (isset($requestData['from_id'])) {
+            return $requestData;
+        }
+
+        foreach ($requestData as $key => $value){
+            if (is_string($key)){
+                $decoded = json_decode($key, true);
+                if (json_last_error() === JSON_ERROR_NONE && isset($decoded['from_id'])){
+                    return $decoded;
+                }
+            }
+        }
+
+        throw new \Exception('Could not extract message data the from request');
+
     }
 }
