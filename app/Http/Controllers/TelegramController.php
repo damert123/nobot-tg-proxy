@@ -118,7 +118,7 @@ class TelegramController extends Controller
 
     private function extractMessageData(array $requestData): array
     {
-        // Получаем данные как раньше
+
         if (isset($requestData['from_id'])) {
             $data = $requestData;
         } else {
@@ -126,7 +126,7 @@ class TelegramController extends Controller
             $data = json_decode($key, true) ?? [];
         }
 
-        // Фиксим проблему с URL encoding
+
         if (isset($data['message'])) {
             $data['message'] = urldecode($data['message']);
         }
