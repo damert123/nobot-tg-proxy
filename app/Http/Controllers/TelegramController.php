@@ -59,13 +59,28 @@ class TelegramController extends Controller
         try {
             Log::channel('top-up-messages')->info('Barzha webhook received:', $request->all());
 
+            $requestData = $request->all();
 
-            $validated = $request->validate([
+
+            $jsonString = array_keys($requestData)[0] ?? null;
+
+            if (!$jsonString) {
+                throw new \Exception('No data found in request');
+            }
+
+
+            $validated = json_decode($jsonString, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception('Invalid JSON format: ' . json_last_error_msg());
+            }
+
+            $validated = validator($validated, [
                 'from_id' => ['required', 'integer'],
                 'to_id'   => ['nullable', 'string'],
                 'task'    => ['nullable', 'string'],
                 'message' => ['required', 'string'],
-            ]);
+            ])->validate();
 
             $data = TelegramMessageDTO::fromArray($validated);
 
