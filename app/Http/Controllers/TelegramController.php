@@ -128,7 +128,7 @@ class TelegramController extends Controller
 
 
         if (isset($data['message'])) {
-            $data['message'] = urlencode($data['message']);
+            $data['message'] = urldecode($data['message']);
         }
 
         return $data;
