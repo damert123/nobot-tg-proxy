@@ -55,14 +55,31 @@ class TelegramController extends Controller
 
     public function sendMessageWithoutRecent(Request $request)
     {
-
         try {
-            Log::channel('top-up-messages')->info('Barzha webhook received:', $request->all());
+            // ДОБАВЛЯЕМ: Логируем все детали запроса
+            Log::channel('top-up-messages')->info('Barzha webhook headers:', ['content-type' => $request->header('Content-Type')]);
+            Log::channel('top-up-messages')->info('Barzha webhook raw content:', ['raw' => $request->getContent()]);
+            Log::channel('top-up-messages')->info('Barzha webhook parsed data:', $request->all());
 
             $requestData = $request->all();
 
+            // ДОБАВЛЯЕМ: Проверяем Content-Type и обрабатываем form-data если нужно
+            $contentType = $request->header('Content-Type');
+            if (str_contains($contentType, 'application/x-www-form-urlencoded')) {
+                // Получаем сырые данные и парсим вручную
+                $rawData = $request->getContent();
+                parse_str($rawData, $formData);
+
+                Log::channel('top-up-messages')->info('Parsed form data:', $formData);
+
+                // Используем распарсенные form-data
+                $requestData = $formData;
+            }
 
             $messageData = $this->extractMessageData($requestData);
+
+            // ДОБАВЛЯЕМ: Логируем что получилось после extract
+            Log::channel('top-up-messages')->info('Extracted message data:', $messageData);
 
             $validated = validator($messageData, [
                 'from_id' => ['required', 'integer'],
@@ -77,12 +94,9 @@ class TelegramController extends Controller
             $status = 'sent';
 
             if (!empty($data->message)) {
-
                 if (!empty($data->toId)) {
-                    SendTelegramMessageJob::dispatch($telegramIdFrom, $data->message, $data->toId)->onQueue('tg-service-messages');;
-//                    $status = $this->topUpSendMessageService->sendMessageDirectly($telegramIdFrom, $data->message, $data->toId);
-                }
-                else {
+                    SendTelegramMessageJob::dispatch($telegramIdFrom, $data->message, $data->toId)->onQueue('tg-service-messages');
+                } else {
                     Log::channel('top-up-messages')->warning("Не найден ни telegram_link, ни task.");
                     $status = 'invalid';
                 }
@@ -92,7 +106,7 @@ class TelegramController extends Controller
                 'status' => $status,
             ]);
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::channel('top-up-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
             return response()->json(['error' => $e->getMessage()], 400);
         }
@@ -125,7 +139,6 @@ class TelegramController extends Controller
             $key = array_keys($requestData)[0] ?? '';
             $data = json_decode($key, true) ?? [];
         }
-
 
         if (isset($data['message'])) {
             $data['message'] = urldecode($data['message']);
