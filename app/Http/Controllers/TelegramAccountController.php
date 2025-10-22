@@ -227,6 +227,9 @@ class TelegramAccountController extends Controller
             $sessionPath = $account->session_path;
             $phone = $account->phone;
 
+            $accountMadeline = new API($sessionPath);
+            $accountMadeline->logout();
+
             $confPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
             if (file_exists($confPath)) {
                 exec("sudo supervisorctl stop tg_session_{$phone}");
