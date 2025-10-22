@@ -225,9 +225,17 @@ class TelegramAccountController extends Controller
         try {
             $account = TelegramAccount::findOrFail($id);
             $sessionPath = $account->session_path;
+            $phone = $account->phone;
+
+            $confPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
+            if (file_exists($confPath)) {
+                exec("sudo supervisorctl stop tg_session_{$phone}");
+                unlink($confPath);
+                exec('sudo supervisorctl reread && sudo supervisorctl update');
+            }
 
             if (file_exists($sessionPath) && is_dir($sessionPath)) {
-                // Удаляем папку с сессией
+
                 $this->deleteSessionFolder($sessionPath);
             }
 
@@ -235,7 +243,6 @@ class TelegramAccountController extends Controller
 
             $account->delete();
 
-            Artisan::call('telegram:restart-supervisor');
 
             return redirect()->route('telegram.index')->with('success', 'Аккаунт успешно удален!');
 
