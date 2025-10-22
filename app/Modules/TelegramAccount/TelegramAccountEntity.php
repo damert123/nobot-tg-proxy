@@ -61,5 +61,11 @@ class TelegramAccountEntity
         return $this->telegramAccount->id;
     }
 
+    public function getPhone()
+    {
+
+        return $this->telegramAccount->phone;
+    }
+
 
 }

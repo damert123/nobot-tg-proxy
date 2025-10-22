@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TelegramAccountCreated;
 use App\Http\Requests\Telegram\StoreRequest;
 use App\Models\PlanfixIntegration;
 use App\Models\TelegramAccount;
@@ -145,13 +146,23 @@ class TelegramAccountController extends Controller
                 throw new \RuntimeException('Не удалось получить ID Telegram-аккаунта.');
             }
 
+
+
             $telegramAccount = TelegramAccount::updateOrCreate(
-                ['phone' => $validated['phone']], // Обновляем, если номер телефона уже существует
+                ['phone' => $validated['phone']],
                 [
                     'telegram_id' => $self['id'],
                     'status' => 'Пауза',
                 ]
             );
+
+            /**
+             * @var TelegramAccount $telegramAccount
+             */
+
+            $telegramAccount->getEntity();
+
+            event(new TelegramAccountCreated($telegramAccount));
 
             return redirect()->route('dashboard')->with('success', 'Аккаунт успешно добавлен!');
 
