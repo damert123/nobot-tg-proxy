@@ -72,13 +72,13 @@ class TelegramController extends Controller
 
                 Log::channel('top-up-messages')->info('Parsed form data:', $formData);
 
-                // Используем распарсенные form-data
+
                 $requestData = $formData;
             }
 
             $messageData = $this->extractMessageData($requestData);
 
-            // ДОБАВЛЯЕМ: Логируем что получилось после extract
+
             Log::channel('top-up-messages')->info('Extracted message data:', $messageData);
 
             $validated = validator($messageData, [
@@ -132,7 +132,7 @@ class TelegramController extends Controller
 
     private function extractMessageData(array $requestData): array
     {
-        // Получаем данные как раньше
+
         if (isset($requestData['from_id'])) {
             $data = $requestData;
         } else {
@@ -140,7 +140,7 @@ class TelegramController extends Controller
             $data = json_decode($key, true) ?? [];
         }
 
-        // Умное исправление сообщения
+
         if (isset($data['message'])) {
             $data['message'] = $this->normalizeMessage($data['message']);
         }
@@ -153,11 +153,17 @@ class TelegramController extends Controller
         // URL decode (на случай %20, + и т.д.)
         $message = urldecode($message);
 
-        // Заменяем подчеркивания на пробелы
+        // Сначала заменяем двойные подчеркивания на перенос строки
+        $message = str_replace('__', "\n", $message);
+
+        // Затем одиночные подчеркивания на пробелы
         $message = str_replace('_', ' ', $message);
 
-        // Убираем лишние пробелы
-        $message = preg_replace('/\s+/', ' ', $message);
+        // Убираем лишние пробелы (но сохраняем переносы строк)
+        $message = preg_replace('/[ \t]+/', ' ', $message);
+
+        // Убираем пробелы в начале и конце строк, но сохраняем переносы
+        $message = preg_replace('/^[ \t]+|[ \t]+$/m', '', $message);
 
         return trim($message);
     }
