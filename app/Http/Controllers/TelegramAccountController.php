@@ -276,40 +276,30 @@ class TelegramAccountController extends Controller
 
     public function start(int $accountId)
     {
-        // Получаем аккаунт по ID
         $account = TelegramAccount::findOrFail($accountId);
 
-        // Проверяем, что сессия не активна
         if ($account->status === 'Активен') {
             return redirect()->route('telegram.index')->with('error', 'Сессия уже активна.');
         }
 
-        // Статус сессии меняем на "Активен"
         $account->status = 'Активен';
         $account->save();
 
-        // Запуск сессии с использованием MadelineProto
-
-        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была успешно запущена.');
     }
 
     public function stop(int $accountId)
     {
-        // Получаем аккаунт по ID
+
         $account = TelegramAccount::findOrFail($accountId);
 
-        // Проверяем, что сессия не активна
         if ($account->status === 'Пауза') {
             return redirect()->route('telegram.index')->with('error', 'Сессия уже на паузе.');
         }
 
-        // Статус сессии меняем на "Активен"
         $account->status = 'Пауза';
         $account->save();
-
-        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была поставлена на паузу.');
     }

@@ -34,14 +34,15 @@ class CreateSupervisorConfigForTelegram
 process_name=%(program_name)s
 command=php /home/developer/nobot-tg-proxy/artisan telegram:listen --id={$account->getId()}
 directory=/home/developer/nobot-tg-proxy
-autostart=false
+autostart=true
 autorestart=true
 stopasgroup=true
 killasgroup=true
 user=developer
 redirect_stderr=true
 stdout_logfile={$logPath}
-stopwaitsecs=20
+stdout_logfile_maxbytes=10MB
+stdout_logfile_backups=2
 CONF;
 
         File::put($confPath, $config);

@@ -61,10 +61,20 @@ class TelegramAccountEntity
         return $this->telegramAccount->id;
     }
 
-    public function getPhone()
+    public function getPhone(): string
     {
 
         return $this->telegramAccount->phone;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->telegramAccount->status;
+    }
+
+    public function inPause(): bool
+    {
+        return $this->telegramAccount->status === 'Пауза';
     }
 
 

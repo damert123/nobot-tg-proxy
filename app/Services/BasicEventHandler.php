@@ -48,7 +48,7 @@ class BasicEventHandler extends SimpleEventHandler
                 MessageEntity::changeStatusInProgressForToken($token, TelegramAccountEntity::ACCOUNT_BANNED);
 
                 $telegramAccount->changeStatus(TelegramAccountEntity::ACCOUNT_BANNED);
-                $this->restart();
+                $this->stop();
                 return;
             }
 
@@ -70,18 +70,24 @@ class BasicEventHandler extends SimpleEventHandler
         MessageEntity::changeStatusInProgressForToken($token, TelegramAccountEntity::ACCOUNT_NOT_AUTH);
 
         $telegramAccount->changeStatus(TelegramAccountEntity::ACCOUNT_NOT_AUTH);
-        $this->restart();
+        $this->stop();
     }
 
     public function onUpdateNewMessage(array $update): void
     {
-//        $this->setReportPeers(406210384);
+
+        $sessionPath = $this->getSessionName();
+        $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
+
+        if ($telegramAccount->inPause()){
+            Log::channel('tg-messages')->info("Аккаунт на паузе, сообщение не будет отправлено в planfix");
+            return;
+        }
 
         $message = $update['message'] ?? null;
 
         if ($message) {
             Log::channel('tg-messages')->info("Полная информация: " . json_encode($update, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
 
             $text = $message['message'] ?? 'Без текста';
             $peerId = $message['peer_id'] ?? null;
@@ -94,8 +100,6 @@ class BasicEventHandler extends SimpleEventHandler
                 ]);
                 return;
             }
-
-
 
             // Получаем данные текущего пользователя (менеджера)
             $self = $this->getSelf();
@@ -495,6 +499,12 @@ class BasicEventHandler extends SimpleEventHandler
 
     public function onUpdateEditMessage(array $update): void
     {
+        $sessionPath = $this->getSessionName();
+        $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
+
+        if ($telegramAccount->inPause()){
+            return;
+        }
 
         $message = $update['message'] ?? null;
 
