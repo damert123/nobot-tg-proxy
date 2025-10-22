@@ -33,7 +33,7 @@ class TelegramService
             ->whereNotNull('telegram_accounts.session_path')
             ->where('telegram_accounts.status', 'Активен')
             ->where('telegram_accounts.session_path', $sessionPath)
-            ->pluck('telegram_accounts.session_path');
+            ->value('telegram_accounts.session_path');
 
         if ($session->isEmpty()) {
             return;
