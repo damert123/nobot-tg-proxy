@@ -23,8 +23,11 @@ class CreateSupervisorConfigForTelegram
      */
     public function handle(TelegramAccountCreated $event): void
     {
+        Log::info("123123123");
         $account = $event->telegramAccount;
         $phone = $account->getPhone();
+        Log::info("Телефон {$phone}");
+
 
         $sessionPath = storage_path("telegram_sessions/{$phone}.madeline");
         $logPath = storage_path("logs/tg_session_{$phone}.log");
