@@ -35,7 +35,7 @@ class TelegramService
             ->where('telegram_accounts.session_path', $sessionPath)
             ->value('telegram_accounts.session_path');
 
-        if ($session->isEmpty()) {
+        if (empty($session)) {
             return;
         }
 
