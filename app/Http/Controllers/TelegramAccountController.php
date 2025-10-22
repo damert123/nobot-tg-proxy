@@ -160,9 +160,9 @@ class TelegramAccountController extends Controller
              * @var TelegramAccount $telegramAccount
              */
 
-            $telegramAccount->getEntity();
+            $telegramAccountEntity = $telegramAccount->getEntity();
 
-            event(new TelegramAccountCreated($telegramAccount));
+            event(new TelegramAccountCreated($telegramAccountEntity));
 
             return redirect()->route('dashboard')->with('success', 'Аккаунт успешно добавлен!');
 
