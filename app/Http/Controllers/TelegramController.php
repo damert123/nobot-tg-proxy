@@ -132,7 +132,7 @@ class TelegramController extends Controller
 
     private function extractMessageData(array $requestData): array
     {
-
+        // Получаем данные как раньше
         if (isset($requestData['from_id'])) {
             $data = $requestData;
         } else {
@@ -140,10 +140,25 @@ class TelegramController extends Controller
             $data = json_decode($key, true) ?? [];
         }
 
+        // Умное исправление сообщения
         if (isset($data['message'])) {
-            $data['message'] = urldecode($data['message']);
+            $data['message'] = $this->normalizeMessage($data['message']);
         }
 
         return $data;
+    }
+
+    private function normalizeMessage(string $message): string
+    {
+        // URL decode (на случай %20, + и т.д.)
+        $message = urldecode($message);
+
+        // Заменяем подчеркивания на пробелы
+        $message = str_replace('_', ' ', $message);
+
+        // Убираем лишние пробелы
+        $message = preg_replace('/\s+/', ' ', $message);
+
+        return trim($message);
     }
 }
