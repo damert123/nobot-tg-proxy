@@ -12,7 +12,7 @@ class TelegramListen extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:listen';
+    protected $signature = 'telegram:listen {--session=}';
 
 
     /**
@@ -36,8 +36,15 @@ class TelegramListen extends Command
      */
     public function handle()
     {
+
+        $sessionPath = $this->option('session');
+
+        if (!$sessionPath) {
+            $this->error('Не указан путь к сессии (--session=)');
+            return 1;
+        }
         $this->info('Запуск обработчика сообщений Telegram...');
-        $this->telegramService->listenForMessage();
+        $this->telegramService->listenForMessage($sessionPath);
 
         return 0;
     }
