@@ -25,21 +25,22 @@ class TelegramService
             ->setApiHash(env('TELEGRAM_API_HASH'));
     }
 
-    public function listenForMessage(string $sessionPath)
+    public function listenForMessage(int $accountId)
     {
 
-        $session = DB::table('telegram_accounts')
+        $sessionPath = DB::table('telegram_accounts')
             ->join('planfix_integrations', 'telegram_accounts.id', '=', 'planfix_integrations.telegram_account_id')
             ->whereNotNull('telegram_accounts.session_path')
             ->where('telegram_accounts.status', 'Активен')
-            ->where('telegram_accounts.session_path', $sessionPath)
+            ->where('telegram_accounts.id', $accountId)
             ->value('telegram_accounts.session_path');
 
-        if (empty($session)) {
+        if (empty($sessionPath)) {
+            echo "Сессия не найдена для аккаунта ID: {$accountId}\n";
             return;
         }
 
-        BasicEventHandler::startAndLoop($session);
+        BasicEventHandler::startAndLoop($sessionPath);
 
     }
 }
