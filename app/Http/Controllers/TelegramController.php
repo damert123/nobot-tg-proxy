@@ -154,7 +154,7 @@ class TelegramController extends Controller
         $message = urldecode($message);
 
         // Сначала заменяем двойные подчеркивания на перенос строки
-        $message = str_replace('__', "\n", $message);
+        $message = str_replace('__', "\n\n", $message);
 
         // Затем одиночные подчеркивания на пробелы
         $message = str_replace('_', ' ', $message);
