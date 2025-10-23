@@ -85,9 +85,7 @@ class TelegramAccountController extends Controller
 
             $madelineProto->phoneLogin($phone);
 
-            if ($existSession){
-                exec("sudo supervisorctl restart tg_session_{$phone}");
-            }
+
 
 
             return view('telegram.code', compact('phone'));
@@ -176,6 +174,8 @@ class TelegramAccountController extends Controller
              */
 
             $telegramAccountEntity = $telegramAccount->getEntity();
+
+            exec("sudo supervisorctl restart tg_session_{$telegramAccountEntity->getPhone()}");
 
             event(new TelegramAccountCreated($telegramAccountEntity));
 
