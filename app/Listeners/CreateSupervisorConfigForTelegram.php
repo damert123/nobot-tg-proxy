@@ -35,21 +35,19 @@ class CreateSupervisorConfigForTelegram
 
         Log::info("Preparing supervisor config for phone: {$phone}");
 
-        $config = <<<EOD
-[program:tg_session_{$phone}]
-process_name=%(program_name)s
-command=php /home/developer/nobot-tg-proxy/artisan telegram:listen --id={$account->getId()}
-directory=/home/developer/nobot-tg-proxy
-autostart=true
-autorestart=true
-stopasgroup=true
-killasgroup=true
-user=developer
-redirect_stderr=true
-stdout_logfile={$logPath}
-stdout_logfile_maxbytes=10MB
-stdout_logfile_backups=2
-EOD;
+        $config = "[program:tg_session_{$phone}]\n" .
+            "process_name=%(program_name)s\n" .
+            "command=php /home/developer/nobot-tg-proxy/artisan telegram:listen --id={$account->getId()}\n" .
+            "directory=/home/developer/nobot-tg-proxy\n" .
+            "autostart=true\n" .
+            "autorestart=true\n" .
+            "stopasgroup=true\n" .
+            "killasgroup=true\n" .
+            "user=developer\n" .
+            "redirect_stderr=true\n" .
+            "stdout_logfile={$logPath}\n" .
+            "stdout_logfile_maxbytes=10MB\n" .
+            "stdout_logfile_backups=2";
 
         File::put($confPath, $config);
         Log::info("Supervisor config written to {$confPath}");
