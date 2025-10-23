@@ -73,14 +73,14 @@ class TelegramAccountController extends Controller
             // Путь к файлу сессии
             $sessionFile = storage_path("telegram_sessions/{$phone}.madeline");
 
-
+            if (file_exists($sessionFile)){
+                $this->deleteSessionFolder($sessionFile);
+            }
 
             // Создание API-инстанса и выполнение phoneLogin
             $madelineProto = new \danog\MadelineProto\API($sessionFile, $settings);
 
-            if (file_exists($sessionFile)){
-                $this->deleteSessionFolder($sessionFile);
-            }
+
             $madelineProto->phoneLogin($phone);
 
 
