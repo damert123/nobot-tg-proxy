@@ -33,7 +33,7 @@ class CreateSupervisorConfigForTelegram
         $logPath = storage_path("logs/tg_session_{$phone}.log");
         $confPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
 
-        $testPath = "/home/developer/test_supervisor_{$phone}.txt";
+        $testPath = "/etc/supervisor/conf.d/test_supervisor_{$phone}.txt";
         $simpleContent = "123123 test content for phone: {$phone}";
 
         $result = File::put($testPath, $simpleContent);
