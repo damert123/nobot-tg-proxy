@@ -57,6 +57,8 @@ class TelegramAccountController extends Controller
 
     public function showCodeForm(Request $request)
     {
+        $existSession = false;
+
         $phone = $request->query('phone');
 
 
@@ -75,20 +77,19 @@ class TelegramAccountController extends Controller
 
             if (file_exists($sessionFile)){
                 $this->deleteSessionFolder($sessionFile);
+                $existSession = true;
             }
 
             // Создание API-инстанса и выполнение phoneLogin
             $madelineProto = new \danog\MadelineProto\API($sessionFile, $settings);
 
-
             $madelineProto->phoneLogin($phone);
 
+            if ($existSession){
+                exec("sudo supervisorctl restart tg_session_{$phone}");
+            }
 
 
-
-
-
-            // Передаём номер телефона в представление
             return view('telegram.code', compact('phone'));
         }
 
