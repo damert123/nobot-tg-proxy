@@ -29,7 +29,6 @@ class TelegramService
     {
 
         $sessionPath = DB::table('telegram_accounts')
-            ->join('planfix_integrations', 'telegram_accounts.id', '=', 'planfix_integrations.telegram_account_id')
             ->whereNotNull('telegram_accounts.session_path')
             ->where('telegram_accounts.status', 'Активен')
             ->where('telegram_accounts.id', $accountId)
