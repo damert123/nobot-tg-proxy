@@ -7,6 +7,7 @@ use App\Http\Requests\Telegram\StoreRequest;
 use App\Models\PlanfixIntegration;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
+use danog\MadelineProto\Logger;
 use danog\MadelineProto\RPCError\SessionPasswordNeededError;
 use danog\MadelineProto\Settings;
 use danog\MadelineProto\Settings\AppInfo;
@@ -115,9 +116,16 @@ class TelegramAccountController extends Controller
                 ->setApiId(env('TELEGRAM_API_ID'))
                 ->setApiHash(env('TELEGRAM_API_HASH'));
 
+
+            $loggerSettings = (new Settings())
+                ->getLogger()
+                ->setLevel(Logger::LEVEL_VERBOSE)
+                ->setType(Logger::LOGGER_FILE);
+
             $settings = (new Settings())
                 ->setPeer($peerSetings)
-                ->setAppInfo($appInfo);
+                ->setAppInfo($appInfo)
+                ->setLogger($loggerSettings);
 
             $sessionFile = storage_path("telegram_sessions/{$validated['phone']}.madeline");
 
@@ -172,9 +180,6 @@ class TelegramAccountController extends Controller
             return back()->withErrors(['code' => 'Ошибка авторизации: ' . $e->getMessage()]);
 
         }
-
-
-
     }
 
     public function resendCode(Request $request, string $phone)
