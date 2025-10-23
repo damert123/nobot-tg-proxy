@@ -30,7 +30,6 @@ class TelegramService
 
         $sessionPath = DB::table('telegram_accounts')
             ->whereNotNull('telegram_accounts.session_path')
-            ->where('telegram_accounts.status', 'Активен')
             ->where('telegram_accounts.id', $accountId)
             ->value('telegram_accounts.session_path');
 
