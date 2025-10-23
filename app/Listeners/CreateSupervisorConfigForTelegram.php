@@ -34,6 +34,7 @@ class CreateSupervisorConfigForTelegram
         $confPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
 
         Log::info("Preparing supervisor config for phone: {$phone}");
+        Log::info("Conf path: {$confPath}");
 
         $config = "[program:tg_session_{$phone}]\n" .
             "process_name=%(program_name)s\n" .
