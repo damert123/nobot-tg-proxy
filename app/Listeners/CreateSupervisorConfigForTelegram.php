@@ -31,15 +31,13 @@ class CreateSupervisorConfigForTelegram
 
         $sessionPath = storage_path("telegram_sessions/{$phone}.madeline");
         $logPath = storage_path("logs/tg_session_{$phone}.log");
-        $confPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
 
-        $testPath = "/etc/supervisor/conf.d/test_supervisor_{$phone}.txt";
-        $simpleContent = "123123 test content for phone: {$phone}";
 
-        $result = File::put($testPath, $simpleContent);
+        $tmpConfPath = storage_path("app/tmp/tg_session_{$phone}.conf");
+        $finalConfPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
 
         Log::info("Preparing supervisor config for phone: {$phone}");
-        Log::info("Conf path: {$confPath}");
+        Log::info("Conf path: {$finalConfPath}");
 
         $config = "[program:tg_session_{$phone}]\n" .
             "process_name=%(program_name)s\n" .
@@ -55,12 +53,53 @@ class CreateSupervisorConfigForTelegram
             "stdout_logfile_maxbytes=10MB\n" .
             "stdout_logfile_backups=2";
 
-        File::put($confPath, $config);
-        Log::info("Supervisor config written to {$confPath}");
 
-        exec('sudo supervisorctl reread && sudo supervisorctl update');
-        Log::info("Supervisor reread and update executed");
+        $tmpDir = dirname($tmpConfPath);
+        if (!File::exists($tmpDir)) {
+            File::makeDirectory($tmpDir, 0755, true);
+            Log::info("Created temporary directory: {$tmpDir}");
+        }
+
+        File::put($tmpConfPath, $config);
+        Log::info("Supervisor config written to temporary location: {$tmpConfPath}");
 
 
+        if (!File::exists($tmpConfPath)){
+            Log::error('Temporary config file was not created!');
+            return;
+        }
+
+        $moveCommand = "sudo mv {$tmpConfPath} {$finalConfPath}";
+
+        exec($moveCommand, $moveOutput, $moveReturnCode);
+
+        Log::info("Move command return code: {$moveReturnCode}");
+        Log::info("Move command output: " . implode("\n", $moveOutput));
+
+
+        if ($moveReturnCode === 0){
+            Log::info("✅ Config successfully moved to supervisor directory");
+
+            exec("sudo chmod 644 {$finalConfPath}", $chmodOutput, $chmodReturnCode);
+
+            Log::info("Chmod return code: {$chmodReturnCode}");
+
+            Log::info("Updating supervisor...");
+            exec('sudo supervisorctl reread', $rereadOutput, $rereadCode);
+            exec('sudo supervisorctl update', $updateOutput, $updateCode);
+
+            Log::info("Supervisor reread return code: {$rereadCode}");
+            Log::info("Supervisor update return code: {$updateCode}");
+            Log::info("Supervisor reread output: " . implode("\n", $rereadOutput));
+            Log::info("Supervisor update output: " . implode("\n", $updateOutput));
+
+            Log::info("✅ Supervisor config successfully created and loaded");
+
+
+
+        }else{
+            Log::error("❌ Failed to move config file to supervisor directory");
+            Log::error("Move command failed with code: {$moveReturnCode}");
+        }
     }
 }
