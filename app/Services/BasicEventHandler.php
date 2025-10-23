@@ -76,8 +76,14 @@ class BasicEventHandler extends SimpleEventHandler
     public function onUpdateNewMessage(array $update): void
     {
 
+
         $sessionPath = $this->getSessionName();
         $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
+
+        if (PlanfixIntegrationEntity::existsForTelegramAccount($telegramAccount->getId())){
+            Log::channel('tg-messages')->info("Аккаунт не подключен к crm, сообщение не будет отправлено в planfix");
+            return;
+        }
 
         if ($telegramAccount->inPause()){
             Log::channel('tg-messages')->info("Аккаунт на паузе, сообщение не будет отправлено в planfix");
@@ -499,6 +505,9 @@ class BasicEventHandler extends SimpleEventHandler
 
     public function onUpdateEditMessage(array $update): void
     {
+
+
+
         $sessionPath = $this->getSessionName();
         $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
 
@@ -507,6 +516,11 @@ class BasicEventHandler extends SimpleEventHandler
         }
 
         $message = $update['message'] ?? null;
+
+        if (PlanfixIntegrationEntity::existsForTelegramAccount($telegramAccount->getId())){
+            Log::channel('tg-messages')->info("Аккаунт не подключен к crm, сообщение не будет отправлено в planfix");
+            return;
+        }
 
 
         if ($message) {

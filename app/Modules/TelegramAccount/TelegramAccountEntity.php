@@ -77,5 +77,10 @@ class TelegramAccountEntity
         return $this->telegramAccount->status === 'Пауза';
     }
 
+    public function isPlanfixIntegration()
+    {
+
+    }
+
 
 }

@@ -32,6 +32,11 @@ class PlanfixIntegrationEntity
         return new self($planfix);
     }
 
+    public static function existsForTelegramAccount(int $telegramAccountId): bool
+    {
+        return PlanfixIntegration::where('telegram_account_id', $telegramAccountId)->exists();
+    }
+
     public function getTelegramAccountId(): int
     {
         return $this->planfixIntegration->telegram_account_id;
