@@ -4,6 +4,7 @@ namespace App\Modules\TelegramAccount;
 
 
 use App\Models\TelegramAccount;
+use Illuminate\Database\Eloquent\Collection;
 
 
 class TelegramAccountEntity
@@ -34,6 +35,12 @@ class TelegramAccountEntity
         return $account ? new self($account) : null;
     }
 
+
+    public static function getAllAccounts(): \Illuminate\Support\Collection
+    {
+        return TelegramAccount::all()->map(fn($account) => new self($account));
+    }
+
     public function changeStatus(string $status): void
     {
         $this->telegramAccount->status = $status;
@@ -59,6 +66,27 @@ class TelegramAccountEntity
     public function getId(): int
     {
         return $this->telegramAccount->id;
+    }
+
+    public function getPhone(): string
+    {
+
+        return $this->telegramAccount->phone;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->telegramAccount->status;
+    }
+
+    public function inPause(): bool
+    {
+        return $this->telegramAccount->status === 'Пауза';
+    }
+
+    public function isPlanfixIntegration()
+    {
+
     }
 
 

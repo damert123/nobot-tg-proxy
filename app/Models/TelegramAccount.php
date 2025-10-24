@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Modules\TelegramAccount\TelegramAccountEntity;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -19,4 +20,10 @@ use Illuminate\Database\Eloquent\Model;
 class TelegramAccount extends Model
 {
     protected $guarded = false;
+
+
+    public function getEntity(): TelegramAccountEntity
+    {
+        return new TelegramAccountEntity($this);
+    }
 }

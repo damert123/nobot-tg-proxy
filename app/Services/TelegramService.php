@@ -25,45 +25,20 @@ class TelegramService
             ->setApiHash(env('TELEGRAM_API_HASH'));
     }
 
-    public function listenForMessage()
+    public function listenForMessage(int $accountId)
     {
 
-        $sessions = DB::table('telegram_accounts')
-            ->join('planfix_integrations', 'telegram_accounts.id', '=', 'planfix_integrations.telegram_account_id')
+        $sessionPath = DB::table('telegram_accounts')
             ->whereNotNull('telegram_accounts.session_path')
-            ->where('telegram_accounts.status', 'Активен')
-            ->pluck('telegram_accounts.session_path');
+            ->where('telegram_accounts.id', $accountId)
+            ->value('telegram_accounts.session_path');
 
-        if ($sessions->isEmpty()) {
+        if (empty($sessionPath)) {
+            echo "Сессия не найдена для аккаунта ID: {$accountId}\n";
             return;
         }
 
-        $MadelineProtos = [];
-        foreach ($sessions as $sessionPath) {
-
-            $api = new API($sessionPath);
-
-            $api->start();
-
-            $MadelineProtos[] = $api;
-        }
-
-        try {
-            API::startAndLoopMulti($MadelineProtos, BasicEventHandler::class);
-        } catch (\Throwable $e) {
-            Log::error("Мульти-цикл упал: ".$e->getMessage());
-
-        }
+        BasicEventHandler::startAndLoop($sessionPath);
 
     }
-
-//    public function getUpdates()
-//    {
-//        return $this->madeline->getUpdates();
-//    }
-//
-//    public function sendMessage($chatId, $message)
-//    {
-//        return $this->madeline->messages->sendMessage(['peer' => $chatId, 'message' => $message]);
-//    }
 }

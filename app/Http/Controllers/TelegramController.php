@@ -150,19 +150,14 @@ class TelegramController extends Controller
 
     private function normalizeMessage(string $message): string
     {
-        // URL decode (на случай %20, + и т.д.)
         $message = urldecode($message);
 
-        // Сначала заменяем двойные подчеркивания на перенос строки
         $message = str_replace('__', "\n\n", $message);
 
-        // Затем одиночные подчеркивания на пробелы
         $message = str_replace('_', ' ', $message);
 
-        // Убираем лишние пробелы (но сохраняем переносы строк)
         $message = preg_replace('/[ \t]+/', ' ', $message);
 
-        // Убираем пробелы в начале и конце строк, но сохраняем переносы
         $message = preg_replace('/^[ \t]+|[ \t]+$/m', '', $message);
 
         return trim($message);

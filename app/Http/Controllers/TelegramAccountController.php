@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TelegramAccountCreated;
 use App\Http\Requests\Telegram\StoreRequest;
 use App\Models\PlanfixIntegration;
 use App\Models\TelegramAccount;
 use danog\MadelineProto\API;
+use danog\MadelineProto\Logger;
 use danog\MadelineProto\RPCError\SessionPasswordNeededError;
 use danog\MadelineProto\Settings;
 use danog\MadelineProto\Settings\AppInfo;
@@ -55,6 +57,8 @@ class TelegramAccountController extends Controller
 
     public function showCodeForm(Request $request)
     {
+        $existSession = false;
+
         $phone = $request->query('phone');
 
 
@@ -71,16 +75,19 @@ class TelegramAccountController extends Controller
             // Путь к файлу сессии
             $sessionFile = storage_path("telegram_sessions/{$phone}.madeline");
 
+            if (file_exists($sessionFile)){
+                $this->deleteSessionFolder($sessionFile);
+                $existSession = true;
+            }
+
             // Создание API-инстанса и выполнение phoneLogin
             $madelineProto = new \danog\MadelineProto\API($sessionFile, $settings);
+
             $madelineProto->phoneLogin($phone);
 
 
 
 
-
-
-            // Передаём номер телефона в представление
             return view('telegram.code', compact('phone'));
         }
 
@@ -114,9 +121,16 @@ class TelegramAccountController extends Controller
                 ->setApiId(env('TELEGRAM_API_ID'))
                 ->setApiHash(env('TELEGRAM_API_HASH'));
 
+
+            $loggerSettings = (new Settings())
+                ->getLogger()
+                ->setLevel(Logger::LEVEL_VERBOSE)
+                ->setType(Logger::LOGGER_FILE);
+
             $settings = (new Settings())
                 ->setPeer($peerSetings)
-                ->setAppInfo($appInfo);
+                ->setAppInfo($appInfo)
+                ->setLogger($loggerSettings);
 
             $sessionFile = storage_path("telegram_sessions/{$validated['phone']}.madeline");
 
@@ -145,13 +159,25 @@ class TelegramAccountController extends Controller
                 throw new \RuntimeException('Не удалось получить ID Telegram-аккаунта.');
             }
 
+
+
             $telegramAccount = TelegramAccount::updateOrCreate(
-                ['phone' => $validated['phone']], // Обновляем, если номер телефона уже существует
+                ['phone' => $validated['phone']],
                 [
                     'telegram_id' => $self['id'],
                     'status' => 'Пауза',
                 ]
             );
+
+            /**
+             * @var TelegramAccount $telegramAccount
+             */
+
+            $telegramAccountEntity = $telegramAccount->getEntity();
+
+            exec("sudo supervisorctl restart tg_session_{$telegramAccountEntity->getPhone()}");
+
+            event(new TelegramAccountCreated($telegramAccountEntity));
 
             return redirect()->route('dashboard')->with('success', 'Аккаунт успешно добавлен!');
 
@@ -161,14 +187,11 @@ class TelegramAccountController extends Controller
             return back()->withErrors(['code' => 'Ошибка авторизации: ' . $e->getMessage()]);
 
         }
-
-
-
     }
 
     public function resendCode(Request $request, string $phone)
     {
-//        $phone = $request->input('phone');
+
         $phoneCodeHash = '40dcf1ed51d4b29095';
 
         if (!$phone){
@@ -214,9 +237,20 @@ class TelegramAccountController extends Controller
         try {
             $account = TelegramAccount::findOrFail($id);
             $sessionPath = $account->session_path;
+            $phone = $account->phone;
+
+            $accountMadeline = new API($sessionPath);
+            $accountMadeline->logout();
+
+            $confPath = "/etc/supervisor/conf.d/tg_session_{$phone}.conf";
+            if (file_exists($confPath)) {
+                exec("sudo supervisorctl stop tg_session_{$phone}");
+                unlink($confPath);
+                exec('sudo supervisorctl reread && sudo supervisorctl update');
+            }
 
             if (file_exists($sessionPath) && is_dir($sessionPath)) {
-                // Удаляем папку с сессией
+
                 $this->deleteSessionFolder($sessionPath);
             }
 
@@ -224,7 +258,6 @@ class TelegramAccountController extends Controller
 
             $account->delete();
 
-            Artisan::call('telegram:restart-supervisor');
 
             return redirect()->route('telegram.index')->with('success', 'Аккаунт успешно удален!');
 
@@ -265,40 +298,30 @@ class TelegramAccountController extends Controller
 
     public function start(int $accountId)
     {
-        // Получаем аккаунт по ID
         $account = TelegramAccount::findOrFail($accountId);
 
-        // Проверяем, что сессия не активна
         if ($account->status === 'Активен') {
             return redirect()->route('telegram.index')->with('error', 'Сессия уже активна.');
         }
 
-        // Статус сессии меняем на "Активен"
         $account->status = 'Активен';
         $account->save();
 
-        // Запуск сессии с использованием MadelineProto
-
-        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была успешно запущена.');
     }
 
     public function stop(int $accountId)
     {
-        // Получаем аккаунт по ID
+
         $account = TelegramAccount::findOrFail($accountId);
 
-        // Проверяем, что сессия не активна
         if ($account->status === 'Пауза') {
             return redirect()->route('telegram.index')->with('error', 'Сессия уже на паузе.');
         }
 
-        // Статус сессии меняем на "Активен"
         $account->status = 'Пауза';
         $account->save();
-
-        Artisan::call('telegram:restart-supervisor');
 
         return redirect()->route('telegram.index')->with('success', 'Сессия была поставлена на паузу.');
     }

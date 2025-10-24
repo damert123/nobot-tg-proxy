@@ -12,7 +12,7 @@ class TelegramListen extends Command
      *
      * @var string
      */
-    protected $signature = 'telegram:listen';
+    protected $signature = 'telegram:listen {--id=}';
 
 
     /**
@@ -36,8 +36,15 @@ class TelegramListen extends Command
      */
     public function handle()
     {
+
+        $id = $this->option('id');
+
+        if (!$id) {
+            $this->error('Не указан id аккаунта (--id=)');
+            return 1;
+        }
         $this->info('Запуск обработчика сообщений Telegram...');
-        $this->telegramService->listenForMessage();
+        $this->telegramService->listenForMessage($id);
 
         return 0;
     }
