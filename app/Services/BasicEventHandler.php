@@ -191,11 +191,11 @@ class BasicEventHandler extends SimpleEventHandler
                 : "https://t.me/$clientId";
 
             $telegramDataProfileLink = $senderUserName
-                ? "https://t.me/$senderUserName"
+                ? "https://t.me/$senderUserName" . "Telegram ID: {$fromId}"
                 : "ChatId:{$fromId}";
 
             $clientDataTelegramProfileLink = $clientUserName
-                ? "https://t.me/$clientUserName"
+                ? "https://t.me/$clientUserName" ."Telegram ID: {$clientId}"
                 : "ChatId:{$clientId}";
 
             Log::channel('tg-messages')->info($telegramProfileLink);
