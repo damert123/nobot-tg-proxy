@@ -183,20 +183,20 @@ class BasicEventHandler extends SimpleEventHandler
             }
 
             $telegramProfileLink = $senderUserName
-                ? "https://t.me/$senderUserName"
-                : "https://t.me/$fromId";
+                ? "https://t.me/$senderUserName  Chat ID: {$fromId}"
+                : "https://t.me/$fromId Chat ID: {$fromId}" ;
 
             $clientTelegramProfileLink = $clientUserName
-                ? "https://t.me/$clientUserName"
-                : "https://t.me/$clientId";
+                ? "https://t.me/$clientUserName Chat ID: {$clientId}"
+                : "https://t.me/$clientId Chat ID: {$clientId}" ;
 
             $telegramDataProfileLink = $senderUserName
                 ? "https://t.me/$senderUserName" . " Chat ID: {$fromId}"
-                : "ChatId:{$fromId}";
+                : "ChatId: {$fromId}";
 
             $clientDataTelegramProfileLink = $clientUserName
                 ? "https://t.me/$clientUserName" ." Chat ID: {$clientId}"
-                : "ChatId:{$clientId}";
+                : "ChatId: {$clientId}";
 
             Log::channel('tg-messages')->info($telegramProfileLink);
 
@@ -224,7 +224,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactId' => $fromId,
                     'contactName' => $senderFirstName,
                     'contactLastName' => $senderLastName,
-                    'telegramUserName' => "$telegramProfileLink",
+                    'telegramUserName' => "Telegram: {$telegramProfileLink}",
                     'contactData' => "Telegram: {$telegramDataProfileLink}"
                 ];
             } else {
