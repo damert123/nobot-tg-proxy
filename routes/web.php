@@ -45,6 +45,9 @@ Route::middleware(AdminMiddleware::class)->group(function (){
     Route::put('/users/{id}/role', [UserController::class, 'updateRole'])->name('users.updateRole');
 
 
+    Route::post('/account/handle/restart', TelegramAccountController::class, 'restartHandler')->name('account.restart');
+
+
 });
 
 Route::middleware('auth')->group(function () {

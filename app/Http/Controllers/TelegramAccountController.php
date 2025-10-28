@@ -326,6 +326,32 @@ class TelegramAccountController extends Controller
         return redirect()->route('telegram.index')->with('success', 'Сессия была поставлена на паузу.');
     }
 
+    public function restartHandler(int $accountId)
+    {
+
+        try {
+            $account = TelegramAccount::findOrFail($accountId);
+
+            $settings = (new \danog\MadelineProto\Settings\AppInfo)
+                ->setApiId(env('TELEGRAM_API_ID'))
+                ->setApiHash(env('TELEGRAM_API_HASH'));
+
+            $storagePath = $account->session_path;
+
+            $api = new API($storagePath);
+
+            $api->restart();
+
+        }catch (\Exception $e){
+            throw  new \Exception($e->getMessage());
+        }
+
+
+
+
+
+    }
+
 
 
 
