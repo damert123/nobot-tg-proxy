@@ -224,7 +224,7 @@ class BasicEventHandler extends SimpleEventHandler
                     'contactId' => $fromId,
                     'contactName' => $senderFirstName,
                     'contactLastName' => $senderLastName,
-                    'telegramUserName' => "Telegram: {$telegramProfileLink}",
+                    'telegramUserName' => "$telegramProfileLink",
                     'contactData' => "Telegram: {$telegramDataProfileLink}"
                 ];
             } else {
