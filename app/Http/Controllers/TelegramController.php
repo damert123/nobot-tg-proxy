@@ -63,10 +63,9 @@ class TelegramController extends Controller
 
             $requestData = $request->all();
 
-            // ДОБАВЛЯЕМ: Проверяем Content-Type и обрабатываем form-data если нужно
+
             $contentType = $request->header('Content-Type');
             if (str_contains($contentType, 'application/x-www-form-urlencoded')) {
-                // Получаем сырые данные и парсим вручную
                 $rawData = $request->getContent();
                 parse_str($rawData, $formData);
 
@@ -111,6 +110,40 @@ class TelegramController extends Controller
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
+
+    public function sendMessageNoticeNewRegister(Request $request)
+    {
+        try {
+            Log::channel('new-register-messages')->info('Barzha webhook received:', $request->all());
+
+            $data = TelegramMessageDTO::fromArray($request->all());
+
+            $telegramIdFrom = $data->fromId;
+            $status = 'skipped';
+
+            if (!empty($data->message)) {
+
+                if (!empty($data->toId)) {
+                    $this->queueMessage($telegramIdFrom, $data->message, $data->toId);
+                }
+                else {
+                    Log::channel('new-register-messages')->warning("Не найден ни telegram_link, ни task.");
+                    $status = 'invalid';
+                }
+            }
+
+            return response()->json([
+                'status' => $status,
+            ]);
+
+        }catch (\Exception $e){
+            Log::channel('new-register-messages')->error("Ошибка обработки вебхука: {$e->getMessage()}");
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+
+    }
+
 
     private function queueMessage(int $telegramId, string $message, string $telegramLink): void
     {

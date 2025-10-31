@@ -75,8 +75,6 @@ class BasicEventHandler extends SimpleEventHandler
 
     public function onUpdateNewMessage(array $update): void
     {
-
-
         $sessionPath = $this->getSessionName();
         $telegramAccount = TelegramAccountEntity::getBySessionPath($sessionPath);
 

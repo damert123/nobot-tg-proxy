@@ -149,6 +149,12 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/queue-messages.log'),
             'replace_placeholders' => true,
+        ],
+
+        'new-register-messages' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/new-register-messages.log'),
+            'replace_placeholders' => true,
         ]
 
 
